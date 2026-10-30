@@ -1,0 +1,8 @@
+name: H3_stone_wine
+description: v12 chapter 2 triptych (stone) - one dried red wine / sauce stain on a rough stone countertop (dried sauce or wine on stone), scanning the whole tabletop
+site: home_dining
+platform: spot_arm
+task: { instruction: "Clean the table.", surface: rough_stone, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  - { type: wine, zone: B3, offset: [0.0, 0.0], radius: 0.022, seed: 22 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

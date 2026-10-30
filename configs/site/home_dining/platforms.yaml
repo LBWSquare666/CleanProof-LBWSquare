@@ -1,0 +1,4 @@
+# Home dining table site (simulation): protective-stop radius of the Spot arm. The default 1.10 m was set for the old small work area; the Spot Arm shoulder joint is about 0.29 m ahead of the body center,
+# the arm is about 0.98 m long, and the horizontal reach is about 1.27 m. When unfolding from the stowed survey pose to the far row of cells, the joint-interpolated path goes beyond 1.1 m midway (smoke test), so it is raised to 1.20 m here.
+spot_arm:
+  reach_m: 1.20

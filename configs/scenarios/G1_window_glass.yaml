@@ -1,0 +1,8 @@
+name: G1_window_glass
+description: multi-platform segment - one dried spot and one water stain on the slanted side window glass (surface glass) of a van; in the video it is wiped by a Flexiv Rizon 4 mounted on top of a floor cleaning cart (at render time IK is re-solved for the cart-top mounting along the same job TCP trajectory)
+platform: rizon4              # the robot registered for the site; the simulation models it when a job starts (CLI --platform can override)
+task: { instruction: "Clean the surface.", surface: glass, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  - { type: dried, zone: C3, offset: [0.0, 0.0], radius: 0.022, seed: 41 }
+  - { type: light, zone: B2, offset: [0.003, -0.003], radius: 0.018, seed: 42 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

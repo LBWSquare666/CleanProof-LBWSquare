@@ -1,0 +1,16 @@
+{
+ "calibrated_utc": "2026-10-29T05:46:51+00:00",
+ "source": "built-in simulation",
+ "rows": 4,
+ "cols": 5,
+ "size_m": [
+  0.24,
+  0.3
+ ],
+ "reference": {
+  "file": "reference.png",
+  "kind": "captured"
+ },
+ "zones_changed": true,
+ "scenario": "R1_rail_dried"
+}

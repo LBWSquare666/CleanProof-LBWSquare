@@ -1,0 +1,160 @@
+# Platform adapters: the same CleanProof software (verifier / planner / guardrail / force-control skill / report) runs on different robots,
+# and only the items here change between platforms: robot model, driven joints, end-effector and tool mounting, base position in the countertop frame, reach radius.
+#
+# Models come from MuJoCo Menagerie (google-deepmind/mujoco_menagerie, commit cda5236; each directory keeps its original license); the root directory is given by the environment variable
+# CLEANPROOF_MENAGERIE (locally ./store/mujoco_menagerie, on the cluster $STORE/mujoco_menagerie).
+# World frame = countertop frame (the base frame of configs/zones.yaml): countertop z = 0, work area x 0.18-0.42, y −0.18-0.12.
+# home / survey joint angles are not filled in by hand: robot/platforms.py solves IK to the same TCP pose as the UR3e mounting Home / survey pose (result cached in runs/platforms/).
+#
+# Fields:
+#   mjcf          model file (relative to the Menagerie root)
+#   arm_joints    driven joints (the other joints are fixed at key "home", e.g. Spot base, legs and fingers)
+#   ee_site / ee_body   end-effector: use the site if there is one (its z axis points outward), otherwise the body
+#   tool_quat     rotation of the tool relative to the end-effector (wxyz; tool axis = rotated +z)
+#   tool_start    distance from the end-effector to the handle start along the tool axis (m; on Spot it must clear the gripper)
+#   base_pos / base_yaw_deg   position of the robot root frame in the world frame and its rotation about z
+#   reach_m       horizontal TCP reach radius used by the protective stop (relative to the base)
+#   floor_z / pedestal   for rendering: floor height; pedestal = a column under the base (the arm sits on a column outside the countertop). Geometry takes no part in contact computation
+# base position found by a reachability scan (all five work-area points × two heights + home + survey pose solvable, pick the spot with the largest minimum joint margin)
+#   label / kind  name and category shown in the console and in the video
+
+ur3e:
+  builtin: true                       # existing UR3e (DH capsule model + robot/kinematics.py), code path unchanged
+  label: "UR3e"
+  kind: "Collaborative arm · 6-DoF"
+  reach_m: 0.53
+
+ur5e:
+  mjcf: universal_robots_ur5e/ur5e.xml
+  arm_joints: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+  ee_site: attachment_site
+  tool_quat: [1, 0, 0, 0]
+  tool_start: 0.0
+  base_pos: [0.0, 0.0, 0.0]
+  base_yaw_deg: 0
+  reach_m: 0.80
+  floor_z: -0.72
+  pedestal: false
+  label: "UR5e"
+  kind: "Collaborative arm · 6-DoF"
+
+panda:
+  mjcf: franka_emika_panda/panda_nohand.xml
+  arm_joints: [joint1, joint2, joint3, joint4, joint5, joint6, joint7]
+  ee_site: attachment_site
+  tool_quat: [1, 0, 0, 0]
+  tool_start: 0.0
+  base_pos: [-0.30, 0.0, 0.0]                 # minimum joint margin 13.9° (far corners unsolvable from −0.35 on)
+  base_yaw_deg: 0
+  reach_m: 0.85
+  floor_z: -0.72
+  pedestal: true
+  label: "Franka Panda"
+  kind: "Research arm · 7-DoF"
+
+rizon4:
+  mjcf: flexiv_rizon4/flexiv_rizon4.xml
+  arm_joints: [joint1, joint2, joint3, joint4, joint5, joint6, joint7]
+  ee_body: link7
+  tool_quat: [1, 0, 0, 0]
+  tool_start: 0.0
+  base_pos: [-0.40, 0.0, 0.0]                 # minimum joint margin 23.8° (far corners unsolvable from −0.45 on)
+  base_yaw_deg: 0
+  reach_m: 0.85
+  floor_z: -0.72
+  pedestal: true
+  label: "Flexiv Rizon 4"
+  kind: "Force-controlled arm · 7-DoF"
+
+spot_arm:
+  mjcf: boston_dynamics_spot/spot_arm.xml
+  arm_joints: [arm_sh0, arm_sh1, arm_el0, arm_el1, arm_wr0, arm_wr1]
+  ee_body: arm_link_wr1
+  tool_quat: [0.70710678, 0, 0.70710678, 0]   # gripper extends along +x of wr1: tool axis z → x
+  tool_start: 0.20
+  base_pos: [-0.55, -0.03, -0.42]             # stands on the ground (root frame origin = floor), countertop height 0.42 m; minimum joint margin 15.7°
+  base_yaw_deg: 0
+  reach_m: 1.10
+  floor_z: -0.42
+  pedestal: false
+  label: "Spot + Arm"
+  kind: "Legged mobile manipulator"
+
+# added (at least 10 robots), models also from MuJoCo Menagerie; base positions determined by scripts/scan_platform_base.py scans
+ur10e:
+  mjcf: universal_robots_ur10e/ur10e.xml
+  arm_joints: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+  ee_site: attachment_site
+  base_pos: [-0.35, -0.03, 0.0]                 # scripts/scan_platform_base.py (runs/platforms/scan/ur10e.log)
+  reach_m: 1.30
+  floor_z: -0.72
+  pedestal: true
+  label: "UR10e"
+  kind: "Collaborative arm · 6-DoF"
+
+kinova_gen3:
+  mjcf: kinova_gen3/gen3.xml
+  arm_joints: [joint_1, joint_2, joint_3, joint_4, joint_5, joint_6, joint_7]
+  ee_body: bracelet_link
+  tool_quat: [0, 1, 0, 0]                     # the z axis of bracelet_link points inward: tool rotated 180° about x
+  base_pos: [-0.25, -0.03, 0.0]                 # scripts/scan_platform_base.py (runs/platforms/scan/kinova_gen3.log)
+  reach_m: 0.90
+  floor_z: -0.72
+  pedestal: true
+  label: "Kinova Gen3"
+  kind: "Lightweight arm · 7-DoF"
+
+xarm7:
+  mjcf: ufactory_xarm7/xarm7_nohand.xml
+  arm_joints: [joint1, joint2, joint3, joint4, joint5, joint6, joint7]
+  ee_site: attachment_site
+  base_pos: [-0.25, -0.03, 0.0]                 # scripts/scan_platform_base.py (runs/platforms/scan/xarm7.log)
+  reach_m: 0.70
+  floor_z: -0.72
+  pedestal: true
+  label: "UFactory xArm 7"
+  kind: "Collaborative arm · 7-DoF"
+
+fr3:
+  mjcf: franka_fr3/fr3.xml
+  arm_joints: [fr3_joint1, fr3_joint2, fr3_joint3, fr3_joint4, fr3_joint5, fr3_joint6, fr3_joint7]
+  ee_site: attachment_site
+  base_pos: [-0.30, -0.03, 0.0]                 # scripts/scan_platform_base.py (runs/platforms/scan/fr3.log)
+  reach_m: 0.855
+  floor_z: -0.72
+  pedestal: true
+  label: "Franka Research 3"
+  kind: "Research arm · 7-DoF"
+
+iiwa14:
+  mjcf: kuka_iiwa_14/iiwa14.xml
+  arm_joints: [joint1, joint2, joint3, joint4, joint5, joint6, joint7]
+  ee_site: attachment_site
+  base_pos: [-0.25, 0.05, -0.30]                 # scripts/scan_platform_base.py (runs/platforms/scan/iiwa14.log; includes the survey-pose margin criterion)
+  reach_m: 0.82
+  floor_z: -0.72
+  pedestal: true
+  label: "KUKA LBR iiwa 14"
+  kind: "Sensitive industrial arm · 7-DoF"
+
+sawyer:
+  mjcf: rethink_robotics_sawyer/sawyer.xml
+  arm_joints: [right_j0, right_j1, right_j2, right_j3, right_j4, right_j5, right_j6]
+  ee_site: attachment_site
+  base_pos: [-0.20, 0.0, 0.0]                 # scripts/scan_platform_base.py (runs/platforms/scan/sawyer.log)
+  reach_m: 1.26
+  floor_z: -0.72
+  pedestal: true
+  label: "Rethink Sawyer"
+  kind: "Collaborative arm · 7-DoF"
+
+lite6:
+  mjcf: ufactory_lite6/lite6.xml
+  arm_joints: [joint1, joint2, joint3, joint4, joint5, joint6]
+  ee_site: attachment_site
+  base_pos: [0.0, -0.03, 0.0]                 # scripts/scan_platform_base.py (runs/platforms/scan/lite6.log)
+  reach_m: 0.44
+  floor_z: -0.72
+  pedestal: false
+  label: "UFactory Lite 6"
+  kind: "Desktop arm · 6-DoF"

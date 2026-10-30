@@ -1,0 +1,31 @@
+{
+ "data": "./store/datasets/verifier_sft_v0",
+ "splits": [
+  "test"
+ ],
+ "role": "verifier",
+ "model": "verifier_lora",
+ "schema_fail": 0,
+ "lenient_parsed": 0,
+ "latency_p50_s": 0.7,
+ "test": {
+  "label_dataset": {
+   "n": 358,
+   "tp": 79,
+   "fn_false_clean": 3,
+   "fp_false_residue": 2,
+   "tn": 274,
+   "uncertain": 0,
+   "precision": 0.9753,
+   "recall": 0.9634,
+   "f1": 0.9693,
+   "false_clean_rate": 0.0366,
+   "false_clean_ci95": [
+    0.0125,
+    0.1021
+   ],
+   "false_residue_rate": 0.0072,
+   "ece": 0.014
+  }
+ }
+}

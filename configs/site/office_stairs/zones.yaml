@@ -1,0 +1,8 @@
+# written by in-software calibration (zone grid and countertop height); keys not written fall back to configs/zones.yaml.
+table:
+  z_surface: 0.0
+work_area:
+  origin_xy: [0.18, -0.18]
+  size_xy: [0.24, 0.3]
+  rows: 4
+  cols: 5

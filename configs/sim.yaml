@@ -1,0 +1,68 @@
+# Simulation parameters (the mujoco and ursim backends share the contact section for the virtual countertop).
+
+contact:
+  stiffness_n_m: 2100.0     # our earlier UR3e work uses k≈2.1 N/mm (to be confirmed with real-robot data)
+  damping_ns_m: 40.0
+  friction_mu: 0.25
+  pad_radius_m: 0.03        # polishing pad radius, to be measured on site
+  edge_points: 8
+  ft_noise_n: 0.05
+  ft_bias_n: [0.3, -0.2, 0.8]   # sensor zero-point bias (used to check the software tare)
+  seed: 0
+
+# speedL tracking: first-order lag + 1 tick delay (same as the contact sandbox from our earlier UR3e work)
+servo:
+  speed_tracking_tau_s: 0.03
+  delay_ticks: 1
+
+dirt:
+  resolution_m: 0.0025
+  clean_level: 0.1           # a cell whose stain concentration is below this counts as clean
+  zone_clean_max_fraction: 0.005
+  # Ground truth is judged by visibility (2026-10-02): a cell is dirty only if its rendered color differs from the countertop by ΔE > 12, in line with the classical vision threshold. At concentration 0.1 the ΔE is only 5-7,
+  # and light / dried need a concentration of about 0.25 to reach ΔE > 12. A threshold of 10 was tried to leave a "faint but visible" band, but then neither Cosmos nor classical vision could see
+  # the residue at ΔE (both S2 demo takes were judged as missed detections because of it), so it was changed to 12; how to handle this band is left to the real-robot stage, to be decided with real images.
+  visible_delta_e: 12.0
+  # removal model: per tick d ← d · exp(−rate · slip · g(F)), g(F) = max(0, F − F0) / 5 N.
+  # v8: F0 and rate can be set per surface ({surface: value, default: value}), consistent with configs/force_table.yaml --
+  # the table's starting force cleans in one pass, one level lower does not move it: F0 = table value − 1.5 N, rate 160 (at g = 0.3 the strength equals the old light class cleaning in one pass at 5 N).
+  # dried has two layers (team member #2: light wiping should remove part of it): 30 % surface layer fades with any force, 70 % hard layer needs F0.
+  types:
+    light:     { rate_per_m: { default: 60.0, rough_stone: 160.0 }, force_threshold_n: { default: 1.0, rough_stone: 6.5 },
+                 rgb: [150, 105, 60] }                                                    # wet coffee (table: wet_spill)
+    dried:     { rate_per_m: 60.0, force_threshold_n: 1.0, rgb: [110, 70, 35],             # dried coffee (table: dried_stain)
+                 hard: { fraction: 0.7, rate_per_m: 160.0,
+                         force_threshold_n: { default: 10.5, whiteboard: 6.5, glass: 6.5, stainless_steel: 8.5, rough_stone: 12.5 } } }
+    marker:    { rate_per_m: 160.0, rgb: [35, 50, 120],                                    # marker (table: ink_mark), stroke shape
+                 force_threshold_n: { default: 8.5, whiteboard: 3.5, glass: 4.5, stainless_steel: 6.5, rough_stone: 11.5 } }
+    permanent: { rate_per_m: 0.0,  force_threshold_n: 0.0, rgb: [40, 40, 120] }           # cannot be removed (S3)
+    # v12 (the triptych pairs three surfaces with three realistic stains). New types are only appended; concentration maps of old recordings are zero-padded by type index and can simply be re-rendered.
+    wine:      { rate_per_m: 60.0, force_threshold_n: 1.0, rgb: [118, 34, 46],              # dried red wine / sauce (table: dried_stain), two layers like dried
+                 hard: { fraction: 0.7, rate_per_m: 160.0,
+                         force_threshold_n: { default: 10.5, whiteboard: 6.5, glass: 6.5, stainless_steel: 8.5, rough_stone: 12.5 } } }
+    grease:    { rate_per_m: 160.0, rgb: [84, 80, 66],                                     # greasy handprint (table: grease), semi-transparent dark oil film, slightly heavier at the edge
+                 force_threshold_n: { default: 7.5, whiteboard: 4.5, glass: 4.5, stainless_steel: 6.5, rough_stone: 10.5 } }
+  surface_rgb: [205, 205, 200]        # plain color base: rgb_plain() (Blender plate decal) and the plain countertop
+  # countertops for perception rendering (keys match configs/force_table.yaml surfaces). texture is a small texture kept in the repo, cut by
+  # scripts/make_surface_textures.py from source (the original CC0 image under store/cc0_assets, the whole image = size_m meters).
+  render_scale: 5                     # render texture = stain grid × 5 = 0.5 mm / pixel (same as the rectified image at 2000 px/m)
+  default_surface: plain              # plain-color countertop used when no countertop is given (unit tests, old calls)
+  surfaces:
+    whiteboard:      { rgb: [236, 238, 236] }
+    glass:           { rgb: [128, 146, 156] }        # car window glass (the Flexiv cart wipes a slanted glass window); F0 = force table value − 1.5 N
+    sealed_wood:     { texture: assets/surfaces/sealed_wood.png,
+                       source: { file: grey_oak_veneer_01/grey_oak_veneer_01_diff_4k.jpg, size_m: 1.0, origin_m: [0.0, 0.0] } }
+    rough_stone:     { texture: assets/surfaces/rough_stone.png,
+                       source: { file: acg_granite002a/Granite002A_4K-JPG_Color.jpg, size_m: 0.4, origin_m: [0.0, 0.0] } }
+    stainless_steel: { texture: assets/surfaces/stainless_steel.png,
+                       source: { file: acg_metal011/Metal011_4K-JPG_Color.jpg, size_m: 1.0, origin_m: [0.0, 0.0] } }
+
+render:
+  width: 1280      # D455 native color resolution
+  height: 720
+
+cameras:
+  # the fixed D455 pose is a placeholder, to be updated after on-site measurement (color field of view about 90°×65°)
+  fixed: { pos: [0.62, -0.03, 0.44], lookat: [0.30, -0.03, 0.0], fovy: 50 }
+  # wrist D405: mounting position taken from robot.yaml wrist_camera.pos_in_flange (field of view about 87°×58°)
+  wrist: { fovy: 58 }

@@ -1,0 +1,62 @@
+{
+ "sealed_wood": {
+  "texture": "assets/surfaces/home_dining/sealed_wood.png",
+  "source": {
+   "file": "grey_oak_veneer_01/grey_oak_veneer_01_diff_4k.jpg",
+   "size_m": 1.0,
+   "origin_m": [
+    0.0,
+    0.0
+   ]
+  },
+  "shape": [
+   680,
+   1200
+  ],
+  "mean_rgb": [
+   204.9,
+   183.4,
+   162.8
+  ]
+ },
+ "rough_stone": {
+  "texture": "assets/surfaces/home_dining/rough_stone.png",
+  "source": {
+   "file": "acg_granite002a/Granite002A_4K-JPG_Color.jpg",
+   "size_m": 0.4,
+   "origin_m": [
+    0.0,
+    0.0
+   ]
+  },
+  "shape": [
+   680,
+   1200
+  ],
+  "mean_rgb": [
+   181.7,
+   178.2,
+   173.9
+  ]
+ },
+ "stainless_steel": {
+  "texture": "assets/surfaces/home_dining/stainless_steel.png",
+  "source": {
+   "file": "acg_metal011/Metal011_4K-JPG_Color.jpg",
+   "size_m": 1.0,
+   "origin_m": [
+    0.0,
+    0.0
+   ]
+  },
+  "shape": [
+   680,
+   1200
+  ],
+  "mean_rgb": [
+   156.4,
+   160.7,
+   165.4
+  ]
+ }
+}

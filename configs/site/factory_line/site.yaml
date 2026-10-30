@@ -1,0 +1,7 @@
+# site registration in the software: stainless steel workbench beside a factory line, Franka Panda. Geometry uses the default work area (simulation).
+name: Factory line · workbench
+type: Factories
+surface: stainless_steel
+robot: panda
+scenarios: [L1_line_steel]
+job_scenario: L1_line_steel

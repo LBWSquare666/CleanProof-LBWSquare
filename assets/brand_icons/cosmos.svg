@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1024" height="1024">
+<!-- cosmos emblem: original work for the CleanProof demo (Apache-2.0). No third-party trademarks. -->
+<defs><linearGradient id="g" x1="0" y1="0" x2="0.45" y2="0.55"><stop offset="0" stop-color="rgb(31, 78, 180)"/><stop offset="1" stop-color="rgb(63, 193, 230)"/></linearGradient><filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect x="40" y="40" width="920" height="920" rx="220" fill="url(#g)"/><rect x="40" y="40" width="920" height="920" rx="220" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="8"/>
+<g filter="url(#glow)">
+<polyline points="300.00,600.00 300.00,840.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="300.00,600.00 700.00,600.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="400.00,600.00 400.00,840.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="300.00,660.00 700.00,660.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="500.00,600.00 500.00,840.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="300.00,720.00 700.00,720.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="600.00,600.00 600.00,840.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="300.00,780.00 700.00,780.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="700.00,600.00 700.00,840.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="300.00,840.00 700.00,840.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.275" stroke-width="8.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="200.00,470.00 225.00,445.20 250.00,420.82 275.00,397.29 300.00,375.00 325.00,354.34 350.00,335.65 375.00,319.26 400.00,305.46 425.00,294.46 450.00,286.47 475.00,281.63 500.00,280.00 525.00,281.63 550.00,286.47 575.00,294.46 600.00,305.46 625.00,319.26 650.00,335.65 675.00,354.34 700.00,375.00 725.00,397.29 750.00,420.82 775.00,445.20 800.00,470.00 800.00,470.00 775.00,494.80 750.00,519.18 725.00,542.71 700.00,565.00 675.00,585.66 650.00,604.35 625.00,620.74 600.00,634.54 575.00,645.54 550.00,653.53 525.00,658.37 500.00,660.00 475.00,658.37 450.00,653.53 425.00,645.54 400.00,634.54 375.00,620.74 350.00,604.35 325.00,585.66 300.00,565.00 275.00,542.71 250.00,519.18 225.00,494.80 200.00,470.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="1.000" stroke-width="40.00" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="500.00" cy="470.00" r="115.00" fill="rgb(255,255,255)" fill-opacity="0.588"/>
+<circle cx="500.00" cy="470.00" r="70.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="530.00" cy="430.00" r="22.00" fill="rgb(31,78,180)" fill-opacity="1.000"/>
+<polyline points="160.00,470.00 840.00,470.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.431" stroke-width="12.00" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>

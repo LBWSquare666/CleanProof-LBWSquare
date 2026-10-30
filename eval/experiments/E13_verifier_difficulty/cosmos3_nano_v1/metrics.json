@@ -1,0 +1,366 @@
+{
+ "data": "./store/datasets/verifier_sft_v1_hard",
+ "splits": [
+  "test",
+  "val"
+ ],
+ "role": "verifier",
+ "model": "nvidia/Cosmos3-Nano",
+ "schema_fail": 11,
+ "lenient_parsed": 11,
+ "latency_p50_s": 1.091,
+ "test": {
+  "label_dataset": {
+   "n": 540,
+   "tp": 60,
+   "fn_false_clean": 25,
+   "fp_false_residue": 11,
+   "tn": 444,
+   "uncertain": 0,
+   "precision": 0.8451,
+   "recall": 0.7059,
+   "f1": 0.7692,
+   "false_clean_rate": 0.2941,
+   "false_clean_ci95": [
+    0.2079,
+    0.3982
+   ],
+   "false_residue_rate": 0.0242,
+   "ece": 0.0331
+  },
+  "label_dE>4": {
+   "n": 540,
+   "tp": 68,
+   "fn_false_clean": 49,
+   "fp_false_residue": 3,
+   "tn": 420,
+   "uncertain": 0,
+   "precision": 0.9577,
+   "recall": 0.5812,
+   "f1": 0.7234,
+   "false_clean_rate": 0.4188,
+   "false_clean_ci95": [
+    0.3334,
+    0.5094
+   ],
+   "false_residue_rate": 0.0071,
+   "ece": 0.0775
+  },
+  "label_dE>6": {
+   "n": 540,
+   "tp": 67,
+   "fn_false_clean": 43,
+   "fp_false_residue": 4,
+   "tn": 426,
+   "uncertain": 0,
+   "precision": 0.9437,
+   "recall": 0.6091,
+   "f1": 0.7403,
+   "false_clean_rate": 0.3909,
+   "false_clean_ci95": [
+    0.3049,
+    0.4843
+   ],
+   "false_residue_rate": 0.0093,
+   "ece": 0.0682
+  },
+  "label_dE>8": {
+   "n": 540,
+   "tp": 67,
+   "fn_false_clean": 39,
+   "fp_false_residue": 4,
+   "tn": 430,
+   "uncertain": 0,
+   "precision": 0.9437,
+   "recall": 0.6321,
+   "f1": 0.7571,
+   "false_clean_rate": 0.3679,
+   "false_clean_ci95": [
+    0.2822,
+    0.4628
+   ],
+   "false_residue_rate": 0.0092,
+   "ece": 0.0608
+  },
+  "label_dE>10": {
+   "n": 540,
+   "tp": 63,
+   "fn_false_clean": 34,
+   "fp_false_residue": 8,
+   "tn": 435,
+   "uncertain": 0,
+   "precision": 0.8873,
+   "recall": 0.6495,
+   "f1": 0.75,
+   "false_clean_rate": 0.3505,
+   "false_clean_ci95": [
+    0.2629,
+    0.4495
+   ],
+   "false_residue_rate": 0.0181,
+   "ece": 0.0479
+  },
+  "label_dE>12": {
+   "n": 540,
+   "tp": 60,
+   "fn_false_clean": 25,
+   "fp_false_residue": 11,
+   "tn": 444,
+   "uncertain": 0,
+   "precision": 0.8451,
+   "recall": 0.7059,
+   "f1": 0.7692,
+   "false_clean_rate": 0.2941,
+   "false_clean_ci95": [
+    0.2079,
+    0.3982
+   ],
+   "false_residue_rate": 0.0242,
+   "ece": 0.0331
+  },
+  "detection_vs_de_max": [
+   {
+    "de_max_bin": [
+     0,
+     4
+    ],
+    "n": 423,
+    "called_residue": 3,
+    "rate": 0.0071,
+    "ci95": [
+     0.0024,
+     0.0206
+    ]
+   },
+   {
+    "de_max_bin": [
+     4,
+     8
+    ],
+    "n": 11,
+    "called_residue": 1,
+    "rate": 0.0909,
+    "ci95": [
+     0.0162,
+     0.3774
+    ]
+   },
+   {
+    "de_max_bin": [
+     8,
+     12
+    ],
+    "n": 21,
+    "called_residue": 7,
+    "rate": 0.3333,
+    "ci95": [
+     0.1719,
+     0.5463
+    ]
+   },
+   {
+    "de_max_bin": [
+     12,
+     20
+    ],
+    "n": 47,
+    "called_residue": 30,
+    "rate": 0.6383,
+    "ci95": [
+     0.4954,
+     0.7603
+    ]
+   },
+   {
+    "de_max_bin": [
+     20,
+     null
+    ],
+    "n": 38,
+    "called_residue": 30,
+    "rate": 0.7895,
+    "ci95": [
+     0.6365,
+     0.8893
+    ]
+   }
+  ]
+ },
+ "val": {
+  "label_dataset": {
+   "n": 540,
+   "tp": 56,
+   "fn_false_clean": 30,
+   "fp_false_residue": 25,
+   "tn": 429,
+   "uncertain": 0,
+   "precision": 0.6914,
+   "recall": 0.6512,
+   "f1": 0.6707,
+   "false_clean_rate": 0.3488,
+   "false_clean_ci95": [
+    0.2565,
+    0.4541
+   ],
+   "false_residue_rate": 0.0551,
+   "ece": 0.0637
+  },
+  "label_dE>4": {
+   "n": 540,
+   "tp": 78,
+   "fn_false_clean": 53,
+   "fp_false_residue": 3,
+   "tn": 406,
+   "uncertain": 0,
+   "precision": 0.963,
+   "recall": 0.5954,
+   "f1": 0.7358,
+   "false_clean_rate": 0.4046,
+   "false_clean_ci95": [
+    0.3244,
+    0.4902
+   ],
+   "false_residue_rate": 0.0073,
+   "ece": 0.0804
+  },
+  "label_dE>6": {
+   "n": 540,
+   "tp": 73,
+   "fn_false_clean": 48,
+   "fp_false_residue": 8,
+   "tn": 411,
+   "uncertain": 0,
+   "precision": 0.9012,
+   "recall": 0.6033,
+   "f1": 0.7228,
+   "false_clean_rate": 0.3967,
+   "false_clean_ci95": [
+    0.314,
+    0.4857
+   ],
+   "false_residue_rate": 0.0191,
+   "ece": 0.073
+  },
+  "label_dE>8": {
+   "n": 540,
+   "tp": 71,
+   "fn_false_clean": 42,
+   "fp_false_residue": 10,
+   "tn": 417,
+   "uncertain": 0,
+   "precision": 0.8765,
+   "recall": 0.6283,
+   "f1": 0.732,
+   "false_clean_rate": 0.3717,
+   "false_clean_ci95": [
+    0.2882,
+    0.4636
+   ],
+   "false_residue_rate": 0.0234,
+   "ece": 0.0619
+  },
+  "label_dE>10": {
+   "n": 540,
+   "tp": 64,
+   "fn_false_clean": 35,
+   "fp_false_residue": 17,
+   "tn": 424,
+   "uncertain": 0,
+   "precision": 0.7901,
+   "recall": 0.6465,
+   "f1": 0.7111,
+   "false_clean_rate": 0.3535,
+   "false_clean_ci95": [
+    0.2664,
+    0.4516
+   ],
+   "false_residue_rate": 0.0385,
+   "ece": 0.0582
+  },
+  "label_dE>12": {
+   "n": 540,
+   "tp": 56,
+   "fn_false_clean": 30,
+   "fp_false_residue": 25,
+   "tn": 429,
+   "uncertain": 0,
+   "precision": 0.6914,
+   "recall": 0.6512,
+   "f1": 0.6707,
+   "false_clean_rate": 0.3488,
+   "false_clean_ci95": [
+    0.2565,
+    0.4541
+   ],
+   "false_residue_rate": 0.0551,
+   "ece": 0.0637
+  },
+  "detection_vs_de_max": [
+   {
+    "de_max_bin": [
+     0,
+     4
+    ],
+    "n": 409,
+    "called_residue": 3,
+    "rate": 0.0073,
+    "ci95": [
+     0.0025,
+     0.0213
+    ]
+   },
+   {
+    "de_max_bin": [
+     4,
+     8
+    ],
+    "n": 18,
+    "called_residue": 7,
+    "rate": 0.3889,
+    "ci95": [
+     0.2031,
+     0.6138
+    ]
+   },
+   {
+    "de_max_bin": [
+     8,
+     12
+    ],
+    "n": 27,
+    "called_residue": 15,
+    "rate": 0.5556,
+    "ci95": [
+     0.3731,
+     0.7241
+    ]
+   },
+   {
+    "de_max_bin": [
+     12,
+     20
+    ],
+    "n": 51,
+    "called_residue": 28,
+    "rate": 0.549,
+    "ci95": [
+     0.4138,
+     0.6773
+    ]
+   },
+   {
+    "de_max_bin": [
+     20,
+     null
+    ],
+    "n": 35,
+    "called_residue": 28,
+    "rate": 0.8,
+    "ci95": [
+     0.6411,
+     0.8996
+    ]
+   }
+  ]
+ }
+}

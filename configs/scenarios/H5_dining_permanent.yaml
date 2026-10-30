@@ -1,0 +1,9 @@
+name: H5_dining_permanent
+description: v12 end of chapter 3 / software showcase - one stain that cannot be removed (a mark) + one wet coffee stain on the home dining table (wood), scanning the whole tabletop; the coffee is cleaned, the mark goes to human review after the force levels are used up
+site: home_dining
+platform: spot_arm
+task: { instruction: "Clean the table.", surface: sealed_wood, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  - { type: permanent, zone: B3, offset: [0.0, 0.0], radius: 0.012, seed: 5 }
+  - { type: light, zone: C2, offset: [0.0, 0.0], radius: 0.016, seed: 6 }
+expect: { status: needs_human, human_zones: [B3], max_false_clean: 0 }

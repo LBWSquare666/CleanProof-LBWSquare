@@ -1,0 +1,8 @@
+name: H2_wood_coffee
+description: v12 chapter 2 triptych (wood) - one coffee stain on the wooden table top of the home dining table (coffee on wood), scanning the whole tabletop
+site: home_dining
+platform: spot_arm
+task: { instruction: "Clean the table.", surface: sealed_wood, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  - { type: light, zone: B3, offset: [0.0, 0.0], radius: 0.020, seed: 21 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

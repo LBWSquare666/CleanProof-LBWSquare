@@ -1,0 +1,65 @@
+# Model and backend configuration.
+# Model IDs follow https://tokenfactory.nebius.com/api/public/models_info (mind the case).
+# Competition compliance: decision / fast / audit must go through tokenfactory during the demo; the verifier runs on vLLM on the local GPU workstation.
+
+backends:
+  tokenfactory:
+    base_url: https://api.tokenfactory.nebius.com/v1/
+    api_key_env: NEBIUS_API_KEY
+    billable: true
+  local_vllm:          # online verifier (current best configuration)
+    base_url: http://127.0.0.1:8001/v1/
+    api_key_env: null
+    billable: false
+  local_vllm_exp:      # experiment port (candidate models / LoRA)
+    base_url: http://127.0.0.1:8002/v1/
+    api_key_env: null
+    billable: false
+
+roles:
+  decision:
+    backend: tokenfactory
+    model: nvidia/nemotron-3-super-120b-a12b
+    thinking: false
+    max_tokens: 800
+    temperature: 0.2
+  fast:
+    backend: tokenfactory
+    model: nvidia/Nemotron-3_5-Lightning
+    thinking: false
+    max_tokens: 600
+    temperature: 0.2
+  audit:
+    backend: tokenfactory
+    model: nvidia/Nemotron-3-Ultra-550b-a55b
+    thinking: true
+    max_tokens: 4000
+    temperature: 0.3
+  verifier:
+    backend: local_vllm
+    model: nvidia/Cosmos3-Nano   # after the 2026-10-02 comparison, Nano is recommended
+    thinking: false
+    max_tokens: 1024
+    # non-reasoning sampling parameters recommended by the NVIDIA Cosmos 3 Reasoner prompting guide
+    temperature: 0.7
+    top_p: 0.8
+    top_k: 20
+    presence_penalty: 1.5
+    # attach a clean reference crop of the same location to each cell. If E19 falls short, set to false and add a line
+    send_reference: true
+
+budget:
+  # Token Factory cumulative spend cap (USD); once exceeded, llm_client refuses further calls to the billed backend
+  usd_limit: 40.0
+  ledger_path: ~/.local/state/cleanproof/spend.json
+
+# 2026-09-29 list prices (USD / million tokens)
+pricing_usd_per_million:
+  nvidia/nemotron-3-super-120b-a12b: { input: 0.30, output: 0.90 }
+  nvidia/Nemotron-3_5-Lightning: { input: 0.06, output: 0.24 }
+  nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B: { input: 0.06, output: 0.24 }
+  nvidia/Nemotron-3-Ultra-550b-a55b: { input: 1.00, output: 3.00 }
+
+timeouts:
+  request_s: 90
+  max_retries: 3

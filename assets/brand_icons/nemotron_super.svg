@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1024" height="1024">
+<!-- nemotron_super emblem: original work for the CleanProof demo (Apache-2.0). No third-party trademarks. -->
+<defs><linearGradient id="g" x1="0" y1="0" x2="0.45" y2="0.55"><stop offset="0" stop-color="rgb(79, 63, 200)"/><stop offset="1" stop-color="rgb(156, 107, 255)"/></linearGradient><filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect x="40" y="40" width="920" height="920" rx="220" fill="url(#g)"/><rect x="40" y="40" width="920" height="920" rx="220" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="8"/>
+<g filter="url(#glow)">
+<polyline points="300.00,360.00 240.00,480.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="240.00,480.00 280.00,610.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="280.00,610.00 370.00,690.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="300.00,360.00 440.00,330.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="440.00,330.00 400.00,460.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="400.00,460.00 360.00,560.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="360.00,560.00 370.00,690.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="240.00,480.00 400.00,460.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="280.00,610.00 360.00,560.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="400.00,460.00 440.00,330.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="700.00,360.00 760.00,480.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="760.00,480.00 720.00,610.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="720.00,610.00 630.00,690.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="700.00,360.00 560.00,330.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="560.00,330.00 600.00,460.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="600.00,460.00 640.00,560.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="640.00,560.00 630.00,690.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="760.00,480.00 600.00,460.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="720.00,610.00 640.00,560.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="600.00,460.00 560.00,330.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="440.00,330.00 560.00,330.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="370.00,690.00 630.00,690.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="400.00,460.00 600.00,460.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="360.00,560.00 640.00,560.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.549" stroke-width="16.00" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="300.00" cy="360.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="240.00" cy="480.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="280.00" cy="610.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="370.00" cy="690.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="400.00" cy="460.00" r="34.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="360.00" cy="560.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="440.00" cy="330.00" r="34.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="700.00" cy="360.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="760.00" cy="480.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="720.00" cy="610.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="630.00" cy="690.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="600.00" cy="460.00" r="34.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="640.00" cy="560.00" r="26.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="560.00" cy="330.00" r="34.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<polyline points="460.00,700.00 480.00,800.00 560.00,840.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="0.588" stroke-width="30.00" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>

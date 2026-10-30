@@ -1,0 +1,7 @@
+# site registration in the software: wide wooden handrail of an indoor staircase, UR5e. Geometry uses the default work area (simulation).
+name: Office stairs · handrail
+type: Public buildings
+surface: sealed_wood
+robot: ur5e
+scenarios: [R1_rail_dried]
+job_scenario: R1_rail_dried

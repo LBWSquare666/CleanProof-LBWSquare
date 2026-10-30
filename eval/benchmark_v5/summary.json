@@ -1,0 +1,1079 @@
+{
+  "benchmark": "benchmark_v5",
+  "n_per_policy": 60,
+  "groups": 5,
+  "variants_per_family": 10,
+  "families": [
+    "S1_light",
+    "S2_dried",
+    "S3_permanent",
+    "S4_new_spill",
+    "S5_obstacle",
+    "S6_forbidden"
+  ],
+  "ci_method": {
+    "rates": "Wilson score interval, 95 %",
+    "means": "t interval over runs, 95 %"
+  },
+  "policies": {
+    "cleanproof": {
+      "config": {
+        "policy": "nemotron",
+        "verifier": "vlm"
+      },
+      "n": 60,
+      "n_expected": 60,
+      "complete": true,
+      "right_outcome": {
+        "k": 58,
+        "n": 60,
+        "rate": 0.9667,
+        "ci95": [
+          0.8864,
+          0.9908
+        ],
+        "half_width": 0.0522
+      },
+      "false_done": {
+        "k": 0,
+        "n": 60,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0602
+        ],
+        "half_width": 0.0301
+      },
+      "wipes": {
+        "n": 60,
+        "mean": 1.917,
+        "sd": 1.266,
+        "ci95": [
+          1.59,
+          2.244
+        ],
+        "sum": 115.0,
+        "ci95_method": "t over runs"
+      },
+      "robot_time_s": {
+        "n": 60,
+        "mean": 91.968,
+        "sd": 56.984,
+        "ci95": [
+          77.254,
+          106.683
+        ],
+        "sum": 5518.11,
+        "ci95_method": "t over runs"
+      },
+      "decision_cost_usd_sum": 0.0992,
+      "wall_s_mean": 55.8,
+      "per_group": [
+        {
+          "group": 1,
+          "n": 12,
+          "right_outcome": {
+            "k": 12,
+            "n": 12,
+            "rate": 1.0,
+            "ci95": [
+              0.7575,
+              1.0
+            ],
+            "half_width": 0.1212
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 1.917,
+          "robot_time_mean_s": 93.86
+        },
+        {
+          "group": 2,
+          "n": 12,
+          "right_outcome": {
+            "k": 11,
+            "n": 12,
+            "rate": 0.9167,
+            "ci95": [
+              0.6461,
+              0.9851
+            ],
+            "half_width": 0.1695
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 1.833,
+          "robot_time_mean_s": 83.94
+        },
+        {
+          "group": 3,
+          "n": 12,
+          "right_outcome": {
+            "k": 12,
+            "n": 12,
+            "rate": 1.0,
+            "ci95": [
+              0.7575,
+              1.0
+            ],
+            "half_width": 0.1212
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 2.0,
+          "robot_time_mean_s": 97.1
+        },
+        {
+          "group": 4,
+          "n": 12,
+          "right_outcome": {
+            "k": 12,
+            "n": 12,
+            "rate": 1.0,
+            "ci95": [
+              0.7575,
+              1.0
+            ],
+            "half_width": 0.1212
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 2.167,
+          "robot_time_mean_s": 102.88
+        },
+        {
+          "group": 5,
+          "n": 12,
+          "right_outcome": {
+            "k": 11,
+            "n": 12,
+            "rate": 0.9167,
+            "ci95": [
+              0.6461,
+              0.9851
+            ],
+            "half_width": 0.1695
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 1.667,
+          "robot_time_mean_s": 82.06
+        }
+      ],
+      "per_family": {
+        "S1_light": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 13,
+          "robot_time_sum_s": 614.3
+        },
+        "S2_dried": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 33,
+          "robot_time_sum_s": 1620.6
+        },
+        "S3_permanent": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "needs_human"
+          ],
+          "wipes_sum": 30,
+          "robot_time_sum_s": 1516.6
+        },
+        "S4_new_spill": {
+          "n": 10,
+          "right_outcome_k": 8,
+          "false_done_k": 0,
+          "statuses": [
+            "done",
+            "needs_human"
+          ],
+          "wipes_sum": 19,
+          "robot_time_sum_s": 818.0
+        },
+        "S5_obstacle": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "fault"
+          ],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 220.9
+        },
+        "S6_forbidden": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 20,
+          "robot_time_sum_s": 727.7
+        }
+      },
+      "models": [
+        "nvidia/Cosmos3-Nano",
+        "nvidia/nemotron-3-super-120b-a12b"
+      ],
+      "prompt_versions": [
+        "dec-c0a6b41/ver-b75e57e"
+      ],
+      "git": [
+        "unknown"
+      ],
+      "notes_rows": []
+    },
+    "fixed1": {
+      "config": {
+        "policy": "fixed1",
+        "verifier": "cv"
+      },
+      "n": 60,
+      "n_expected": 60,
+      "complete": true,
+      "right_outcome": {
+        "k": 36,
+        "n": 60,
+        "rate": 0.6,
+        "ci95": [
+          0.4737,
+          0.7143
+        ],
+        "half_width": 0.1203
+      },
+      "false_done": {
+        "k": 24,
+        "n": 60,
+        "rate": 0.4,
+        "ci95": [
+          0.2857,
+          0.5263
+        ],
+        "half_width": 0.1203
+      },
+      "wipes": {
+        "n": 60,
+        "mean": 3.333,
+        "sd": 1.612,
+        "ci95": [
+          2.917,
+          3.75
+        ],
+        "sum": 200.0,
+        "ci95_method": "t over runs"
+      },
+      "robot_time_s": {
+        "n": 60,
+        "mean": 170.983,
+        "sd": 70.258,
+        "ci95": [
+          152.84,
+          189.125
+        ],
+        "sum": 10258.95,
+        "ci95_method": "t over runs"
+      },
+      "decision_cost_usd_sum": 0.0,
+      "wall_s_mean": 45.8,
+      "per_group": [
+        {
+          "group": 1,
+          "n": 12,
+          "right_outcome": {
+            "k": 8,
+            "n": 12,
+            "rate": 0.6667,
+            "ci95": [
+              0.3906,
+              0.8619
+            ],
+            "half_width": 0.2356
+          },
+          "false_done": {
+            "k": 4,
+            "n": 12,
+            "rate": 0.3333,
+            "ci95": [
+              0.1381,
+              0.6094
+            ],
+            "half_width": 0.2356
+          },
+          "wipes_mean": 3.333,
+          "robot_time_mean_s": 172.25
+        },
+        {
+          "group": 2,
+          "n": 12,
+          "right_outcome": {
+            "k": 6,
+            "n": 12,
+            "rate": 0.5,
+            "ci95": [
+              0.2538,
+              0.7462
+            ],
+            "half_width": 0.2462
+          },
+          "false_done": {
+            "k": 6,
+            "n": 12,
+            "rate": 0.5,
+            "ci95": [
+              0.2538,
+              0.7462
+            ],
+            "half_width": 0.2462
+          },
+          "wipes_mean": 3.333,
+          "robot_time_mean_s": 169.77
+        },
+        {
+          "group": 3,
+          "n": 12,
+          "right_outcome": {
+            "k": 7,
+            "n": 12,
+            "rate": 0.5833,
+            "ci95": [
+              0.3195,
+              0.8067
+            ],
+            "half_width": 0.2436
+          },
+          "false_done": {
+            "k": 5,
+            "n": 12,
+            "rate": 0.4167,
+            "ci95": [
+              0.1933,
+              0.6805
+            ],
+            "half_width": 0.2436
+          },
+          "wipes_mean": 3.333,
+          "robot_time_mean_s": 171.71
+        },
+        {
+          "group": 4,
+          "n": 12,
+          "right_outcome": {
+            "k": 8,
+            "n": 12,
+            "rate": 0.6667,
+            "ci95": [
+              0.3906,
+              0.8619
+            ],
+            "half_width": 0.2356
+          },
+          "false_done": {
+            "k": 4,
+            "n": 12,
+            "rate": 0.3333,
+            "ci95": [
+              0.1381,
+              0.6094
+            ],
+            "half_width": 0.2356
+          },
+          "wipes_mean": 3.333,
+          "robot_time_mean_s": 170.8
+        },
+        {
+          "group": 5,
+          "n": 12,
+          "right_outcome": {
+            "k": 7,
+            "n": 12,
+            "rate": 0.5833,
+            "ci95": [
+              0.3195,
+              0.8067
+            ],
+            "half_width": 0.2436
+          },
+          "false_done": {
+            "k": 5,
+            "n": 12,
+            "rate": 0.4167,
+            "ci95": [
+              0.1933,
+              0.6805
+            ],
+            "half_width": 0.2436
+          },
+          "wipes_mean": 3.333,
+          "robot_time_mean_s": 170.39
+        }
+      ],
+      "per_family": {
+        "S1_light": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 40,
+          "robot_time_sum_s": 2082.4
+        },
+        "S2_dried": {
+          "n": 10,
+          "right_outcome_k": 0,
+          "false_done_k": 10,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 40,
+          "robot_time_sum_s": 2091.7
+        },
+        "S3_permanent": {
+          "n": 10,
+          "right_outcome_k": 0,
+          "false_done_k": 10,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 30,
+          "robot_time_sum_s": 1561.0
+        },
+        "S4_new_spill": {
+          "n": 10,
+          "right_outcome_k": 6,
+          "false_done_k": 4,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 40,
+          "robot_time_sum_s": 2063.9
+        },
+        "S5_obstacle": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "fault"
+          ],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 229.9
+        },
+        "S6_forbidden": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 50,
+          "robot_time_sum_s": 2230.0
+        }
+      },
+      "models": [
+        ""
+      ],
+      "prompt_versions": [
+        "dec-c0a6b41/ver-b75e57e"
+      ],
+      "git": [
+        "unknown"
+      ],
+      "notes_rows": []
+    },
+    "fixed2": {
+      "config": {
+        "policy": "fixed2",
+        "verifier": "cv"
+      },
+      "n": 60,
+      "n_expected": 60,
+      "complete": true,
+      "right_outcome": {
+        "k": 36,
+        "n": 60,
+        "rate": 0.6,
+        "ci95": [
+          0.4737,
+          0.7143
+        ],
+        "half_width": 0.1203
+      },
+      "false_done": {
+        "k": 24,
+        "n": 60,
+        "rate": 0.4,
+        "ci95": [
+          0.2857,
+          0.5263
+        ],
+        "half_width": 0.1203
+      },
+      "wipes": {
+        "n": 60,
+        "mean": 6.667,
+        "sd": 3.224,
+        "ci95": [
+          5.834,
+          7.499
+        ],
+        "sum": 400.0,
+        "ci95_method": "t over runs"
+      },
+      "robot_time_s": {
+        "n": 60,
+        "mean": 225.84,
+        "sd": 95.471,
+        "ci95": [
+          201.188,
+          250.493
+        ],
+        "sum": 13550.42,
+        "ci95_method": "t over runs"
+      },
+      "decision_cost_usd_sum": 0.0,
+      "wall_s_mean": 64.8,
+      "per_group": [
+        {
+          "group": 1,
+          "n": 12,
+          "right_outcome": {
+            "k": 8,
+            "n": 12,
+            "rate": 0.6667,
+            "ci95": [
+              0.3906,
+              0.8619
+            ],
+            "half_width": 0.2356
+          },
+          "false_done": {
+            "k": 4,
+            "n": 12,
+            "rate": 0.3333,
+            "ci95": [
+              0.1381,
+              0.6094
+            ],
+            "half_width": 0.2356
+          },
+          "wipes_mean": 6.667,
+          "robot_time_mean_s": 228.16
+        },
+        {
+          "group": 2,
+          "n": 12,
+          "right_outcome": {
+            "k": 6,
+            "n": 12,
+            "rate": 0.5,
+            "ci95": [
+              0.2538,
+              0.7462
+            ],
+            "half_width": 0.2462
+          },
+          "false_done": {
+            "k": 6,
+            "n": 12,
+            "rate": 0.5,
+            "ci95": [
+              0.2538,
+              0.7462
+            ],
+            "half_width": 0.2462
+          },
+          "wipes_mean": 6.667,
+          "robot_time_mean_s": 223.93
+        },
+        {
+          "group": 3,
+          "n": 12,
+          "right_outcome": {
+            "k": 7,
+            "n": 12,
+            "rate": 0.5833,
+            "ci95": [
+              0.3195,
+              0.8067
+            ],
+            "half_width": 0.2436
+          },
+          "false_done": {
+            "k": 5,
+            "n": 12,
+            "rate": 0.4167,
+            "ci95": [
+              0.1933,
+              0.6805
+            ],
+            "half_width": 0.2436
+          },
+          "wipes_mean": 6.667,
+          "robot_time_mean_s": 227.6
+        },
+        {
+          "group": 4,
+          "n": 12,
+          "right_outcome": {
+            "k": 8,
+            "n": 12,
+            "rate": 0.6667,
+            "ci95": [
+              0.3906,
+              0.8619
+            ],
+            "half_width": 0.2356
+          },
+          "false_done": {
+            "k": 4,
+            "n": 12,
+            "rate": 0.3333,
+            "ci95": [
+              0.1381,
+              0.6094
+            ],
+            "half_width": 0.2356
+          },
+          "wipes_mean": 6.667,
+          "robot_time_mean_s": 224.99
+        },
+        {
+          "group": 5,
+          "n": 12,
+          "right_outcome": {
+            "k": 7,
+            "n": 12,
+            "rate": 0.5833,
+            "ci95": [
+              0.3195,
+              0.8067
+            ],
+            "half_width": 0.2436
+          },
+          "false_done": {
+            "k": 5,
+            "n": 12,
+            "rate": 0.4167,
+            "ci95": [
+              0.1933,
+              0.6805
+            ],
+            "half_width": 0.2436
+          },
+          "wipes_mean": 6.667,
+          "robot_time_mean_s": 224.52
+        }
+      ],
+      "per_family": {
+        "S1_light": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 80,
+          "robot_time_sum_s": 2808.8
+        },
+        "S2_dried": {
+          "n": 10,
+          "right_outcome_k": 0,
+          "false_done_k": 10,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 80,
+          "robot_time_sum_s": 2818.9
+        },
+        "S3_permanent": {
+          "n": 10,
+          "right_outcome_k": 0,
+          "false_done_k": 10,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 60,
+          "robot_time_sum_s": 2106.1
+        },
+        "S4_new_spill": {
+          "n": 10,
+          "right_outcome_k": 6,
+          "false_done_k": 4,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 80,
+          "robot_time_sum_s": 2788.6
+        },
+        "S5_obstacle": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "fault"
+          ],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 229.9
+        },
+        "S6_forbidden": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 100,
+          "robot_time_sum_s": 2798.1
+        }
+      },
+      "models": [
+        ""
+      ],
+      "prompt_versions": [
+        "dec-c0a6b41/ver-b75e57e"
+      ],
+      "git": [
+        "unknown"
+      ],
+      "notes_rows": []
+    },
+    "cleanproof_all15": {
+      "config": {
+        "policy": "nemotron",
+        "verifier": "vlm",
+        "ablation": {
+          "force_all": 15.0
+        }
+      },
+      "n": 60,
+      "n_expected": 60,
+      "complete": true,
+      "right_outcome": {
+        "k": 58,
+        "n": 60,
+        "rate": 0.9667,
+        "ci95": [
+          0.8864,
+          0.9908
+        ],
+        "half_width": 0.0522
+      },
+      "false_done": {
+        "k": 0,
+        "n": 60,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0602
+        ],
+        "half_width": 0.0301
+      },
+      "wipes": {
+        "n": 60,
+        "mean": 1.683,
+        "sd": 1.081,
+        "ci95": [
+          1.404,
+          1.963
+        ],
+        "sum": 101.0,
+        "ci95_method": "t over runs"
+      },
+      "robot_time_s": {
+        "n": 60,
+        "mean": 84.487,
+        "sd": 46.695,
+        "ci95": [
+          72.429,
+          96.545
+        ],
+        "sum": 5069.21,
+        "ci95_method": "t over runs"
+      },
+      "decision_cost_usd_sum": 0.0824,
+      "wall_s_mean": 54.4,
+      "per_group": [
+        {
+          "group": 1,
+          "n": 12,
+          "right_outcome": {
+            "k": 11,
+            "n": 12,
+            "rate": 0.9167,
+            "ci95": [
+              0.6461,
+              0.9851
+            ],
+            "half_width": 0.1695
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 1.75,
+          "robot_time_mean_s": 89.02
+        },
+        {
+          "group": 2,
+          "n": 12,
+          "right_outcome": {
+            "k": 11,
+            "n": 12,
+            "rate": 0.9167,
+            "ci95": [
+              0.6461,
+              0.9851
+            ],
+            "half_width": 0.1695
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 1.5,
+          "robot_time_mean_s": 71.47
+        },
+        {
+          "group": 3,
+          "n": 12,
+          "right_outcome": {
+            "k": 12,
+            "n": 12,
+            "rate": 1.0,
+            "ci95": [
+              0.7575,
+              1.0
+            ],
+            "half_width": 0.1212
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 1.667,
+          "robot_time_mean_s": 84.17
+        },
+        {
+          "group": 4,
+          "n": 12,
+          "right_outcome": {
+            "k": 12,
+            "n": 12,
+            "rate": 1.0,
+            "ci95": [
+              0.7575,
+              1.0
+            ],
+            "half_width": 0.1212
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 1.833,
+          "robot_time_mean_s": 92.18
+        },
+        {
+          "group": 5,
+          "n": 12,
+          "right_outcome": {
+            "k": 12,
+            "n": 12,
+            "rate": 1.0,
+            "ci95": [
+              0.7575,
+              1.0
+            ],
+            "half_width": 0.1212
+          },
+          "false_done": {
+            "k": 0,
+            "n": 12,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.2425
+            ],
+            "half_width": 0.1212
+          },
+          "wipes_mean": 1.667,
+          "robot_time_mean_s": 85.6
+        }
+      ],
+      "per_family": {
+        "S1_light": {
+          "n": 10,
+          "right_outcome_k": 9,
+          "false_done_k": 0,
+          "statuses": [
+            "done",
+            "needs_human"
+          ],
+          "wipes_sum": 13,
+          "robot_time_sum_s": 656.0
+        },
+        "S2_dried": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 15,
+          "robot_time_sum_s": 729.3
+        },
+        "S3_permanent": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "needs_human"
+          ],
+          "wipes_sum": 29,
+          "robot_time_sum_s": 1523.5
+        },
+        "S4_new_spill": {
+          "n": 10,
+          "right_outcome_k": 9,
+          "false_done_k": 0,
+          "statuses": [
+            "done",
+            "needs_human"
+          ],
+          "wipes_sum": 22,
+          "robot_time_sum_s": 1037.5
+        },
+        "S5_obstacle": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "fault"
+          ],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 245.8
+        },
+        "S6_forbidden": {
+          "n": 10,
+          "right_outcome_k": 10,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 22,
+          "robot_time_sum_s": 877.1
+        }
+      },
+      "models": [
+        "nvidia/Cosmos3-Nano",
+        "nvidia/nemotron-3-super-120b-a12b"
+      ],
+      "prompt_versions": [
+        "dec-c0a6b41/ver-b75e57e"
+      ],
+      "git": [
+        "unknown"
+      ],
+      "notes_rows": [
+        {
+          "variant_id": "S4_new_spill-v02",
+          "notes": "verifier_cv_fallback_zones=4"
+        },
+        {
+          "variant_id": "S6_forbidden-v05",
+          "notes": "verifier_cv_fallback_zones=5"
+        },
+        {
+          "variant_id": "S2_dried-v08",
+          "notes": "verifier_cv_fallback_zones=4"
+        },
+        {
+          "variant_id": "S6_forbidden-v09",
+          "notes": "verifier_cv_fallback_zones=5"
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "dropped_rows": [],
+  "generated_utc": "2026-10-27T09:40:54+00:00",
+  "git": "aaf9ecb",
+  "config_hash": "82676584ae8d",
+  "csv": "runs/benchmark_v5/sim_results.csv"
+}

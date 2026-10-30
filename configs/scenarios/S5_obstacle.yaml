@@ -1,0 +1,8 @@
+name: S5_obstacle
+description: mid-wipe the side of the polishing pad hits a 20 mm obstacle; the safety layer latches a stop and asks a human
+task: { instruction: "Clean zone C3.", zones: [C3], max_passes_per_zone: 3, max_steps: 10 }
+stains:
+  - { type: light, zone: C3, offset: [-0.01, -0.01], radius: 0.012, seed: 9 }
+obstacles:
+  - { zone: C3, rel: [0.0, 0.75, 1.0, 1.4], height: 0.02 }   # normalized within the zone [u0, v0, u1, v1], may exceed 1
+expect: { status: fault, max_false_clean: 0 }

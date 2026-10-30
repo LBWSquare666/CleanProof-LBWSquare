@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CleanProof Console</title>
+<style>
+:root{--bg:#f4f4f1;--card:#ffffff;--ink:#0b0b0b;--muted:#52514e;--line:#e2e1dc;--accent:#2a78d6;
+--clean:#0ca30c;--residue:#d03b3b;--uncertain:#fab219;--na:#b5b4ae}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.4 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
+header h1{font-size:16px;margin:0 8px 0 0}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;border:1px solid var(--line);background:#fff}
+.badge.sim{background:#eef4fc;border-color:#c6d9f3;color:#1c4f8a}.badge.ok{background:#e9f7e9;border-color:#b9e3b9;color:#0a5a0a}
+.badge.bad{background:#fbeaea;border-color:#f0bcbc;color:#8a1f1f}.badge.warn{background:#fff6dd;border-color:#f3dc92;color:#7a5600}
+.spacer{flex:1}
+button{font:inherit;padding:7px 14px;border-radius:6px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.approve{background:#0ca30c;border-color:#0ca30c;color:#fff}button.reject{background:#fff;border-color:#8a8a86}
+button.estop{background:#d03b3b;border-color:#a62626;color:#fff;font-size:14px;padding:9px 18px;letter-spacing:.5px}
+button.start{background:var(--accent);border-color:var(--accent);color:#fff}
+main{display:grid;grid-template-columns:1.1fr 1fr 1.2fr;gap:12px;padding:12px 16px}
+@media(max-width:1100px){main{grid-template-columns:1fr 1fr}}@media(max-width:720px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:80px}
+.card h2{font-size:13px;margin:0 0 8px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.col{display:flex;flex-direction:column;gap:12px}
+img#cam{width:100%;border-radius:6px;border:1px solid var(--line);background:#ddd;min-height:160px;display:block}
+.muted{color:var(--muted)}.small{font-size:12px}.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
+#scrub{width:100%}
+.pending{border:2px solid var(--accent);background:#eef4fc;border-radius:8px;padding:10px 12px;margin:8px 0}
+.pending .act{font-weight:700;font-size:14px}
+#timeline{max-height:62vh;overflow:auto}
+.step{border-left:3px solid var(--line);padding:4px 0 4px 10px;margin:0 0 8px}
+.step.cur{border-left-color:var(--accent);background:#f7faff}
+.step .hdr{font-weight:700}
+.step .row{margin:2px 0}
+.chip{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+svg{display:block;max-width:100%}
+.tip{position:absolute;pointer-events:none;background:#0b0b0b;color:#fff;padding:4px 7px;border-radius:4px;font-size:11px;white-space:nowrap;display:none}
+.legend span{margin-right:12px}
+table{border-collapse:collapse;width:100%;font-size:12px}td,th{padding:3px 6px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+#err{color:#8a1f1f;white-space:pre-wrap}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <h1>CleanProof Console</h1>
+  <span id="modeBadge" class="badge">…</span>
+  <span id="simBadge" class="badge sim" style="display:none">Simulation (MuJoCo)</span>
+  <span id="statusBadge" class="badge">loading</span>
+  <span id="runId" class="mono muted"></span>
+  <span class="spacer"></span>
+  <button id="btnStart" class="start" style="display:none">Start task</button>
+  <button id="btnApprove" class="approve" style="display:none" disabled>Approve</button>
+  <button id="btnReject" class="reject" style="display:none" disabled>Reject</button>
+  <button id="btnEstop" class="estop" style="display:none">E-STOP</button>
+  <a id="reportLink" href="/api/report" target="_blank" class="small">Open cleaning report</a>
+</header>
+<main>
+  <div class="col">
+    <div class="card">
+      <h2>Camera <span id="camLabel" class="muted" style="text-transform:none;font-weight:400"></span></h2>
+      <img id="cam" alt="camera view">
+      <div id="task" class="small" style="margin-top:8px"></div>
+    </div>
+    <div class="card">
+      <h2>Timeline position</h2>
+      <input id="scrub" type="range" min="0" max="0" value="0">
+      <div class="small muted"><span id="scrubLabel">—</span> · <label><input type="checkbox" id="follow" checked> follow live</label></div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <h2>Zone heatmap</h2>
+      <div id="heat"></div>
+      <div class="legend small" style="margin-top:6px">
+        <span><i class="chip" style="background:var(--clean)"></i>clean</span>
+        <span><i class="chip" style="background:var(--residue)"></i>residue</span>
+        <span><i class="chip" style="background:var(--uncertain)"></i>uncertain</span>
+        <span><i class="chip" style="background:var(--na)"></i>not inspected</span>
+        <span class="muted">opacity = confidence</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Force curve <span id="forceLabel" class="muted" style="text-transform:none;font-weight:400"></span></h2>
+      <div id="force" style="position:relative"></div>
+      <div id="forceStats" class="small"></div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <h2>Decision timeline</h2>
+      <div id="pending"></div>
+      <div id="timeline"></div>
+    </div>
+    <div class="card">
+      <h2>Model calls</h2>
+      <div id="calls" class="small"></div>
+      <div id="err" class="small"></div>
+    </div>
+  </div>
+</main>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const COLORS={clean:'#0ca30c',residue:'#d03b3b',uncertain:'#fab219'};
+const MARK={clean:'OK',residue:'!!',uncertain:'?'};
+let run=null, status=null, snapIdx=-1, userScrubbed=false, lastTracePath=null, lastRunEvents=-1;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(v,n=2)=> (v==null||v===''?'n/a':(typeof v==='number'?v.toFixed(n):String(v)));
+const usd=v=> v==null?'n/a':('$'+Number(v).toFixed(4));
+
+async function getJSON(u){const r=await fetch(u,{cache:'no-store'}); if(!r.ok) throw new Error(u+' → '+r.status); return r.json();}
+async function post(u){const r=await fetch(u,{method:'POST'}); return r.json();}
+
+function badgeClass(st){return {done:'ok',needs_human:'warn',fault:'bad',estopped:'bad',rejected:'bad',running:'warn',starting:'warn'}[st]||'';}
+
+function renderHeader(){
+  const live=status&&status.live;
+  $('modeBadge').textContent = status ? (status.mode==='live'?'LIVE simulation':'REPLAY') : '…';
+  $('simBadge').style.display = (run&&run.is_sim) || live ? '' : 'none';
+  let st = run ? run.status : 'starting';
+  if(live){ if(live.error) st='error'; else if(!live.started) st='not started'; else if(live.running) st='running'; }
+  $('statusBadge').textContent = st; $('statusBadge').className='badge '+badgeClass(st);
+  $('runId').textContent = run&&run.run_id ? run.run_id : (live?`${live.scenario} · ${live.policy} · ${live.verifier}`:'');
+  if(live){
+    $('btnStart').style.display = live.started?'none':'';
+    $('btnApprove').style.display=$('btnReject').style.display=$('btnEstop').style.display='';
+    const pend=!!live.pending; $('btnApprove').disabled=!pend; $('btnReject').disabled=!pend;
+    $('btnEstop').disabled = !live.running || live.estopped;
+    if(live.estopped){ $('btnEstop').textContent='E-STOPPED'; }
+    $('err').textContent = live.error||'';
+  }
+}
+
+function renderTask(){
+  if(!run||!run.task) { $('task').innerHTML=''; return; }
+  const t=run.task, s=run.summary||{};
+  const bits=[`<b>Task:</b> ${esc(t.instruction||'(none)')}`,
+    `<b>Targets:</b> ${(run.targets||[]).join(', ')}`,
+    `<b>Forbidden:</b> ${(run.forbidden||[]).join(', ')||'none'}`,
+    `<b>Policy / verifier:</b> ${esc((run.task_start||{}).policy||'')} / ${esc((run.task_start||{}).verifier||'')}`];
+  if(s.robot_time_s!=null) bits.push(`<b>Robot time:</b> ${fmt(s.robot_time_s,1)} s · <b>Decision cost:</b> ${usd(s.decision_cost_usd)}`);
+  if(run.judge) bits.push(`<b>Sim ground truth:</b> ${run.judge.passed?'<span class="badge ok">passed</span>':'<span class="badge bad">failed</span>'}`);
+  $('task').innerHTML=bits.join('<br>');
+}
+
+function currentSnap(){ if(!run||!run.snapshots.length) return null; return run.snapshots[Math.max(0,Math.min(snapIdx,run.snapshots.length-1))]; }
+
+function renderCamera(){
+  const live=status&&status.live, snap=currentSnap();
+  const following = live && live.running && $('follow').checked && !userScrubbed;
+  if(following){ $('cam').src='/api/frame?t='+Date.now(); $('camLabel').textContent='live top-down view'; $('cam').onerror=()=>{ if(snap&&snap.image){$('cam').onerror=null;$('cam').src='/api/image/'+snap.image;} }; return; }
+  $('cam').onerror=null;
+  if(snap&&snap.image){ $('cam').src='/api/image/'+snap.image; $('camLabel').textContent=`step ${snap.step} · ${snap.label}`; }
+  else { $('camLabel').textContent='no image yet'; }
+}
+
+function hexA(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgba(${r},${g},${b},${a})`;}
+
+function renderHeat(){
+  const g=run&&run.grid, snap=currentSnap();
+  if(!g){$('heat').innerHTML='<p class="muted small">waiting for run data…</p>';return;}
+  const cell=76, ml=22, mt=20, W=ml+g.cols*cell+4, H=mt+g.rows*cell+4;
+  const targets=new Set(run.targets||[]), forb=new Set(run.forbidden||[]);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="zone heatmap">`;
+  for(let c=0;c<g.cols;c++) s+=`<text x="${ml+c*cell+cell/2}" y="${mt-6}" font-size="11" fill="#52514e" text-anchor="middle">${c+1}</text>`;
+  for(let r=0;r<g.rows;r++){
+    s+=`<text x="${ml-9}" y="${mt+r*cell+cell/2+4}" font-size="11" fill="#52514e" text-anchor="middle">${String.fromCharCode(65+r)}</text>`;
+    for(let c=0;c<g.cols;c++){
+      const z=g.ids[r][c], x=ml+c*cell, y=mt+r*cell; let fill='#f1f0ec', label='', sub='', tip=z, dark=false, extra='';
+      const v=snap&&snap.zones[z];
+      if(forb.has(z)){ fill='#fff'; label='forbidden'; tip+=' · forbidden'; extra=`<line x1="${x+4}" y1="${y+4}" x2="${x+cell-6}" y2="${y+cell-6}" stroke="#8a8a86" stroke-width="1.5"/><line x1="${x+cell-6}" y1="${y+4}" x2="${x+4}" y2="${y+cell-6}" stroke="#8a8a86" stroke-width="1.5"/>`; }
+      else if(!targets.has(z)){ sub='not in task'; }
+      else if(v&&v.status){ const a=0.35+0.65*(v.confidence==null?1:v.confidence); fill=hexA(COLORS[v.status]||'#b5b4ae',a); label=`${MARK[v.status]||''} ${v.status}`; sub=`conf ${fmt(v.confidence)} · ${v.source||''}`; dark=a>0.6&&v.status!=='uncertain'; tip+=` · ${v.status} (${fmt(v.confidence)}) ${v.source||''} · ${v.likely_cause||''} · wipes ${v.passes}`; }
+      else { fill='#d9d8d2'; label='not inspected'; }
+      const col=dark?'#fff':'#0b0b0b';
+      s+=`<g><title>${esc(tip)}</title><rect x="${x+2}" y="${y+2}" width="${cell-4}" height="${cell-4}" rx="4" fill="${fill}" stroke="#fff" stroke-width="2"/>${extra}`+
+         `<text x="${x+7}" y="${y+16}" font-size="12" font-weight="700" fill="${col}">${z}</text>`+
+         (label?`<text x="${x+7}" y="${y+33}" font-size="10.5" fill="${col}">${esc(label)}</text>`:'')+
+         (sub?`<text x="${x+7}" y="${y+47}" font-size="9.5" fill="${col}">${esc(sub)}</text>`:'')+
+         (v&&v.passes&&targets.has(z)?`<text x="${x+7}" y="${y+cell-8}" font-size="9.5" fill="${col}">wipes: ${v.passes}</text>`:'')+`</g>`;
+    }
+  }
+  $('heat').innerHTML=s+'</svg>';
+}
+
+function latestWipe(){
+  if(!run) return null; const snap=currentSnap(); const maxStep = snap? snap.step : Infinity;
+  let best=null;
+  for(const st of run.steps){ if(st.index>maxStep) continue; for(const sk of st.skills){ if((sk.skill==='wipe_zone'||sk.skill==='spot_scrub')&&sk.trace) best={step:st.index,sk}; } }
+  return best;
+}
+
+async function renderForce(){
+  const w=latestWipe();
+  if(!w){ $('force').innerHTML='<p class="muted small">no wipe yet</p>'; $('forceLabel').textContent=''; $('forceStats').innerHTML=''; lastTracePath=null; return; }
+  if(w.sk.trace===lastTracePath) return;
+  lastTracePath=w.sk.trace;
+  $('forceLabel').textContent=`step ${w.step} · ${w.sk.skill} · ${(w.sk.zone_ids||[]).join(', ')}`;
+  let tr; try{ tr=await getJSON('/api/trace?path='+encodeURIComponent(w.sk.trace)); }catch(e){ $('force').innerHTML='<p class="muted small">trace unavailable</p>'; return; }
+  drawForce(tr);
+  const f=w.sk.force||{}; let rows='';
+  for(const z in f){const q=f[z]; rows+=`<tr><td>${z}</td><td class="num">${fmt(q.target_n,1)}</td><td class="num">${fmt(q.mean_normal_n)}</td><td class="num">${fmt(q.peak_normal_n)}</td><td class="num">${fmt(q.within_1n_ratio)}</td><td class="num">${q.contact_loss_count}</td><td class="num">${fmt(q.coverage_ratio)}</td></tr>`;}
+  $('forceStats').innerHTML = rows?`<table><thead><tr><th>Zone</th><th class="num">Target N</th><th class="num">Mean N</th><th class="num">Peak N</th><th class="num">±1 N</th><th class="num">Losses</th><th class="num">Coverage</th></tr></thead><tbody>${rows}</tbody></table>`:'';
+}
+
+function drawForce(tr){
+  const W=460,H=190,ml=40,mr=10,mt=14,mb=30,pw=W-ml-mr,ph=H-mt-mb;
+  const t0=tr.t[0], ts=tr.t.map(v=>v-t0), fn=tr.f_n, fr=tr.f_ref||ts.map(()=>0), st=tr.state||ts.map(()=>0);
+  const xhi=Math.max(ts[ts.length-1],1e-3), ylo=Math.min(0,...fn), yhi=Math.max(...fn,...fr,1)*1.1;
+  const sx=v=>ml+(v/xhi)*pw, sy=v=>mt+ph-((v-ylo)/(yhi-ylo))*ph;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" id="forceSvg">`;
+  for(let i=0;i<ts.length;){ if(Math.round(st[i])===5){let j=i; while(j+1<ts.length&&Math.round(st[j+1])===5) j++; s+=`<rect x="${sx(ts[i]).toFixed(1)}" y="${mt}" width="${Math.max(1,sx(ts[j])-sx(ts[i])).toFixed(1)}" height="${ph}" fill="#2a78d6" opacity="0.08"/>`; i=j+1;} else i++; }
+  const ny=4; for(let k=0;k<=ny;k++){const yv=ylo+(yhi-ylo)*k/ny; s+=`<line x1="${ml}" x2="${ml+pw}" y1="${sy(yv).toFixed(1)}" y2="${sy(yv).toFixed(1)}" stroke="#e6e5e0"/><text x="${ml-5}" y="${(sy(yv)+4).toFixed(1)}" font-size="10" fill="#52514e" text-anchor="end">${yv.toFixed(0)}</text>`;}
+  const nx=5; for(let k=0;k<=nx;k++){const xv=xhi*k/nx; s+=`<text x="${sx(xv).toFixed(1)}" y="${mt+ph+13}" font-size="10" fill="#52514e" text-anchor="middle">${xv.toFixed(0)}</text>`;}
+  s+=`<text x="${ml+pw/2}" y="${H-3}" font-size="10" fill="#52514e" text-anchor="middle">time in wipe (s) — N on the y axis</text>`;
+  s+=`<polyline fill="none" stroke="#52514e" stroke-width="1.3" stroke-dasharray="5 4" points="${ts.map((x,i)=>sx(x).toFixed(1)+','+sy(fr[i]).toFixed(1)).join(' ')}"/>`;
+  s+=`<polyline fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" points="${ts.map((x,i)=>sx(x).toFixed(1)+','+sy(fn[i]).toFixed(1)).join(' ')}"/>`;
+  s+=`<line id="cross" x1="0" x2="0" y1="${mt}" y2="${mt+ph}" stroke="#0b0b0b" stroke-width="1" style="display:none"/>`;
+  s+=`<text x="${ml+pw-200}" y="10" font-size="10" fill="#0b0b0b"><tspan fill="#2a78d6">■</tspan> measured f_n  <tspan fill="#52514e">- -</tspan> reference f_ref  <tspan fill="#2a78d6" opacity=".3">■</tspan> control phase</text>`;
+  s+=`<rect x="${ml}" y="${mt}" width="${pw}" height="${ph}" fill="transparent" id="hover"/></svg><div class="tip" id="tip"></div>`;
+  $('force').innerHTML=s;
+  const svg=$('forceSvg'), tip=$('tip'), cross=$('cross'), names=tr.state_names||{};
+  $('hover').addEventListener('mousemove',ev=>{
+    const rect=svg.getBoundingClientRect(); const x=(ev.clientX-rect.left)*W/rect.width; const tv=(x-ml)/pw*xhi;
+    let i=0, lo=0, hi=ts.length-1; while(lo<hi){const m=(lo+hi)>>1; if(ts[m]<tv) lo=m+1; else hi=m;} i=lo;
+    cross.setAttribute('x1',sx(ts[i])); cross.setAttribute('x2',sx(ts[i])); cross.style.display='';
+    tip.style.display=''; tip.style.left=(ev.clientX-rect.left+12)+'px'; tip.style.top=(ev.clientY-rect.top-10)+'px';
+    tip.textContent=`t=${ts[i].toFixed(2)} s  f_n=${fn[i].toFixed(2)} N  f_ref=${fr[i].toFixed(1)} N  ${names[Math.round(st[i])]||''}`;
+  });
+  $('hover').addEventListener('mouseleave',()=>{tip.style.display='none';cross.style.display='none';});
+}
+
+function chip(st){return `<i class="chip" style="background:${COLORS[st]||'#b5b4ae'}"></i>${esc(st||'n/a')}`;}
+
+function renderTimeline(){
+  if(!run){$('timeline').innerHTML='';return;}
+  const snap=currentSnap(); const cur = snap? snap.step : -1;
+  let h='';
+  for(const st of run.steps){
+    let body='';
+    for(const n of st.notes) body+=`<div class="row muted">${esc(n)}</div>`;
+    for(const g of st.guard_rejects){const d=g.decision||{}; body+=`<div class="row"><span class="badge bad">guardrail rejected</span> ${esc(d.action)} ${(d.zone_ids||[]).join(',')} ${esc(d.force_preset||'')} — ${esc(g.reason)}</div>`;}
+    if(st.decision){const d=st.decision; const call=(st.calls||[]).find(c=>c.role==='decision');
+      body+=`<div class="row"><b>${esc(d.action)}</b> ${(d.zone_ids||[]).join(', ')} ${d.force_preset?'· '+esc(d.force_preset):''} ${d.pattern?'· '+esc(d.pattern):''} ${d.passes>1?'· passes '+d.passes:''}`+
+        (st.guard&&st.guard!=='ok'&&st.guard!=='not_applied'?` <span class="badge warn">${esc(st.guard)}</span>`:'')+`</div>`;
+      if(d.reason) body+=`<div class="row small"><span class="muted">Reason:</span> ${esc(d.reason)}</div>`;
+      body+=`<div class="row small muted">${esc(st.policy)}${call?` · ${esc(call.model)} on ${esc(call.backend)} · ${fmt(call.latency_s)} s · ${usd(call.cost_usd)}`:''}</div>`;}
+    for(const op of st.operator){const k=op.kind; const lbl={operator_approved:'operator approved',operator_rejected:'operator rejected',stop_requested:'E-STOP / stop requested'}[k]||k; body+=`<div class="row"><span class="badge ${k==='operator_approved'?'ok':'bad'}">${esc(lbl)}</span> ${esc(op.reason||'')}</div>`;}
+    for(const sk of st.skills){ if(sk.skill==='survey') continue; body+=`<div class="row"><span class="badge ${sk.status==='ok'?'ok':'bad'}">${esc(sk.skill)}: ${esc(sk.status)}</span> <span class="muted small">${(sk.zone_ids||[]).join(', ')} · ${fmt(sk.duration_s,1)} s</span>${sk.reason?` <span class="small">${esc(sk.reason)}</span>`:''}</div>`; }
+    for(const ins of st.inspections){ const res=ins.results||{}, prov=ins.provenance||{}; const parts=(ins.zones||Object.keys(res)).map(z=>{const r=res[z]||{}; return `${z} ${chip(r.status)} ${fmt(r.confidence)} <span class="muted">${esc(prov[z]||'')}</span>`;});
+      const vc=((ins.llm||{}).calls||[])[0];
+      body+=`<div class="row small"><span class="muted">Inspection (${esc(ins.label)}, ${esc(ins.verifier)}):</span> ${parts.join(' · ')}${vc?` <span class="muted">· ${esc(vc.model)} ${fmt(vc.latency_s)} s</span>`:''}${(ins.new_spills||[]).length?` <span class="badge warn">new spill: ${ins.new_spills.join(', ')}</span>`:''}</div>`; }
+    h+=`<div class="step ${st.index===cur?'cur':''}" id="step${st.index}"><div class="hdr">Step ${st.index}</div>${body}</div>`;
+  }
+  if(run.task_end) h+=`<div class="step"><div class="hdr">Task end: <span class="badge ${badgeClass(run.task_end.status)}">${esc(run.task_end.status)}</span> ${esc(run.task_end.reason||'')}</div></div>`;
+  $('timeline').innerHTML=h;
+  const el=$('step'+cur); if(el) el.scrollIntoView({block:'nearest'});
+}
+
+function renderPending(){
+  const live=status&&status.live, p=live&&live.pending;
+  if(!p){$('pending').innerHTML='';return;}
+  const d=p.decision||{};
+  $('pending').innerHTML=`<div class="pending"><div class="small muted">Waiting for operator approval — step ${p.step}</div><div class="act">${esc(d.action)} ${(d.zone_ids||[]).join(', ')} ${d.force_preset?'· '+esc(d.force_preset):''} ${d.pattern?'· '+esc(d.pattern):''}</div><div class="small">${esc(d.reason||'')}</div></div>`;
+}
+
+function renderCalls(){
+  if(!run||!run.calls||!run.calls.length){$('calls').innerHTML='<span class="muted">no model calls recorded</span>';return;}
+  let rows=''; for(const c of run.calls) rows+=`<tr><td>${c.step==null?'—':c.step}</td><td>${esc(c.role)}</td><td>${esc(c.backend||'n/a')}</td><td class="mono">${esc(c.model||'n/a')}</td><td class="num">${fmt(c.latency_s)}</td><td class="num">${usd(c.cost_usd)}</td></tr>`;
+  $('calls').innerHTML=`<table><thead><tr><th>Step</th><th>Role</th><th>Backend</th><th>Model</th><th class="num">Latency s</th><th class="num">Cost</th></tr></thead><tbody>${rows}</tbody></table><div class="muted" style="margin-top:4px">Total logged cost: ${usd(run.total_cost_usd)}</div>`;
+}
+
+function renderScrub(){
+  const n=run?run.snapshots.length:0; $('scrub').max=Math.max(0,n-1); $('scrub').disabled=n===0;
+  if(!userScrubbed||snapIdx>=n) snapIdx=n-1;
+  $('scrub').value=Math.max(0,snapIdx);
+  const snap=currentSnap(); $('scrubLabel').textContent = snap?`inspection ${snapIdx+1}/${n} — step ${snap.step} (${snap.label})`:'no inspections yet';
+}
+
+function renderAll(){ renderHeader(); renderTask(); renderScrub(); renderCamera(); renderHeat(); renderForce(); renderTimeline(); renderPending(); renderCalls(); }
+
+async function poll(){
+  try{
+    status=await getJSON('/api/status');
+    const live=status.live;
+    if(!run || !live || live.running || (live.finished && (run.n_events!==lastRunEvents || !run.summary))){
+      run=await getJSON('/api/run'); lastRunEvents=run.n_events;
+    }
+    renderAll();
+  }catch(e){ $('err').textContent=String(e); }
+  const live=status&&status.live;
+  if(!live) return;                                  // replay: static run dir, one fetch is enough
+  setTimeout(poll, live.running?700:(live.finished?3000:1500));
+}
+
+$('scrub').addEventListener('input',e=>{ userScrubbed=true; $('follow').checked=false; snapIdx=parseInt(e.target.value,10); lastTracePath=null; renderAll(); });
+$('follow').addEventListener('change',e=>{ if(e.target.checked){ userScrubbed=false; lastTracePath=null; renderAll(); } });
+$('btnStart').onclick=async()=>{ await post('/api/start'); };
+$('btnApprove').onclick=async()=>{ await post('/api/approve'); };
+$('btnReject').onclick=async()=>{ await post('/api/reject'); };
+$('btnEstop').onclick=async()=>{ await post('/api/estop'); };
+poll();
+})();
+</script>
+</body>
+</html>

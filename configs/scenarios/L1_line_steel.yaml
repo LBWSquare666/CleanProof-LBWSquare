@@ -1,0 +1,8 @@
+name: L1_line_steel
+description: multi-platform segment - one marker stroke + one dried stain on a stainless steel workbench (horizontal, stainless_steel) beside a factory production line; in the video it is wiped by a Franka Panda
+platform: panda              # the robot registered for the site; the simulation models it when a job starts (CLI --platform can override)
+task: { instruction: "Clean the surface.", surface: stainless_steel, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  - { type: marker, zone: B3, offset: [0.0, 0.002], radius: 0.018, seed: 51 }
+  - { type: dried, zone: C2, offset: [0.002, -0.002], radius: 0.016, seed: 52 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

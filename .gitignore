@@ -1,0 +1,60 @@
+# Secrets
+.env
+*.env
+!.env.example
+secrets/
+*credentials*.json
+*.pem
+*.key
+
+# Data, runs, weights (large or private)
+data/
+runs/
+checkpoints/
+outputs/
+wandb/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.engine
+media/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Node / UI
+node_modules/
+.next/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+.remote-control.log
+.venv-*/
+eval/*.lock
+*.csv.lock
+DEPLOYED_FROM
+wheelhouse/
+
+# Original robot product photos (downloaded from Wikimedia Commons, includes a 199 MB TIFF; sources in assets/robots_photos/SOURCES.md)
+assets/robots_photos/raw/
+
+# local store for large assets, venvs and datasets (see README)
+store/
+
+# written to the working directory by MuJoCo
+MUJOCO_LOG.TXT

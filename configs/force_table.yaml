@@ -1,0 +1,38 @@
+# Stain × surface → target wiping force (N). Since v8 (2026-10-20) the planner picks the starting force for each cell from this table, replacing the light / medium / firm levels.
+# Values are conservative estimates from material properties (enough to clean, without damaging the surface), not measured on site; when deploying to a new site, adjust the table to the actual surfaces and stains.
+# The old three levels (configs/robot.yaml force_presets_n) are kept to reproduce benchmark_v1 and are no longer used for new tasks.
+#
+# Rules (shared by the planner prompt and the guardrail):
+# - Starting force = forces[stain][surface]. The surface comes from the task config (chosen by the operator at start), the stain type from Cosmos 3 likely_cause;
+#     if the type cannot be told (unknown), start from the surface's wet_spill (the most common kind) and add force through rechecks.
+# - If the recheck is still dirty: add escalate_step_n to the previous force, capped at the surface's max_n; if it still does not come off at max_n, ask_human.
+#     Example: wood 5 → 10 → 15 N; whiteboard 5 → 10 N (capped).
+# - Never below min_n, never above the global cap hard_max_n. min_n = 5 N is the lower limit of the control law: contact confirmation threshold 3 N,
+#     the teacher law F_ref is clamped to [5, 20] N (configs/robot.yaml teacher.f_ref_clip_n, inherited from our earlier UR3e work), and on the real robot only 5 N has trial data.
+
+hard_max_n: 15.0          # global cap: at 15 N the simulated steady-state RMS is already 2.45 N, and a contact normal force of 24 N latches a stop (configs/robot.yaml)
+min_n: 5.0
+escalate_step_n: 5.0
+
+surfaces:                 # max_n = largest wiping force allowed on that surface (low for soft, easily scratched surfaces)
+  whiteboard:      { label: "Whiteboard",       max_n: 10.0 }
+  polished_marble: { label: "Polished marble",  max_n: 10.0 }
+  glass:           { label: "Glass",            max_n: 10.0 }
+  stainless_steel: { label: "Stainless steel",  max_n: 15.0 }
+  sealed_wood:     { label: "Wood",             max_n: 15.0 }
+  rough_stone:     { label: "Rough stone",      max_n: 15.0 }
+
+stains:                   # likely_cause value → display name
+  dust:        { label: "Dust & crumbs" }
+  wet_spill:   { label: "Wet spill" }
+  dried_stain: { label: "Dried stain" }
+  ink_mark:    { label: "Marker ink" }
+  grease:      { label: "Grease" }
+
+# On smooth, non-absorbent surfaces the stain sits on top, so the force is small; on porous, rough surfaces the stain soaks in, so the force is large; dried is larger than wet.
+forces:
+  dust:        { whiteboard: 5, polished_marble: 5, glass: 5, stainless_steel: 5,  sealed_wood: 5,  rough_stone: 5  }
+  wet_spill:   { whiteboard: 5, polished_marble: 5, glass: 5, stainless_steel: 5,  sealed_wood: 5,  rough_stone: 8  }
+  dried_stain: { whiteboard: 8, polished_marble: 9, glass: 8, stainless_steel: 10, sealed_wood: 12, rough_stone: 14 }
+  ink_mark:    { whiteboard: 5, polished_marble: 7, glass: 6, stainless_steel: 8,  sealed_wood: 10, rough_stone: 13 }
+  grease:      { whiteboard: 6, polished_marble: 7, glass: 6, stainless_steel: 8,  sealed_wood: 9,  rough_stone: 12 }

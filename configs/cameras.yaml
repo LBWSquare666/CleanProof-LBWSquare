@@ -1,0 +1,16 @@
+# RealSense cameras on robot-pc (cleanproof/perception/camera_server.py). Serial numbers and resolutions come from our site survey.
+# After site calibration, write the fixed exposure / white balance into configs/site/<site>/cameras.yaml (scripts/calibrate_site.py prints the values) so every power-up is identical.
+cameras:
+  fixed:                      # D455, global top-down view; plug into a root USB port on the motherboard, do not share a hub with the D405
+    serial: "<D455-serial>"
+    width: 1280
+    height: 720
+    fps: 15
+    lock_exposure: true       # lock exposure and white balance after warm-up (residue detection is a color difference against the reference image)
+  wrist:                      # D405, close-up wrist view; set enabled to false if it is not installed
+    enabled: true
+    serial: "<D405-serial>"
+    width: 640
+    height: 480
+    fps: 15
+    lock_exposure: true

@@ -1,0 +1,1753 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1600,initial-scale=1">
+<title>CleanProof</title>
+<!-- CleanProof operator software (cleanproof/ui/operator.py). Logical size 1600 x 900: the upper 746 is desktop and window, the lower 154 is left for video subtitles.
+     First-run wizard (Robot → Connect → Models → Site, a small Bambu Studio style window that leads into the main UI); main UI: Jobs · Robots · Sites · Reports · Settings · Logs.
+     All data comes from the API (real configs, real run records).
+     All screen state is set deterministically by setView(v) (called frame by frame when recording); in local live mode the page polls the backend itself and buttons call the API directly.
+     All fades are computed from parameters in v, with no CSS transitions (CSS transitions are not controllable in frame-by-frame screenshots). -->
+<style>
+@font-face{font-family:Manrope;font-weight:400;src:url(/fonts/manrope/Manrope-Regular.ttf)}
+@font-face{font-family:Manrope;font-weight:600;src:url(/fonts/manrope/Manrope-SemiBold.ttf)}
+:root{--paper:#f7f5f0;--card:#fff;--ink:#1d2433;--muted:#6b7280;--faint:#9aa1ad;--line:#e4e1da;--sub:#f4f2ed;
+--clean:#0f766e;--clean-bg:#e3f2ef;--res:#d14343;--res-bg:#fbe9e7;--amber:#c26a12;--amber-bg:#fdf0e1;--nemo:#4f3fc8;--nemo-bg:#ece9fb;
+--cos:#1d4ed8;--cos-bg:#e6edfc;--slate:#475569;--slate-bg:#eef0f3;
+/* spacing follows the golden ratio: 8 · 13 · 21 · 34 */
+--g0:8px;--g1:13px;--g2:21px;--g3:34px}
+*{box-sizing:border-box}
+html,body{margin:0;width:1600px;height:900px;overflow:hidden;background:var(--paper);color:var(--ink);font:400 14px/1.4 Manrope,system-ui,sans-serif}
+#desk{position:absolute;left:0;top:0;width:1600px;height:746px;background:linear-gradient(160deg,#efece6,#e5e2da)}
+#band{position:absolute;left:0;top:746px;width:1600px;height:154px;background:var(--paper)}
+.win{position:absolute;left:16px;top:14px;width:1568px;height:718px;background:#fff;border:1px solid #d9d5cc;border-radius:14px;
+  box-shadow:0 18px 50px rgba(29,36,51,.14),0 2px 6px rgba(29,36,51,.06);overflow:hidden}
+.tbar{height:44px;display:flex;align-items:center;gap:var(--g1);padding:0 var(--g2);border-bottom:1px solid var(--line);background:#fbfaf8}
+.dots{display:flex;gap:7px;margin-right:4px}.dots i{width:11px;height:11px;border-radius:50%;background:#d8d4cc;display:block}
+.logo{width:22px;height:22px;border-radius:6px;flex:none;background:var(--clean) url(/brand/cleanproof_app.svg) center/106.667% no-repeat}
+.ttl{font-weight:600;font-size:15px}
+.sitechip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:9px;padding:4px 12px;font-weight:600;font-size:13px;background:#fff}
+.sitechip i{width:8px;height:8px;border-radius:50%;background:var(--clean)}
+.sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.pill .d{width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.ok{background:var(--clean-bg);border-color:#b7dcd6;color:var(--clean)}
+.pill.run{background:var(--amber-bg);border-color:#f0d3ad;color:var(--amber)}
+.pill.bad{background:var(--res-bg);border-color:#f1c2bd;color:var(--res)}
+.pill.staff{background:var(--slate-bg);border-color:#d5dae1;color:var(--slate)}
+.user{width:28px;height:28px;border-radius:50%;background:var(--slate-bg);color:var(--slate);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px}
+#body{position:absolute;left:0;top:44px;right:0;bottom:0;display:flex}
+#nav{width:196px;flex:none;border-right:1px solid var(--line);background:#fbfaf8;padding:var(--g2) var(--g1)}
+.nv{display:flex;align-items:center;gap:var(--g1);padding:9px 12px;border-radius:10px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.nv svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nv.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.07)}.nv.on svg{stroke:var(--clean)}
+.nv.hover{background:#f3f1ec;color:var(--ink)}
+.nvsep{height:1px;background:var(--line);margin:var(--g1) 6px}
+#content{flex:1;position:relative;min-width:0}
+.page{position:absolute;inset:0;padding:var(--g2) var(--g3) var(--g2) var(--g3);display:none}
+.page.on{display:block}
+.ph{display:flex;align-items:flex-end;gap:var(--g1);margin-bottom:var(--g2)}
+.ph .h1{font-size:22px;font-weight:600;letter-spacing:-.2px}.ph .sub{color:var(--muted);font-size:13px;margin-top:2px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px}
+h3{margin:0 0 var(--g0);font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:600}
+button{font:600 14px Manrope,sans-serif;padding:8px 18px;border-radius:10px;border:1.5px solid var(--clean);background:var(--clean);color:#fff;cursor:pointer;white-space:nowrap}
+button.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+button.danger{background:#fff;color:var(--res);border-color:#efb7b0}
+button.hover{filter:brightness(1.07);box-shadow:0 0 0 4px rgba(15,118,110,.14)}
+button.ghost.hover,button.danger.hover{box-shadow:0 0 0 4px rgba(29,36,51,.06);filter:none;background:#faf9f6}
+button.press{transform:scale(.96)}
+button[disabled]{opacity:.4;cursor:default}
+.mono{font-family:"DejaVu Sans Mono",ui-monospace,monospace;font-size:12px}
+.muted{color:var(--muted)}
+/* status dot */
+.sd{width:22px;height:22px;border-radius:50%;border:1.5px solid #cfcac0;flex:none;position:relative;background:#fff}
+.sd.ok{background:var(--clean);border-color:var(--clean)}
+.sd.ok.fb{background:var(--amber);border-color:var(--amber)}
+.sd.ok:after{content:"";position:absolute;left:7px;top:3.5px;width:5px;height:10px;border:solid #fff;border-width:0 2.2px 2.2px 0;transform:rotate(45deg)}
+.sd.bad{background:var(--res);border-color:var(--res)}
+.sd.bad:after{content:"!";position:absolute;inset:0;color:#fff;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center}
+.sd.run{border-color:var(--clean);border-top-color:transparent}
+/* ---------- Jobs ---------- */
+#jobs{display:grid;grid-template-columns:300px 1fr 400px;gap:var(--g2);height:100%}
+.col{display:flex;flex-direction:column;gap:var(--g2);min-height:0}
+.form{padding:var(--g1) var(--g2) var(--g2)}
+.fl{font-size:12px;font-weight:600;color:var(--muted);margin:var(--g1) 0 6px}
+.inp{border:1.5px solid var(--line);border-radius:9px;padding:7px 11px;font-size:14px;min-height:36px;background:#fff;display:flex;align-items:center;gap:8px}
+.inp.ro{background:var(--sub);color:var(--ink)}
+.inp .car{display:inline-block;width:1.5px;height:16px;background:var(--ink)}
+.inp .chev{margin-left:auto;width:8px;height:8px;border:solid var(--muted);border-width:0 1.8px 1.8px 0;transform:rotate(45deg) translateY(-3px)}
+.inp.focus,.inp:focus-within{border-color:var(--clean);box-shadow:0 0 0 3px rgba(15,118,110,.12)}
+.inp input,.inp select{border:0;outline:0;background:transparent;font:400 14px Manrope,sans-serif;color:var(--ink);flex:1;min-width:0;padding:0;appearance:none;-webkit-appearance:none}
+.inp.sel{position:relative}.inp.sel .chev{position:absolute;right:12px;top:13px;pointer-events:none}
+#jstart{width:100%;margin-top:var(--g2)}
+.ctl{padding:var(--g1) var(--g2) var(--g2)}
+.ctl .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--g0)}
+.ctl button{padding:8px 0}
+.appr{font-size:12px;color:var(--muted);margin-top:var(--g1)}
+.cam{padding:var(--g1);position:relative}
+.cam .hd,.zm .hd,.jc .hd{display:flex;align-items:center;gap:var(--g0);margin-bottom:var(--g0)}
+.cam .hd .t,.zm .hd .t,.jc .hd .t{font-weight:600;font-size:14px}
+.camv{position:relative;border-radius:9px;overflow:hidden;background:var(--sub);aspect-ratio:16/9}
+.camv img{width:100%;height:100%;object-fit:cover;display:block}
+.simtag{position:absolute;right:9px;bottom:7px;font-size:10.5px;color:rgba(110,110,110,.85);letter-spacing:.2px}
+.zm{padding:var(--g1);display:flex;gap:var(--g1)}
+.zmap{position:relative;width:280px;flex:none;align-self:flex-start;border-radius:8px;overflow:hidden;border:1px solid var(--line)}   /* not stretched by the stats card on the right (once stretched, aspect-ratio breaks and the grid would stick out of the reference image) */
+.zmap img{width:100%;display:block}
+.zg{position:absolute;inset:0;display:grid}
+.zc2{border:1px solid rgba(255,255,255,0);position:relative}
+.zc2 .lb{position:absolute;left:4px;top:2px;font-size:10px;font-weight:600;color:rgba(255,255,255,0)}
+.zinfo{flex:1;min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--g0);align-content:start}
+.st{background:var(--sub);border-radius:9px;padding:7px 11px}.st b{display:block;font-size:18px}.st span{font-size:11px;color:var(--muted);font-weight:600}
+.jc{padding:var(--g1);display:flex;flex-direction:column;min-height:0;flex:1}
+#jlog{flex:1;min-height:0;overflow:hidden;position:relative}
+#jlog.over{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 26px);mask-image:linear-gradient(to bottom,transparent 0,#000 26px)}
+#jlogi{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:7px}
+.ev{border-left:3px solid var(--line);padding:3px 0 3px 10px}
+.ev .w{display:inline-block;font-size:12px;font-weight:600;padding:1px 7px;border-radius:6px;margin-right:6px}
+.ev .x{font-size:14px;font-weight:600}.ev .m{font-size:12px;color:var(--muted)}
+.ev.check{border-color:var(--cos)}.ev.check .w{background:var(--cos-bg);color:var(--cos)}
+.ev.plan{border-color:var(--nemo)}.ev.plan .w{background:var(--nemo-bg);color:var(--nemo)}
+.ev.guard{border-color:var(--amber)}.ev.guard .w{background:var(--amber-bg);color:var(--amber)}
+.ev.wipe{border-color:var(--slate)}.ev.wipe .w{background:var(--slate-bg);color:var(--slate)}
+.ev.end{border-color:var(--clean)}.ev.end .w{background:var(--clean-bg);color:var(--clean)}
+.ev.op{border-color:var(--ink)}.ev.op .w{background:var(--sub);color:var(--ink)}
+.fdb{margin:4px 0 2px;background:var(--nemo-bg);border-radius:8px;padding:7px 9px;font-size:12px;color:var(--nemo)}
+.fdb .chips{display:flex;flex-wrap:wrap;align-content:flex-start;gap:4px;margin-top:5px;height:42px;overflow:hidden}   /* fixed two-row height: the log below does not jump when screening changes phase */
+.tailw{overflow:hidden;display:flex;flex-direction:column;gap:7px}
+.fdb .chip{padding:1px 6px;border-radius:5px;background:#fff;color:#7d73c9;font-weight:600;font-size:11px;border:1px solid #d9d3f6}
+.fdb .chip.hit{background:var(--nemo);color:#fff;border-color:var(--nemo)}
+.req{padding:var(--g1);border-color:#d5dae1;background:#fbfbfc}
+.req .t{font-weight:600;font-size:14px;display:flex;gap:8px;align-items:center}
+.req .r{font-size:13px;color:var(--ink);margin:6px 0 var(--g0)}
+.req .row{display:flex;gap:var(--g0);align-items:center}
+.req .inp{flex:1;min-height:34px;font-size:13px}
+.req .done{color:var(--clean);font-weight:600;font-size:13px}
+/* ---------- first-run wizard (Bambu Studio style small window) ---------- */
+#wiz{position:absolute;left:250px;top:40px;width:1100px;height:666px;background:#fff;border:1px solid #d9d5cc;border-radius:14px;
+  box-shadow:0 24px 60px rgba(29,36,51,.18),0 2px 6px rgba(29,36,51,.06);overflow:hidden;display:none;z-index:30}
+#wiz .wb{position:absolute;left:0;right:0;top:96px;bottom:72px;padding:var(--g1) var(--g3)}
+.wsteps{display:flex;gap:var(--g0);align-items:center;height:52px;padding:0 var(--g3);border-bottom:1px solid #f0ede7}
+.wst{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;color:var(--faint)}
+.wst .n{width:24px;height:24px;border-radius:50%;border:1.5px solid #d6d2c9;display:flex;align-items:center;justify-content:center;font-size:12px;background:#fff}
+.wst.on{color:var(--ink)}.wst.on .n{border-color:var(--clean);color:var(--clean)}
+.wst.done{color:var(--muted)}.wst.done .n{background:var(--clean);border-color:var(--clean);color:#fff}
+.wsep{flex:0 0 34px;height:1.5px;background:#e2ded6}
+.wpage{position:absolute;inset:0;padding:var(--g1) var(--g3);display:none}
+.wh{font-size:22px;font-weight:600;letter-spacing:-.2px}.wsub{color:var(--muted);font-size:13px;margin:3px 0 var(--g2)}
+#wgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--g1);margin-top:var(--g1)}
+.wcard{border:1.5px solid var(--line);border-radius:12px;padding:var(--g0);position:relative;background:#fff}
+.wcard .im{height:118px;display:flex;align-items:center;justify-content:center;background:#fff}
+.wcard .im img{max-height:108px;max-width:92%;object-fit:contain}
+.wcard .nm{font-weight:600;font-size:13px;text-align:center;margin-top:6px}.wcard .kd{font-size:11px;color:var(--muted);text-align:center}
+.wcard.hover{border-color:#cfcac0;box-shadow:0 4px 14px rgba(29,36,51,.08)}
+.wcard.sel{border-color:var(--clean);box-shadow:0 0 0 3px rgba(15,118,110,.12)}
+.wcard .ck{position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;background:var(--clean);display:none}
+.wcard.sel .ck{display:block}.wcard .ck:after{content:"";position:absolute;left:7px;top:3.5px;width:5px;height:10px;border:solid #fff;border-width:0 2.2px 2.2px 0;transform:rotate(45deg)}
+.wcard.dim{opacity:.25}
+.wtwo{display:grid;grid-template-columns:380px 1fr;gap:var(--g3)}
+.wrow{display:flex;gap:var(--g1);align-items:center;padding:var(--g1) 0;border-top:1px solid #f0ede7}
+.wrow:first-child{border-top:0}
+.wrow .ic{width:40px;height:40px;border-radius:10px;background:var(--sub);display:flex;align-items:center;justify-content:center;flex:none}
+.wrow .ic img{width:34px;height:34px}.wrow .ic svg{width:22px;height:22px;stroke:var(--slate);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.wrow .tx{flex:1;min-width:0}.wrow .a{font-weight:600;font-size:14px}.wrow .b{color:var(--muted);font-size:12px;margin-top:2px}
+.wthumb{width:132px;height:74px;border-radius:7px;object-fit:cover;flex:none;border:1px solid var(--line)}
+.wfoot{position:absolute;left:0;right:0;bottom:0;height:72px;border-top:1px solid var(--line);display:flex;align-items:center;gap:var(--g1);padding:0 var(--g3);background:#fbfaf8}
+.wtypes{display:flex;flex-wrap:wrap;gap:var(--g0);margin-bottom:var(--g1)}
+.wty{padding:7px 14px;border-radius:10px;border:1.5px solid var(--line);font-weight:600;font-size:13px;color:var(--muted);background:#fff}
+.wty.sel{border-color:var(--clean);color:var(--clean);background:var(--clean-bg)}.wty.hover{border-color:#cfcac0;color:var(--ink)}
+.wref{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);width:100%}
+.wref img{width:100%;display:block}
+.wref .zg .zc2{border-color:rgba(255,255,255,0)}
+.wcal{display:flex;align-items:center;gap:var(--g0);margin-top:var(--g1);font-weight:600;font-size:13px;color:var(--clean)}
+.wlink{font-weight:600;font-size:13px;color:var(--muted)}.wlink.ok{color:var(--clean)}
+.mz i{position:relative}.mz i b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:600;color:var(--faint);font-style:normal}
+#rzclose{position:absolute;right:22px;top:22px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted);pointer-events:auto}
+#japprove2{padding:var(--g1);border-color:#c9c2f2;background:#f7f5ff;display:none}
+#japprove2 .t{font-weight:600;font-size:14px;color:var(--nemo)}#japprove2 .row{display:flex;gap:var(--g0);margin-top:var(--g0)}
+/* ---------- Robots ---------- */
+#rgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--g1)}
+.rc{padding:var(--g0);border:1.5px solid var(--line)}
+.rc .im{border-radius:8px;overflow:hidden;background:#fff;height:88px;display:flex;align-items:center;justify-content:center}
+.rc .im img{max-height:82px;max-width:90%;object-fit:contain;display:block}
+.rc .nm{font-weight:600;font-size:15px;margin:var(--g0) 4px 0}.rc .sn{font-size:12px;color:var(--muted);margin:1px 4px 6px}
+.rc .row{display:flex;gap:6px;margin:0 4px 4px}
+.rc.hover{border-color:#cfcac0;box-shadow:0 4px 14px rgba(29,36,51,.08)}
+.rc.sel{border-color:var(--clean);box-shadow:0 0 0 3px rgba(15,118,110,.12)}
+#rsup{}
+#rsupg{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--g0)}
+.mt{border:1px solid var(--line);border-radius:10px;padding:6px 6px 7px;text-align:center;font-size:12px;font-weight:600;background:#fff}
+.mt .im{height:74px;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.mt img{max-height:68px;max-width:88%;object-fit:contain}.mt .ad{color:var(--muted);font-weight:400;font-size:11px}
+.mt.dim{opacity:.25}
+.rhead{display:flex;align-items:center;gap:var(--g1);margin:var(--g1) 0 var(--g0)}
+.rhead h3{margin:0}
+#rlow{position:relative;margin-top:var(--g0)}
+#rsup{}
+#rdet{position:absolute;left:0;right:0;top:0;background:#fff;border:1px solid var(--line);border-radius:12px;display:none;padding:var(--g1);gap:var(--g2);height:100%;box-sizing:border-box}
+#rdet .camv{height:100%;flex:none;aspect-ratio:16/9}
+#rdet .side{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--g0)}
+#rdet .side .t{font-weight:600;font-size:18px}
+#rzoom{position:fixed;left:0;top:0;width:1600px;height:746px;display:none;pointer-events:none;z-index:40}   /* full-screen view (above the subtitle band) */
+#rzoom .bg{position:absolute;inset:0;background:var(--paper)}
+#rztabs{position:absolute;left:0;right:0;top:22px;display:flex;justify-content:center;gap:var(--g0)}
+.rzt{padding:6px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:14px;color:var(--muted)}
+.rzt.on{background:var(--ink);color:#fff;border-color:var(--ink)}.rzt.hover{border-color:#cfcac0;color:var(--ink)}.rzt.on.hover{color:#fff;border-color:var(--ink)}
+#rzoom .rzim{position:absolute;border-radius:14px;overflow:hidden;background:var(--sub);box-shadow:0 18px 50px rgba(30,30,30,.16)}
+#rzoom .rzim img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+#rzoom .simtag{right:16px;bottom:12px;color:#5f6672;text-shadow:0 0 1px rgba(255,255,255,.95),0 0 2px rgba(255,255,255,.75)}   /* still visible on dark scenes (remains small text) */
+.rzcap{position:absolute;left:14px;bottom:12px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.94);border-radius:10px;padding:7px 12px;font-size:14px}
+.rzcap #rzs{color:var(--muted)}
+#rdlogw{flex:1;min-height:0;margin-top:var(--g1);position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 26px);mask-image:linear-gradient(to bottom,transparent 0,#000 26px)}
+#rdlog{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:7px}   /* new entries at the bottom; during replay a new row expands and smoothly pushes old rows up, the top fades out */
+/* ---------- Sites ---------- */
+#sites{display:grid;grid-template-columns:330px 1fr;gap:var(--g2)}
+.sl{padding:var(--g0)}
+.si{display:flex;gap:var(--g1);align-items:center;padding:10px 12px;border-radius:10px;margin-bottom:4px}
+.si img{width:62px;height:44px;object-fit:contain;flex:none;background:var(--sub);border-radius:6px}
+.si .a{font-weight:600;font-size:14px}.si .b{font-size:12px;color:var(--muted)}
+.si.on{background:var(--clean-bg)}.si.hover{background:#f3f1ec}
+.sd2{padding:var(--g2)}
+.sd2 .t{font-size:20px;font-weight:600}
+.chips2{display:flex;flex-wrap:wrap;gap:var(--g0);margin:var(--g0) 0 var(--g2)}
+.kv{display:inline-flex;gap:6px;padding:4px 10px;border:1px solid var(--line);border-radius:8px;background:var(--sub);font-size:12px}.kv b{color:var(--muted);font-weight:600}
+.sref{position:relative;width:560px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.sref img{width:100%;display:block}
+.sref .zg .zc2{border-color:rgba(255,255,255,.55)}
+.sref .zg .zc2 .lb{color:rgba(255,255,255,.9);text-shadow:0 1px 2px rgba(0,0,0,.35)}
+/* ---------- Settings ---------- */
+#sgrid{display:grid;grid-template-columns:220px 1fr;gap:var(--g2);height:calc(100% - 64px)}
+#scats{padding:var(--g0)}
+.scat{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted);margin-bottom:2px}
+.scat.on{background:var(--clean-bg);color:var(--clean)}.scat.hover{background:#f3f1ec;color:var(--ink)}
+.scat svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#spanel{padding:var(--g1) var(--g2);overflow:hidden}
+.sgh{font-size:17px;font-weight:600;margin:6px 0 2px}.sgs{font-size:12px;color:var(--muted);margin-bottom:var(--g0)}
+.srow{display:flex;align-items:center;gap:var(--g2);padding:11px 0;border-top:1px solid #f0ede7;min-height:54px}
+.srow .tx{flex:1;min-width:0}.srow .lbl{font-weight:600;font-size:14px}.srow .hint{font-size:12px;color:var(--muted);margin-top:2px}
+.step{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:9px;overflow:hidden;flex:none}
+.step span{width:34px;height:32px;display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--muted);font-weight:600;background:#fbfaf8}
+.step span.hover{background:#efede7;color:var(--ink)}.step span.press{background:#e4e1da}
+.step b{min-width:54px;text-align:center;font-size:15px}
+.sval2{font-weight:600;font-size:14px;color:var(--ink);text-align:right;white-space:nowrap}
+.sinp{border:1.5px solid var(--line);border-radius:9px;padding:6px 11px;font-size:13px;min-width:300px;color:var(--muted);background:#fff}
+.mz{display:grid;gap:3px;flex:none}.mz i{width:22px;height:16px;border-radius:3px;background:var(--sub);border:1px solid var(--line)}
+.mz i.on{background:var(--res-bg);border-color:#f1c2bd}
+.sl2{display:flex;align-items:center;gap:var(--g0);width:340px;flex:none}
+.sl2 .slider{margin:0}
+.sl2 .sval2{min-width:46px;margin-left:8px}
+.sc{padding:var(--g2)}
+.sc .row{display:flex;align-items:center;gap:var(--g1);margin-top:var(--g1)}
+.sc .lbl{font-weight:600;font-size:14px}.sc .hint{font-size:12px;color:var(--muted);margin-top:3px}
+.slider{position:relative;height:6px;border-radius:3px;background:var(--sub);flex:1;margin:0 6px}
+.slider i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--clean)}
+.slider b{position:absolute;top:-7px;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--clean);margin-left:-10px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.val{font-size:22px;font-weight:600;min-width:70px;text-align:right}.val small{font-size:13px;color:var(--muted);font-weight:600}
+.tog{width:42px;height:24px;border-radius:12px;background:#d8d4cc;position:relative;flex:none}
+.tog:after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.tog.on{background:var(--clean)}.tog.on:after{left:21px}
+.mrow{display:flex;align-items:center;gap:var(--g1);padding:9px 0;border-top:1px solid #f0ede7}
+.mrow img{width:30px;height:30px}.mrow .a{font-weight:600;font-size:14px}.mrow .b{font-size:12px;color:var(--muted)}
+.bbar{height:8px;border-radius:4px;background:var(--sub);margin-top:var(--g0);overflow:hidden}.bbar i{display:block;height:100%;background:var(--clean)}
+#ssave{position:absolute;right:var(--g3);top:var(--g2)}
+#jlist{padding:var(--g1) var(--g1) var(--g0)}
+.jl{display:flex;align-items:center;gap:var(--g0);padding:6px 8px;border-radius:9px;margin:0 -4px}
+.jl img{width:34px;height:30px;object-fit:contain;flex:none}
+.jl .a{font-weight:600;font-size:13px;white-space:nowrap}.jl .tx{flex:1;min-width:0}
+.jl .b2{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:2px}
+.jl .pill{font-size:10.5px;padding:1px 7px}
+.jl.sel{background:var(--clean-bg)}.jl.hover{background:#f3f1ec}
+#jtoast{position:absolute;right:210px;top:20px;z-index:20;background:#fff;border:1px solid #d5dae1;border-left:4px solid var(--slate);border-radius:9px;
+  box-shadow:0 6px 18px rgba(29,36,51,.12);padding:3px 6px 3px 12px;font-size:13px;display:none;height:32px}   /* notification bar in the title bar (does not cover the content area) */
+#jtoast b{font-size:13px;margin-right:8px}
+#jtoast .row{display:flex;align-items:center;gap:var(--g0);height:100%}#jtoast .muted{font-size:12px}
+#jtoast button{padding:2px 10px;font-size:12px;margin-left:6px}
+#toast{position:absolute;right:var(--g3);top:72px;background:var(--clean-bg);color:var(--clean);border:1px solid #b7dcd6;border-radius:9px;padding:7px 14px;font-weight:600;font-size:13px;opacity:0}
+/* ---------- Logs / Reports ---------- */
+.filters{display:flex;gap:var(--g0);margin-bottom:var(--g1)}
+.fch{padding:5px 12px;border-radius:999px;border:1px solid var(--line);font-weight:600;font-size:12px;color:var(--muted);background:#fff}
+.fch.on{background:var(--ink);color:#fff;border-color:var(--ink)}.fch.hover{border-color:#cfcac0;color:var(--ink)}.fch.on.hover{color:#fff;border-color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:600;padding:9px 14px;border-bottom:1px solid var(--line);background:#fbfaf8}
+td{padding:9px 14px;border-bottom:1px solid #f0ede7;white-space:nowrap}
+tr.hover td{background:#faf9f6}tr.sel td{background:var(--clean-bg)}
+.tw{overflow:hidden;border-radius:12px;border:1px solid var(--line)}
+.who{display:inline-flex;align-items:center;gap:6px;font-weight:600}.who img{width:18px;height:18px}
+#drawer{position:absolute;top:0;right:0;bottom:0;width:860px;background:#fff;border-left:1px solid var(--line);box-shadow:-18px 0 40px rgba(29,36,51,.10);overflow:hidden;display:none}
+#drawer .dh2{height:50px;display:flex;align-items:center;gap:10px;padding:0 var(--g2);border-bottom:1px solid var(--line)}
+#rframe{position:absolute;left:0;top:50px;width:1075px;height:770px;border:0;transform:scale(.8);transform-origin:0 0}
+/* pointer and click ripple (placed by setView when recording) */
+#cursor{position:absolute;left:0;top:0;width:22px;height:30px;pointer-events:none;z-index:50;display:none}
+#ripple{position:absolute;width:40px;height:40px;border-radius:50%;border:2.5px solid var(--clean);opacity:0;z-index:49;pointer-events:none}
+/* desktop edition (?app=1, cleanproof/ui/desktop.py): the native frameless window holds only the software window itself, with no desktop background edge or subtitle band below, scaled proportionally to the window size;
+   the title bar is draggable, and the three dots are close / minimize / maximize (colored on hover, plain grey dots as in the video otherwise) */
+body.app{width:100vw;height:100vh;background:#fbfaf8}
+body.app #band{display:none}
+body.app #desk{transform-origin:0 0;background:#fbfaf8}
+body.app .win{border:none;border-radius:0;box-shadow:none}
+body.app .dots:hover i:nth-child(1){background:#ff5f57}body.app .dots:hover i:nth-child(2){background:#febc2e}body.app .dots:hover i:nth-child(3){background:#28c840}
+.wrow .b.fb{color:var(--amber) !important}
+/* ---------- controls that appear only in live mode (not in the recorded video, existing element styles unchanged) ---------- */
+.wcalbtn{display:none;align-items:center;gap:var(--g1);margin-top:var(--g1)}
+.wcalbtn .msg{font-size:12px;font-weight:600;color:var(--muted)}.wcalbtn .msg.bad{color:var(--res)}
+.wnew{display:none}
+#wz-gcal{display:none;padding:2px var(--g2);contain:inline-size;overflow:hidden}   /* a long one-line note never widens the right column (buttons are not pushed out of the card) */
+#wz-gcal .wrow{padding:8px 0}
+#wz-gcal .wrow .b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#wz-gcal .wrow .b.bad{color:var(--res)}
+#wz-gcal button,#wz-gcal a.btn{padding:5px 12px;font-size:12px;border-radius:8px}
+a.btn{font:600 12px Manrope,sans-serif;padding:5px 12px;border-radius:8px;border:1.5px solid var(--line);background:#fff;color:var(--ink);text-decoration:none;white-space:nowrap}
+#wz-gcal .gsz{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+#wz-gcal .gsz input{width:40px;border:1.5px solid var(--line);border-radius:7px;padding:3px 6px;font:400 12px Manrope,sans-serif;text-align:center}
+.sinp2{border:1.5px solid var(--line);border-radius:9px;padding:6px 11px;font:400 13px Manrope,sans-serif;color:var(--ink);background:#fff;outline:0}
+.sinp2:focus{border-color:var(--clean);box-shadow:0 0 0 3px rgba(15,118,110,.12)}
+.chs{display:flex;gap:var(--g0);flex:none}
+.chs .wty{cursor:pointer;padding:6px 13px}
+#toast.bad{background:var(--res-bg);color:var(--res);border-color:#f1c2bd}
+#jzones{font-size:12px;margin-top:6px;display:none}
+#wz-repl{font-size:12px;margin-top:6px;display:none;color:var(--amber);font-weight:600}
+#wzblock{position:absolute;inset:0;z-index:29;display:none}   /* Add robot: while the wizard is open it blocks the faded main UI behind it (not clickable) */
+/* live-mode mouse feedback: same styles as .hover / .press set by setView in the recording (body.live is added only in live mode, the recorded video is unchanged) */
+body.live .nv:hover{background:#f3f1ec;color:var(--ink)}
+body.live button:not([disabled]):hover{filter:brightness(1.07);box-shadow:0 0 0 4px rgba(15,118,110,.14)}
+body.live button.ghost:not([disabled]):hover,body.live button.danger:not([disabled]):hover{box-shadow:0 0 0 4px rgba(29,36,51,.06);filter:none;background:#faf9f6}
+body.live button:not([disabled]):active{transform:scale(.96)}
+body.live .wcard:hover{border-color:#cfcac0;box-shadow:0 4px 14px rgba(29,36,51,.08)}
+body.live .wty:hover{border-color:#cfcac0;color:var(--ink)}
+body.live .rc:hover{border-color:#cfcac0;box-shadow:0 4px 14px rgba(29,36,51,.08)}
+body.live .rzt:hover{border-color:#cfcac0;color:var(--ink)}body.live .rzt.on:hover{color:#fff;border-color:var(--ink)}
+body.live .si:hover{background:#f3f1ec}
+body.live .scat:hover{background:#f3f1ec;color:var(--ink)}
+body.live .step span:hover{background:#efede7;color:var(--ink)}body.live .step span:active{background:#e4e1da}
+body.live .jl:hover{background:#f3f1ec}
+body.live .fch:hover{border-color:#cfcac0;color:var(--ink)}body.live .fch.on:hover{color:#fff;border-color:var(--ink)}
+body.live tbody tr:not(.sel):hover td{background:#faf9f6}
+body.live .nv,body.live .wcard,body.live .wty,body.live .rc,body.live .rzt,body.live .si,body.live .scat,body.live .step span,body.live .jl,body.live .fch,body.live #p-reports tbody tr,body.live .tog,body.live .slider,body.live .mz i{cursor:pointer}
+</style>
+</head>
+<body>
+<div id="desk">
+ <div class="win" id="win">
+  <div class="tbar"><span class="dots"><i></i><i></i><i></i></span><span class="logo"></span><span class="ttl">CleanProof</span>
+   <span class="sitechip" id="tsite"><i></i><span></span></span>
+   <span class="sp"></span><span id="tstat"></span></div>
+  <div id="body">
+   <div id="nav"></div>
+   <div id="content">
+    <div class="page" id="p-jobs"></div>
+    <div class="page" id="p-robots"></div>
+    <div class="page" id="p-sites"></div>
+    <div class="page" id="p-settings"></div>
+    <div class="page" id="p-logs"></div>
+    <div class="page" id="p-reports"></div>
+   </div>
+  </div>
+ </div>
+ <div id="wiz"></div>
+ <div id="jtoast"></div>
+ <svg id="cursor" viewBox="0 0 22 30"><path d="M2 2 L2 24 L8 18.5 L12 28 L16 26.2 L12 17 L20 17 Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+ <div id="ripple"></div>
+</div>
+<div id="band"></div>
+<script>
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = u => { u = clamp(u); return u * u * (3 - 2 * u); };
+// requests that change state all carry a custom header (the server uses it to refuse cross-site requests from other web pages, cleanproof/ui/operator.py cross_site_guard)
+{ const _f = window.fetch.bind(window);
+  window.fetch = (u, o) => { o = o || {}; const m = String(o.method || "GET").toUpperCase();
+    if (m !== "GET" && m !== "HEAD") { const h = new Headers(o.headers || {}); h.set("X-CleanProof", "1"); o = {...o, headers: h}; }
+    return _f(u, o); }; }
+async function api(p, opt) {
+  const r = await fetch(p, opt);
+  if (!r.ok) {                                                    // 4xx / 5xx: report the detail the server gives the operator (FastAPI {"detail": ...}), and only if absent the path and status code
+    let m = "";
+    let j0 = null;
+    try { const j = await r.json(); j0 = j; const d = j && j.detail;
+      m = typeof d === "string" ? d : Array.isArray(d) ? d.map(x => (x && x.msg) || "").filter(Boolean).join("; ") : d ? JSON.stringify(d) : ""; } catch (e) {}
+    const er = new Error(m || `${p} ${r.status}`); er.status = r.status; er.detail = m; er.needsConfirm = !!(j0 && j0.needs_confirm); throw er;
+  }
+  return r.json();
+}
+const errText = e => String((e && e.message) || e || "Something went wrong");
+const say = e => alert(errText(e));
+const postJ = (p, body) => api(p, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body || {})});
+const PAGES = [["jobs", "Jobs", '<path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/>'],
+  ["robots", "Robots", '<rect x="5" y="8" width="14" height="10" rx="2"/><path d="M12 4v4M9 13h.01M15 13h.01"/>'],
+  ["sites", "Sites", '<path d="M12 21s-6-5.6-6-10a6 6 0 1 1 12 0c0 4.4-6 10-6 10z"/><circle cx="12" cy="11" r="2"/>'],
+  ["reports", "Reports", '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>'],
+  ["settings", "Settings", '<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14.3 3h-4l-.4 2.6a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 5.5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2l.4 2.7h4l.4-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/>'],
+  ["logs", "Logs", '<path d="M4 6h16M4 12h16M4 18h10"/>']];
+const SVG = {chip: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/><path d="M2 9h2M2 15h2M20 9h2M20 15h2M9 2v2M15 2v2M9 20v2M15 20v2"/></svg>',
+  cam: '<svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  gpu: '<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><circle cx="9" cy="12" r="2.5"/><path d="M15 10h3M15 14h3M6 17v3M10 17v3M14 17v3"/></svg>'};
+const WSTEPS = [["robot", "Robot"], ["connect", "Connect"], ["models", "Services"], ["site", "Site"]];
+// settings page groups (left categories): every item can really be saved and takes effect, or is honestly marked Not configured
+const SCATS = [["jobs", "Jobs", '<path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/>'],
+  ["safety", "Safety & force", '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/>'],
+  ["vision", "Vision", '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'],
+  ["cloud", "Cloud models", '<path d="M7 18h10a4 4 0 0 0 .6-8A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18z"/>'],
+  ["robot", "Robot", '<rect x="5" y="8" width="14" height="10" rx="2"/><path d="M12 4v4M9 13h.01M15 13h.01"/>'],
+  ["notify", "Notifications", '<path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 21h4"/>'],
+  ["data", "Data & logs", '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>'],
+  ["about", "About", '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>']];
+const SITE_ORDER = ["home_dining", "office_stairs", "factory_line", "carwash_van"];   // order of the Robots page and the full-screen view (consistent with the s11 narration "homes, offices, factories and car washes")
+const WHO = {"Cosmos 3": ["check", "cosmos"], "Vision check": ["check", "cosmos"], "Classical vision": ["check", "cosmos"], "Rule planner": ["plan", "nemotron_super"],
+  "Model unavailable": ["guard", "guardrail"], "Nemotron 3 Super": ["plan", "nemotron_super"],
+  "Planner": ["plan", "nemotron_super"], "Guardrail": ["guard", "guardrail"], "Skill server": ["wipe", "skill_server"], "Report": ["end", "nemotron_ultra"]};
+const D = {meta: null, settings: null, deploy: null, reports: [], calls: [], spent: null, sites: {}, robots: {}, js: {}, lookups: {}, wz: null};
+let V = {page: "jobs"}, built = {}, liveMode = false;
+let READY; const readyP = new Promise(r => { READY = r; });   // setView is a function declaration (visible early): wait until data is loaded and the page is built before drawing
+
+/* ------------------------------------------------------------ build (once after data loads) */
+function buildNav() {
+  $("#nav").innerHTML = PAGES.map(([k, n, ic], i) => (i === 4 ? '<div class="nvsep"></div>' : "") +
+    `<div class="nv" id="nv-${k}" data-page="${k}"><svg viewBox="0 0 24 24">${ic}</svg>${n}</div>`).join("");
+}
+function siteById(id) { return D.meta.sites.find(s => s.id === id) || D.meta.sites[0]; }
+function robotLabel(k) { const r = D.meta.supported.find(x => x.key === k); return r ? r.label : k; }
+
+function buildWizard() {
+  // first-run wizard (Bambu Studio style: small window, Robot → Connect → Models → Site, leads into the main UI). The checks are the deploy checks (cleanproof/ui/deploy_checks.py)
+  const s = siteById(D.meta.site);
+  const groups = ["All", ...new Set(D.meta.supported.map(r => r.group))];
+  const cards = D.meta.supported.map(r => `<div class="wcard" id="wz-r-${r.key}" data-group="${esc(r.group)}"><span class="ck"></span>
+    <div class="im"><img src="/robots/photo/${r.key}.png"></div><div class="nm">${esc(r.label)}</div><div class="kd">${esc(r.kind)}</div></div>`).join("");
+  const row = (id, icon, title, sub, extra = "") => `<div class="wrow" data-wck="${id}"><div class="ic">${icon}</div><div class="tx"><div class="a">${title}</div>
+    <div class="b">${sub}</div></div>${extra}<span class="sd"></span></div>`;
+  const g = s.grid;
+  $("#wiz").innerHTML = `<div class="tbar"><span class="dots"><i></i><i></i><i></i></span><span class="logo"></span><span class="ttl">CleanProof Setup</span></div>
+   <div class="wsteps">${WSTEPS.map(([k, n], i) => (i ? '<span class="wsep"></span>' : "") + `<span class="wst" id="wst-${k}"><span class="n">${i + 1}</span>${n}</span>`).join("")}</div>
+   <div class="wb">
+    <div class="wpage" id="wp-robot"><div class="wh">Choose your robot</div><div class="wsub">Pick the robot at this site. CleanProof drives it through a software adapter; you can add more robots later.</div>
+     <div class="filters" id="wfil">${groups.map(x => `<span class="fch" id="wf-${x.replace(/ /g, "_")}">${esc(x)}</span>`).join("")}</div>
+     <div id="wgrid">${cards}</div></div>
+    <div class="wpage" id="wp-connect"><div class="wh">Connect to the robot computer</div><div class="wsub">${D.meta.sim_robot ? "The robot computer runs the skill server and the camera service. In this desktop build it is a built-in simulation on this computer." : "The robot computer runs the skill server and the camera service. It was paired with this computer during installation."}</div>
+     <div class="wtwo"><div>
+       <div class="fl">Robot computer</div><div class="inp ro" id="wz-host">${esc(D.meta.sim_robot ? "This computer · built-in simulation" : (D.meta.robot_host || "Not paired yet"))}</div>
+       <div class="fl">Link</div><div class="inp ro"><span class="wlink" id="wz-link">${D.meta.sim_robot ? "MuJoCo simulation · no pairing needed" : esc(linkIdle())}</span></div>
+       <button id="wz-connect" style="margin-top:var(--g2)">Connect</button></div>
+      <div class="card" style="padding:2px var(--g2)">
+       ${row("skill_server", SVG.chip, "Skill server", "")}
+       ${row("camera", SVG.cam, "Camera service", "", `<img class="wthumb" id="wz-cam" src="/api/sites/${esc(s.id)}/reference.png">`)}
+       ${row("adapter", `<img id="wz-ricon" src="/robots/photo/${esc(s.robot)}.png">`, "Robot", "")}</div></div></div>
+    <div class="wpage" id="wp-models"><div class="wh">Check the services</div><div class="wsub">Cosmos 3 and the orchestrator run on this computer. Nemotron 3 runs on Nebius Token Factory.</div>
+     <div class="card" style="padding:2px var(--g2);max-width:860px">
+      ${row("tokenfactory", '<img src="/brand/token_factory.png">', "Nebius Token Factory", "Nemotron 3 Super plans · Nemotron 3 Ultra audits",
+        `<div class="inp" id="wz-keyw" style="min-width:270px"><input id="wz-key" type="password" placeholder="API key" autocomplete="off"></div><button class="ghost" id="wz-test">Test</button>`)}
+      ${row("cosmos", '<img src="/brand/cosmos.png">', "Cosmos 3", "Local NVIDIA GPU")}
+      ${row("orchestrator", '<span class="logo" style="width:30px;height:30px;border-radius:8px"></span>', "CleanProof orchestrator", "Agent loop · guardrail · reports")}</div></div>
+    <div class="wpage" id="wp-site"><div class="wh">Set up the site</div><div class="wsub">Each site is calibrated once on site: the whole surface becomes a zone grid with its clean-surface database.</div>
+     <div class="wtwo"><div>
+       <div class="fl">Site type</div><div class="wtypes">${D.meta.site_types.map(x => `<span class="wty" id="wz-t-${x.replace(/ /g, "_")}">${esc(x)}</span>`).join("")}</div>
+       <div class="fl">Site</div><div class="inp sel" id="wz-site"><select id="wz-sitesel">${D.meta.sites.map(x => `<option value="${esc(x.id)}" ${x.id === s.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}${liveMode ? '<option value="__new__">New site…</option>' : ""}</select><i class="chev"></i></div>${liveMode ? '<div id="wz-repl"></div>' : ""}
+       <div class="fl">Site name</div><div class="inp"><input id="wz-sname" value="${esc(s.name)}"></div>
+       ${liveMode && !D.meta.sim_robot ? `<div class="wnew" id="wz-surfw"><div class="fl">Surface</div><div class="inp sel"><select id="wz-surfsel">${(D.settings.surfaces || []).map(f => `<option value="${esc(f.surface)}">${esc(f.label)}</option>`).join("")}</select><i class="chev"></i></div></div>` : ""}
+       ${liveMode && D.meta.sim_robot ? `<div class="wnew" id="wz-tplw"><div class="fl">Simulated scene</div><div class="inp sel"><select id="wz-tpl">${(D.meta.sim_templates || []).map(x => `<option value="${esc(x.id)}" data-robot="${esc(x.robot)}">${esc(x.name)}</option>`).join("")}</select><i class="chev"></i></div></div>` : ""}
+       <div class="fl">Detected surface</div><div class="inp ro" id="wz-surf">–</div>
+       <div class="wcal" id="wz-calok" style="opacity:0"><span class="sd ok"></span><span id="wz-caltxt"></span></div>
+       ${liveMode ? '<div class="wcalbtn" id="wz-calbtn"><button id="wz-cal">Calibrate</button><span class="msg" id="wz-calmsg"></span></div>' : ""}</div>
+      <div><div class="wref" id="wz-ref"><img src="/api/sites/${esc(s.id)}/reference.png">
+        <div class="zg" style="grid-template-columns:repeat(${g.cols},1fr);grid-template-rows:repeat(${g.rows},1fr)">${zoneCells(g.rows, g.cols)}</div></div>
+       ${liveMode ? '<div class="card" id="wz-gcal"></div>' : ""}</div></div></div>
+   </div>
+   <div class="wfoot"><span class="muted" id="wfstat" style="font-size:12px"></span><span class="sp"></span><button class="ghost" id="wz-back">Back</button><button id="wz-next">Next</button></div>`;
+}
+
+// the Link row of the wizard Connect step. Recording: word for word as before (paired = tunnel 8100 / 8101). Live: the ports follow the skill server / camera service addresses
+// (tunnel_ports of /api/meta); if an address is not a local port (no tunnel, the robot computer address was entered directly) honestly write Direct link
+function urlPort(u) { try { const x = new URL(u); return x.port ? +x.port : (x.protocol === "https:" ? 443 : 80); } catch (e) { return null; } }
+function urlHost(u) { try { return new URL(u).host; } catch (e) { return String(u || ""); } }
+const isLoop = u => /^https?:\/\/(127(\.\d{1,3}){3}|localhost|\[::1\])(:\d+)?\/?$/i.test(String(u || "").trim());
+function viaTunnel() {                                           // via tunnel = both the skill server and camera service addresses in settings are local loopback (the paired hostname is not considered)
+  const r = (D.settings && D.settings.robot) || {}; return isLoop(r.skill_url) && isLoop(r.camera_url);
+}
+function linkIdle() {
+  if (!liveMode) return D.meta.robot_host ? "SSH tunnel · ports 8100 and 8101" : "Run install_edge.sh --pair on this computer";
+  const r = (D.settings && D.settings.robot) || {};
+  if (!viaTunnel()) return `Direct link · ${urlHost(r.skill_url)}`;
+  if (!D.meta.robot_host) return "Run install_edge.sh --pair on this computer";
+  return `SSH tunnel · ports ${urlPort(r.skill_url) ?? "–"} and ${urlPort(r.camera_url) ?? "–"}`;   // the ports come from the current addresses in settings (after an address change, meta is stale)
+}
+const KEY_SENT = "•".repeat(28);                                 // placeholder of the wizard key box: when a key is stored these 28 dots are shown
+const PEND = ids => ids.map(id => ({id, pending: true}));
+const FAILED = (ids, e) => ids.map((id, i) => ({id, ok: false, detail: i ? "Not checked" : errText(e)}));   // the check request itself failed: all three rows are marked failed (none keeps spinning)
+function renderChecks(rows, checks, dt) {
+  // checks run one by one: spinner → tick (same order as the real checks); dt = seconds after the button click (< 0 = not clicked yet)
+  let all = checks.length > 0;
+  checks.forEach((c, i) => { const r = rows.find(x => x.dataset.wck === c.id); if (!r) return; const sd = r.querySelector(".sd");
+    const t0 = 0.2 + i * 0.4, t1 = t0 + 0.35;
+    const pend = !!c.pending;                                     // live: the result has not come back yet, so the row whose turn has come (dt >= t0) keeps spinning and the rows not yet reached stay empty circles
+    sd.className = "sd" + (!pend && dt >= t1 ? (c.ok ? " ok" : " bad") + (c.ok && c.fallback ? " fb" : "") : dt >= t0 ? " run" : "");   // fallback usable: amber tick (text in the same color)
+    sd.style.transform = dt >= t0 && (pend || dt < t1) ? `rotate(${(dt - t0) * 720}deg)` : "";
+    const b = r.querySelector(".b");
+    if (!pend && dt >= t1) { b.textContent = c.id === "orchestrator" ? (c.ok ? `Ready · ${siteById(D.meta.site).name}` : (c.detail || "")) : (c.detail || "").replace("version unknown · ", "");
+      b.style.color = c.ok ? "var(--clean)" : "var(--res)"; b.classList.toggle("fb", !!c.fallback); }
+    if (pend || !(dt >= t1 && c.ok)) all = false; });
+  return all;
+}
+function renderWizard(w) {
+  const wz = $("#wiz");
+  const blk = $("#wzblock"); if (blk) blk.style.display = w && w.a > 0 ? "block" : "none";   // live: while the wizard is open the main UI cannot be clicked
+  if (!w || !(w.a > 0)) { wz.style.display = "none"; return; }
+  wz.style.display = "block"; wz.style.opacity = clamp(w.a);
+  const step = w.step || "robot", k = WSTEPS.findIndex(x => x[0] === step);
+  WSTEPS.forEach(([id], i) => { const e = $("#wst-" + id); e.className = "wst" + (i < k ? " done" : i === k ? " on" : "");
+    e.querySelector(".n").textContent = i < k ? "✓" : i + 1; });
+  $$(".wpage").forEach(e => { e.style.display = e.id === "wp-" + step ? "block" : "none"; e.style.opacity = w.pa == null ? 1 : w.pa; });
+  $("#wfstat").textContent = `Step ${k + 1} of ${WSTEPS.length}`;
+  $("#wz-next").textContent = step === "site" ? "Finish" : "Next";
+  const cancel = liveMode && w.add && k === 0;                      // wizard opened by Add robot on the Robots page: Back in the first step is Cancel (the first-run wizard cannot be skipped)
+  $("#wz-back").disabled = k === 0 && !cancel;
+  if (liveMode) $("#wz-back").textContent = cancel ? "Cancel" : "Back";
+  const done = {robot: !!w.sel, connect: false, models: false, site: false};
+  // 1 Robot
+  const grp = w.filter || "All";
+  $$("#wfil .fch").forEach(e => e.classList.toggle("on", e.id === "wf-" + grp.replace(/ /g, "_")));
+  $$(".wcard").forEach(e => { e.classList.toggle("sel", e.id === "wz-r-" + w.sel); e.classList.toggle("dim", grp !== "All" && e.dataset.group !== grp); });
+  // 2 Connect (check results = deploy checks: when recording, the saved real check)
+  const ck = (D.wz && D.wz.connect) || ((D.deploy && D.deploy.checks) || []).filter(c => ["skill_server", "camera", "adapter"].includes(c.id));
+  done.connect = renderChecks($$("#wp-connect .wrow"), ck, w.ck == null ? -1 : w.ck);
+  if (w.sel) $("#wz-ricon").src = `/robots/photo/${w.sel}.png`;
+  $("#wz-cam").style.opacity = (w.ck != null && w.ck >= 0.95) ? 1 : 0.15;
+  const lk = $("#wz-link"); if (D.meta.sim_robot) { lk.className = "wlink" + (done.connect ? " ok" : ""); lk.textContent = done.connect ? "Built-in simulation · connected" : "MuJoCo simulation · no pairing needed"; }
+  else if (!liveMode) { if (D.meta.robot_host) { lk.className = "wlink" + (done.connect ? " ok" : "");
+    lk.textContent = done.connect ? "Encrypted SSH tunnel · connected" : "SSH tunnel · ports 8100 and 8101"; } }
+  else { lk.className = "wlink" + (done.connect ? " ok" : "");                  // paired robot computer (live): ports follow the real addresses, and connected is written only if all checks pass
+    lk.textContent = done.connect ? (viaTunnel() ? "Encrypted SSH tunnel · connected" : "Direct link · connected") : linkIdle(); }
+  $("#wz-connect").textContent = done.connect ? "Reconnect" : "Connect"; $("#wz-connect").className = done.connect ? "ghost" : "";
+  if (liveMode) { $("#wz-host").textContent = D.meta.sim_robot ? "This computer · built-in simulation" : (D.meta.robot_host || "Not paired yet");
+    $("#wz-connect").disabled = w.busy === "connect"; }                  // while checking: the button still reads Connect (as in the video) but cannot be clicked; the three rows spin immediately
+  // 3 Models
+  const mk = (D.wz && D.wz.models) || ((D.deploy && D.deploy.checks) || []).filter(c => ["tokenfactory", "cosmos", "orchestrator"].includes(c.id));
+  if (!liveMode) $("#wz-key").value = w.key ? "•".repeat(28) : "";           // recording: the key box shows only dots (no real key ever appears)
+  $("#wz-keyw").classList.toggle("focus", !!w.keyFocus);
+  done.models = renderChecks($$("#wp-models .wrow"), mk, w.mk == null ? -1 : w.mk);
+  // 4 Site: choose a venue type → show the calibration result of this site (zone grid covering the whole tabletop + clean reference; calibration is done once on site, people do not draw zones).
+  // w.cal 0→1 = after the calibration result is read back, the grid and note fade in (UI animation, not the calibration process)
+  $$(".wty").forEach(e => e.classList.toggle("sel", e.id === "wz-t-" + String(w.type || "").replace(/ /g, "_")));
+  const cal = clamp(w.cal == null ? 0 : w.cal), ci = (D.wz && D.wz.site) || D.siteCal;
+  if (liveMode && step === "site") wizSiteRef(ci, !!w.newSite);    // live: swap the reference image and grid first (the new cells get their styles right below by cal)
+  $$("#wz-ref .zc2").forEach(e => { e.style.border = `1px solid rgba(255,255,255,${(0.75 * cal).toFixed(3)})`;
+    e.querySelector(".lb").style.color = `rgba(255,255,255,${(0.95 * cal).toFixed(3)})`; e.querySelector(".lb").style.textShadow = "0 1px 2px rgba(0,0,0,.35)"; });
+  $("#wz-ref").style.opacity = 0.35 + 0.65 * cal;
+  $("#wz-calok").style.opacity = cal >= 1 ? 1 : 0;
+  if (ci) $("#wz-caltxt").textContent = ci.calibrated ? `Calibrated on site ${ci.calibrated_utc} · ${ci.zones} zones · clean reference saved` : "Not calibrated yet";
+  $("#wz-surf").textContent = cal >= 1 && ci ? ci.surface : "–";
+  done.site = cal >= 1 && !!(ci && ci.calibrated && !(liveMode && ci.needs_sync));
+  if (liveMode) { if (w.newSite) done.site = false; if (step === "site") renderSiteLive(w, ci); }
+  $("#wz-next").disabled = !done[step];
+  if (liveMode) $("#wz-test").disabled = w.busy === "test";
+}
+
+/* ---- wizard Site step (live): sites without calibration are calibrated in place; creating a site ---- */
+// calibrated site: same as the video (clean reference + zone grid fade-in + the Calibrated on site ... line), no extra controls.
+// not calibrated: a Calibrate button replaces that line. Simulation (how = auto) calibrates in one click; a real-robot computer (how = guided) expands the on-site calibration steps on the right (API G).
+const GSTEPS = [["markers", "Markers", "Print the marker sheet; tape the four markers just outside the corners of the surface"],
+  ["touch", "Touch the markers", "Freedrive the pad centre onto each marker, touch the surface lightly, then record it"],
+  ["survey", "Survey pose", "Move the arm where it does not block the camera, then record the pose"],
+  ["capture", "Camera view", "Arm at the survey pose: capture a frame with all four markers visible"],
+  ["zones", "Zones", "Work area from the four touches, split into a zone grid"],
+  ["reference", "Clean reference", "Clean the surface, arm at the survey pose, then capture the clean reference"],
+  ["sync", "Sync to the robot computer", "Copy the site to the robot computer and restart its services"]];
+const MARKERS = [0, 1, 2, 3];                                    // ids 0-3 on the print page (MARKER_IDS in scripts/calibrate_site.py)
+function tplSite() { const t = $("#wz-tpl"); return (t && t.value) || D.meta.site; }
+function wizSiteRef(ci, isNew) {
+  // the reference image and grid follow the selected site: calibrated → clean reference + grid; not calibrated / new site → what the robot computer sees now (simulation: the view of this scene at job creation), no grid drawn
+  if (!ci && !isNew) return;
+  const img = $("#wz-ref img"), zg = $("#wz-ref .zg");
+  let src, rows = 0, cols = 0;
+  if (!isNew && ci && ci.calibrated && ci.grid) { src = ci.reference || `/api/sites/${encodeURIComponent(ci.site)}/reference.png`; rows = ci.grid.rows; cols = ci.grid.cols; }
+  else src = `/api/jobs/frame?t=0&site=${encodeURIComponent(isNew ? tplSite() : ((ci && ci.site) || D.meta.site))}`;
+  if (img.dataset.src !== src) setImg(img, src);
+  const key = rows + "x" + cols;
+  if (zg.dataset.g !== key) { zg.dataset.g = key; zg.style.gridTemplateColumns = `repeat(${cols || 1},1fr)`; zg.style.gridTemplateRows = `repeat(${rows || 1},1fr)`;
+    zg.innerHTML = rows ? zoneCells(rows, cols) : ""; }
+}
+function renderSiteLive(w, ci) {
+  const unc = !!w.newSite || !!(ci && (!ci.calibrated || ci.needs_sync));   // needs_sync: on-site calibration reached the reference image but has not yet been synced to the robot computer
+  if (ci && ci.needs_sync && !w.newSite && !w.gOpen && !w.gAuto) { w.gAuto = true; w.gOpen = true; loadGuided(w, ci.site).then(() => setView(V)); }
+  const how = (ci && ci.how) || D.lastHow;                        // unknown = never connected to the robot computer, so it is not known whether one-click or on-site calibration applies
+  $("#wz-calok").style.display = unc ? "none" : "";
+  const cb = $("#wz-calbtn"); cb.style.display = unc ? "flex" : "none";
+  const rp = $("#wz-repl"), cur = !w.newSite && ci ? siteById(ci.site) : null;   // Add robot picked an existing site: this robot will replace the original robot of that site
+  const repl = w.add && cur && cur.id === ci.site && w.sel && cur.robot && cur.robot !== w.sel;
+  rp.style.display = repl ? "block" : "none"; if (repl) rp.textContent = `Replaces ${robotLabel(cur.robot)} at this site`;
+  if (unc) {
+    const b = $("#wz-cal"); b.disabled = !!w.calBusy;
+    b.style.display = how === "unknown" && !w.calBusy ? "none" : "";
+    b.textContent = w.calBusy === "create" ? "Creating site…" : w.calBusy === "auto" ? "Calibrating…" : "Calibrate";
+    b.className = w.gOpen ? "ghost" : "";
+    const m = $("#wz-calmsg"); m.className = "msg" + (w.calErr ? " bad" : "");
+    m.textContent = w.calMsg || (w.calBusy === "auto" ? "Building the zone grid and the clean reference" : how === "unknown" ? "Robot computer not reachable · connect first" : w.newSite ? "New site · not calibrated yet" :
+      ci && ci.how === "guided" ? "Not calibrated yet · calibrate once on site" : "Not calibrated yet");
+    $("#wz-surf").textContent = "–";
+  }
+  const tw = $("#wz-tplw") || $("#wz-surfw"); if (tw) tw.style.display = w.newSite ? "block" : "none";   // new site: a simulated deployment picks a simulation scene, a paired deployment picks a tabletop material
+  const sf = $("#wz-surf"); sf.style.display = sf.previousElementSibling.style.display = w.newSite ? "none" : "";   // a new site has no measured tabletop yet: this column is given to the simulation scene, and Calibrate stays at the position of the original row
+  const g = !!(w.gOpen && unc && !w.newSite);
+  $("#wz-ref").style.display = g ? "none" : "";
+  $("#wz-gcal").style.display = g ? "block" : "none";
+  if (g) renderGuided(w, ci);
+}
+function renderGuided(w, ci) {
+  if ($("#wz-grows")) { w.grows = $("#wz-grows").value; w.gcols = $("#wz-gcols").value; }   // row / column counts changed by the operator are kept
+  const gs = w.gstate || {steps: [], touched: []}, by = Object.fromEntries((gs.steps || []).map(x => [x.id, x]));
+  const order = GSTEPS.map(x => x[0]), nx = order.indexOf(gs.next || order.find(id => !(by[id] || {}).done) || "sync");
+  const touched = (gs.touched || []).map(Number);
+  const ids = Array.isArray(gs.markers) && gs.markers.length ? gs.markers : MARKERS;
+  const g = (ci && ci.grid) || {rows: 3, cols: 5};
+  const rowsHtml = GSTEPS.map(([id, title, hint], i) => {
+    const s = by[id] || {}, busy = w.gBusy === id, err = w.gErr && w.gErr.step === id ? w.gErr.msg : "";
+    const sd = "sd" + (busy ? " run" : err ? " bad" : s.done ? " ok" : "");
+    const can = !w.gBusy && i <= Math.max(0, nx);
+    let act = "";
+    if (id === "markers") act = `<a class="btn" href="/api/calibrate/markers.png" target="_blank" rel="noopener">Marker sheet</a><button class="ghost" data-gstep="markers" ${can ? "" : "disabled"}>Done</button>`;
+    else if (id === "touch") { const m = ids.find(x => !touched.includes(+x)), mk = Number(m == null ? ids[0] : m);
+      act = `<button class="ghost" data-gstep="touch" data-marker="${mk}" ${can ? "" : "disabled"}>${m == null ? "Redo" : "Record"} marker ${mk}</button>`; }
+    else if (id === "zones") act = `<span class="gsz"><input id="wz-grows" value="${esc(w.grows ?? g.rows)}" aria-label="Rows"> × <input id="wz-gcols" value="${esc(w.gcols ?? g.cols)}" aria-label="Columns"></span><button class="ghost" data-gstep="zones" ${can ? "" : "disabled"}>Set zones</button>`;
+    else act = `<button class="ghost" data-gstep="${id}" ${can ? "" : "disabled"}>${{survey: "Record pose", capture: "Capture", reference: "Capture", sync: "Sync"}[id]}</button>`;
+    const sub = err || (busy ? (id === "sync" ? "Copying to the robot computer…" : "Reading the robot…") : s.detail || hint);   // one-line note from the server (write the result once done)
+    return `<div class="wrow"><span class="${sd}"></span><div class="tx"><div class="a">${esc(s.title || title)}</div><div class="b ${err ? "bad" : ""}" title="${esc(sub)}">${esc(sub)}</div></div>${act}</div>`;
+  }).join("");
+  const box = $("#wz-gcal");
+  if (box.dataset.html === rowsHtml) return;                     // content unchanged: do not redraw (does not interrupt row / column counts being edited or a link being clicked)
+  const keep = document.activeElement && box.contains(document.activeElement) ? document.activeElement.id : null;
+  box.dataset.html = rowsHtml; box.innerHTML = rowsHtml;
+  if (keep && document.getElementById(keep)) document.getElementById(keep).focus();
+}
+async function loadGuided(w, site) {
+  try { w.gstate = await api(`/api/calibrate/state?site=${encodeURIComponent(site)}`); w.gErr = null; }
+  catch (e) { w.gErr = {step: "markers", msg: errText(e)}; }
+}
+function fadeCal(w) {                                             // calibration result read back: grid and note fade in (same 0.6 s animation as choosing a venue type)
+  const t0 = performance.now(); w.cal = 0;
+  const f = () => { w.cal = Math.min(1, (performance.now() - t0) / 600); setView(V); if (w.cal < 1 && V.wiz === w) requestAnimationFrame(f); }; f();
+}
+function siteCalibrated(ci) {                                     // calibration done: this entry in the site table is updated too (used by the Jobs page etc. before the page reloads after Finish)
+  const s = D.meta.sites.find(x => x.id === ci.site); if (!s) return;
+  s.calibrated = true; if (ci.grid) s.grid = ci.grid; if (ci.surface) s.surface_label = ci.surface;
+}
+function wizNewSite(w) {                                         // last item of the Site dropdown, New site...: empty site name, venue-type buttons pick the type, a simulation scene is picked when simulated
+  Object.assign(w, {newSite: true, calErr: false, calMsg: "", gOpen: false, gAuto: false, gstate: null, gErr: null, cal: 1});
+  $("#wz-sitesel").value = "__new__";
+  const n = $("#wz-sname"); n.value = ""; n.placeholder = "Name of the new site";
+  const t = $("#wz-tpl"); if (t) { const m = [...t.options].find(o => o.dataset.robot === w.sel); if (m) t.value = m.value; }
+  setView(V); n.focus();
+}
+async function wizCalibrate(w) {
+  w.calErr = false; w.calMsg = "";
+  let ci = D.wz && D.wz.site;
+  try {
+    if (w.newSite) {                                               // new site: create the site first (POST /api/sites), then calibrate
+      const name = $("#wz-sname").value.trim();
+      if (!name) throw new Error("Enter a name for the new site first");
+      if (!w.type) throw new Error("Pick the site type first");
+      w.calBusy = "create"; setView(V);
+      const body = {name, type: w.type || "", robot: w.sel || ""};
+      if (D.meta.sim_robot && $("#wz-tpl") && $("#wz-tpl").value) body.template = $("#wz-tpl").value;
+      if (!D.meta.sim_robot && $("#wz-surfsel") && $("#wz-surfsel").value) body.surface = $("#wz-surfsel").value;
+      const ns = (await postJ("/api/sites", body)).site;
+      if (!D.meta.sites.some(x => x.id === ns.id)) D.meta.sites.push(ns);
+      const sel = $("#wz-sitesel"), op = document.createElement("option"); op.value = ns.id; op.textContent = ns.name;
+      sel.insertBefore(op, sel.querySelector('option[value="__new__"]')); sel.value = ns.id;
+      w.newSite = false; await loadSiteCal(ns.id); ci = D.wz.site;
+      if (!ci) throw new Error("The new site was created but its calibration could not be read");
+    }
+    if (!ci) throw new Error("Choose a site first");
+    if (ci.calibrated) { w.calBusy = null; fadeCal(w); return; }
+    if (ci.how === "unknown") throw new Error("Robot computer not reachable · connect first");
+    if (ci.how === "guided") { w.calBusy = null; w.gOpen = true; await loadGuided(w, ci.site); setView(V); return; }
+    w.calBusy = "auto"; w.cal = 0; setView(V);
+    const r = await postJ("/api/setup/calibrate", {site: ci.site});
+    D.wz = {...(D.wz || {}), site: r}; siteCalibrated(r); built.site = null;
+    w.calBusy = null; fadeCal(w);
+  } catch (e) {
+    w.calBusy = null;
+    if (e.status === 409 && ci && /guided/.test(e.detail || "")) { ci.how = "guided"; w.gOpen = true; await loadGuided(w, ci.site); }
+    else { w.calErr = true; w.calMsg = errText(e); w.cal = 1; }
+    setView(V);
+  }
+}
+async function wizGuidedStep(w, el) {
+  const ci = D.wz && D.wz.site; if (!ci) return;
+  const step = el.dataset.gstep, body = {site: ci.site, step};
+  if (step === "touch") body.marker = +el.dataset.marker;
+  if (step === "zones") { const r = parseInt($("#wz-grows").value, 10), c = parseInt($("#wz-gcols").value, 10);
+    w.grows = $("#wz-grows").value; w.gcols = $("#wz-gcols").value;
+    if (!(r >= 1 && r <= 8 && c >= 1 && c <= 12)) { w.gErr = {step, msg: "Rows must be 1–8 and columns 1–12"}; setView(V); return; }
+    body.rows = r; body.cols = c; }
+  w.gBusy = step; w.gErr = null; setView(V);
+  try { w.gstate = await postJ("/api/calibrate/step", body); }
+  catch (e) { w.gErr = {step, msg: errText(e)}; }
+  w.gBusy = null;
+  const c2 = await api(`/api/setup/site?site=${encodeURIComponent(ci.site)}`).catch(() => null);   // after each step check whether the site is calibrated: if so collapse the steps and fade in the grid
+  if (c2 && c2.calibrated && !c2.needs_sync && ((w.gstate && (w.gstate.steps || []).every(x => x.done)) || step === "sync")) {
+    D.wz = {...(D.wz || {}), site: c2}; siteCalibrated(c2); built.site = null; w.gOpen = false; fadeCal(w); return; }
+  setView(V);
+}
+
+function zoneCells(rows, cols) {
+  let h = ""; for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) { const z = String.fromCharCode(65 + r) + (c + 1);
+    h += `<div class="zc2" data-z="${z}"><span class="lb">${z}</span></div>`; } return h;
+}
+function buildJobs() {
+  const s = siteById(D.meta.job ? D.meta.job.site : D.meta.site);
+  const g = s.grid; const ar = g.size_m[0] / g.size_m[1];
+  $("#p-jobs").innerHTML = `<div id="jobs">
+   <div class="col">
+    <div class="card form"><h3 style="margin-top:6px">New job</h3>
+     <div class="fl">Site</div><div class="inp sel" id="jsitew"><select id="jsite">${D.meta.sites.map(x => `<option value="${esc(x.id)}" ${x.id === s.id ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select><i class="chev"></i></div>
+     <div class="muted" id="jrobot" style="font-size:12px;margin-top:6px">${esc(robotLabel(s.robot))} · ${esc(s.surface_label)} · ${g.rows * g.cols} zones</div>
+     <div class="fl">Task</div><div class="inp" id="jtaskw"><input id="jtask" type="text" placeholder="Describe the job" autocomplete="off"></div>${liveMode ? '<div class="muted" id="jzones"></div>' : ""}
+     <button id="jstart">Start job</button></div>
+    <div class="card" id="japprove2"></div>
+    <div class="card ctl"><h3 style="margin-top:6px">Controls</h3><div class="row">
+     <button class="ghost" id="jpause" disabled>Pause</button><button class="ghost" id="jstop" disabled>Stop</button><button class="danger" id="jestop" disabled>E-stop</button></div>
+     <div class="appr" id="jappr"></div></div>
+    <div class="card" id="jlist"><h3 style="margin-top:4px">Today</h3><div id="jlrows"></div></div>
+   </div>
+   <div class="col">
+    <div class="card cam"><div class="hd"><span class="t">Site camera</span><span class="muted" style="font-size:12px">${esc(s.name)}</span><span class="sp"></span><span id="jpill"></span></div>
+     <div class="camv"><img id="jcam" alt=""><span class="simtag" id="jsimtag">Simulation</span></div></div>
+    <div class="card zm"><div class="zmap" id="jzmap" style="aspect-ratio:${(g.size_m[1] / g.size_m[0]).toFixed(4)}"><img src="/api/sites/${esc(s.id)}/reference.png">
+      <div class="zg" style="grid-template-columns:repeat(${g.cols},1fr);grid-template-rows:repeat(${g.rows},1fr)">${zoneCells(g.rows, g.cols)}</div></div>
+     <div class="zinfo"><div class="st"><b id="jzn">${g.rows * g.cols}</b><span>zones · whole surface</span></div><div class="st"><b id="jdirty">–</b><span>need cleaning</span></div>
+      <div class="st"><b id="jwipes">0</b><span>wipes</span></div><div class="st"><b id="jforce">–</b><span>contact force</span></div>
+      <div class="st"><b id="jchecks">0</b><span>vision checks</span></div><div class="st"><b id="jcost">$0.000</b><span>model cost</span></div></div></div>
+   </div>
+   <div class="col">
+    <div class="card jc"><div class="hd"><span class="t">Activity</span><span class="sp"></span><span class="muted" id="jrun" style="font-size:12px"></span></div>
+     <div id="jlog"><div id="jlogi"></div></div></div>
+    <div class="card req" id="jreq" style="display:none"></div>
+   </div></div>`;
+}
+
+function robotsSorted() {
+  const o = id => { const i = SITE_ORDER.indexOf(id); return i < 0 ? 99 : i; };
+  return D.meta.robots.slice().sort((a, b) => o(a.site) - o(b.site));
+}
+function statusPill(st) {
+  return st === "done" ? '<span class="pill ok"><span class="d"></span>Last job: all zones clean</span>' :
+    st ? `<span class="pill staff"><span class="d"></span>Last job: ${st === "needs_human" ? "staff check" : esc(st)}</span>` : '<span class="pill"><span class="d"></span>Idle</span>';
+}
+function buildRobots() {
+  // Bambu Studio style Robots page: each card uses the original product image; at the top the integrated robots, below the models that can be integrated (filterable by type, no counts written)
+  const rs = robotsSorted();
+  // live: the same model may be at two sites, so the id carries the site (rc-<model>--<site>) and the latest job is matched by site + model; ids and visuals when recording are unchanged
+  const rid = (p, r) => liveMode ? `${p}-${r.key}--${r.site}` : `${p}-${r.key}`;
+  const lastSt = r => liveMode ? ((D.reports || []).find(x => (x.site_id ? x.site_id === r.site : x.site === r.site_name) && robotKeyOf(x.robot) === r.key) || {}).status
+    : r.last_status || ((D.reports || []).find(x => robotKeyOf(x.robot) === r.key) || {}).status;
+  const cards = rs.map(r => `<div class="card rc" id="${rid("rc", r)}" data-key="${esc(r.key)}" data-site="${esc(r.site)}"><div class="im"><img src="/robots/photo/${r.key}.png"></div>
+    <div class="nm">${esc(r.label)}</div><div class="sn">${esc(r.site_name)}</div><div class="row">${statusPill(lastSt(r))}</div></div>`).join("");
+  const groups = ["All", ...new Set(D.meta.supported.map(r => r.group))];
+  const sup = D.meta.supported.map(r => `<div class="mt" data-group="${esc(r.group)}"><div class="im"><img src="/robots/photo/${r.key}.png"></div>${esc(r.label)}
+    <div class="ad">${r.adapter === "RTDE" ? "RTDE adapter" : "Software adapter"}</div></div>`).join("");
+  $("#p-robots").innerHTML = `<div class="ph"><div><div class="h1">Robots</div><div class="sub">Your robots, and the robot models CleanProof can drive</div></div>
+    <span class="sp"></span><button class="ghost" id="radd">Add robot</button></div>
+    <div class="rhead"><h3>My robots</h3></div><div id="rgrid">${cards}</div>
+    <div id="rlow"><div id="rsup"><div class="rhead"><h3>Supported models</h3><span class="sp"></span>
+      <div class="filters" id="rfil" style="margin:0">${groups.map(x => `<span class="fch" id="rf-${x.replace(/ /g, "_")}">${esc(x)}</span>`).join("")}</div></div>
+     <div id="rsupg">${sup}</div></div></div>
+    <div id="rzoom"><div class="bg"></div><span id="rzclose">×</span><div id="rztabs">${rs.map(r => `<span class="rzt" id="${rid("rz", r)}" data-key="${esc(r.key)}" data-site="${esc(r.site)}">${esc(r.site_name)}</span>`).join("")}</div>
+     <div class="rzim"><img id="rzimg2"><img id="rzimg"><span class="simtag">Simulation</span><div class="rzcap"><b id="rzn"></b><span id="rzs"></span><span id="rzchip"></span></div></div></div>`;
+  if (liveMode) $("#p-robots").style.overflowY = rs.length > 4 ? "auto" : "";   // live: when more than one row of robots is added the Robots page can scroll down (four per row in the video, unchanged)
+}
+function sitesSub() {                                           // recording: same as before; live: count only calibrated sites, and when not all are calibrated write "N sites · M calibrated"
+  const n = D.meta.sites.length; if (!liveMode) return `${n} calibrated sites`;
+  const c = D.meta.sites.filter(x => x.calibrated).length; return c === n ? `${n} calibrated sites` : `${n} sites · ${c} calibrated`;
+}
+function buildSites() {
+  const list = D.meta.sites.map(s => `<div class="si" id="si-${s.id}"><img src="/robots/${esc(s.robot)}.png"><div><div class="a">${esc(s.name)}</div>
+    <div class="b">${esc(s.type)} · ${esc(robotLabel(s.robot))}</div></div></div>`).join("");
+  $("#p-sites").innerHTML = `<div class="ph"><div><div class="h1">Sites</div><div class="sub">${sitesSub()}</div></div></div>
+    <div id="sites"><div class="card sl">${list}</div><div class="card sd2" id="sdet"></div></div>`;
+}
+function renderSiteDetail(id) {
+  const s = siteById(id); const g = s.grid;
+  $("#sdet").innerHTML = `<div class="t">${esc(s.name)}</div>
+    <div class="chips2"><span class="kv"><b>Robot</b>${esc(robotLabel(s.robot))}</span><span class="kv"><b>Surface</b>${esc(s.surface_label)}</span>
+    <span class="kv"><b>Work area</b>${(g.size_m[0] * 100).toFixed(0)} × ${(g.size_m[1] * 100).toFixed(0)} cm</span><span class="kv"><b>Zones</b>${g.rows} × ${g.cols}</span></div>
+    <h3>Clean reference · captured at calibration</h3>
+    <div class="sref"><img src="/api/sites/${esc(s.id)}/reference.png"><div class="zg" style="grid-template-columns:repeat(${g.cols},1fr);grid-template-rows:repeat(${g.rows},1fr)">${zoneCells(g.rows, g.cols)}</div></div>
+    <div class="muted" style="font-size:12px;margin-top:var(--g0)">${D.meta.runtime && D.meta.runtime.verifier === "cv" && !D.meta.job ? "Every zone is compared with this reference (classical vision on this computer; Cosmos 3 when its server is running), so grain and texture are not mistaken for stains." : "Cosmos 3 compares every zone with this reference, so grain and texture are not mistaken for stains."}</div>`;
+  built.site = id;
+}
+
+function buildSettings() {
+  const st = D.settings; const s = siteById(D.meta.site);
+  const row = (lbl, hint, ctl, id = "") => `<div class="srow"${id ? ` id="${id}"` : ""}><div class="tx"><div class="lbl">${lbl}</div>${hint ? `<div class="hint">${hint}</div>` : ""}</div>${ctl}</div>`;
+  const step = (id) => `<div class="step"><span id="${id}-dec">−</span><b id="${id}"></b><span id="${id}-inc">+</span></div>`;
+  const tog = id => `<div class="tog" id="${id}"></div>`;
+  const val = (t, id = "") => `<span class="sval2"${id ? ` id="${id}"` : ""}>${t}</span>`;
+  const stat = id => `<span class="pill" id="${id}"><span class="d"></span><span></span></span>`;
+  const g = st.grid;
+  let mzc = ""; for (let r = 0; r < g.rows; r++) for (let c = 0; c < g.cols; c++) { const z = `${String.fromCharCode(65 + r)}${c + 1}`; mzc += `<i data-z="${z}"><b>${z}</b></i>`; }
+  const mz = `<div class="mz" id="snw" style="grid-template-columns:repeat(${g.cols},22px)">${mzc}</div>`;
+  const surf = st.surfaces.map(f => row(`Maximum force on ${esc(f.label.toLowerCase())}`, [f.surface === s.surface ? "This site's surface" : "", f.clamp_note ? `<span style="color:#b45309">${esc(f.clamp_note)}</span>` : ""].filter(Boolean).join(" · "),
+    `<div class="sl2"><span class="muted" style="font-size:12px">${f.min_allowed_n}</span><div class="slider" data-sf="${f.surface}"><i></i><b></b></div><span class="muted" style="font-size:12px">${f.max_allowed_n}</span>${val("", "sfv-" + f.surface)}</div>`)).join("");
+  const m = st.models;
+  const P = {
+    jobs: ["Jobs", "How each cleaning job runs at this site",
+      row("Wipes per zone before asking staff", "After this many wipes a zone that is still dirty goes to a staff check.", step("sj-passes")) +
+      row("Maximum steps per job", "Upper limit on check, plan and wipe steps in one job.", step("sj-steps")) +
+      row("Re-check every zone after each wipe", "Cosmos 3 looks at the whole surface again, not only the wiped zones.", tog("sj-recheck")) +
+      row("Ask an operator to approve each plan", "When off, plans that pass the guardrail run on their own.", tog("stog")) +
+      row("Audit each job with Nemotron 3 Ultra", liveMode && D.meta.runtime && D.meta.runtime.policy !== "nemotron"
+        ? "Adds an audit summary to every report. Runs once a Nebius Token Factory key is set." : "Adds an audit summary to every report.", tog("sj-audit")) +
+      row("No-wipe zones", "Zones the robot never wipes, for example where things are always left.", `<span class="hint" id="snwt" style="margin-right:8px"></span>` + mz)],
+    safety: ["Safety & force", "The guardrail rejects any plan outside these limits",
+      surf + row("Extra force on each re-wipe", "A zone that is still dirty is wiped again with this much more force, up to the surface maximum." + (st.escalate.clamp_note ? ` <span style="color:#b45309">${esc(st.escalate.clamp_note)}</span>` : ""),
+        `<div class="sl2"><span class="muted" style="font-size:12px">${st.escalate.min}</span><div class="slider" id="sesc"><i></i><b></b></div><span class="muted" style="font-size:12px">${st.escalate.max}</span>${val("", "sescv")}</div>`) +
+      (liveMode && st.real_limit && st.real_limit.active ? row("Real robot limit", "Only forces up to this value are validated on the real robot. A plan above it is refused by the robot computer and goes to staff, even if the surface maximum above is higher.", val(`${st.real_limit.max_n} N`)) : "") +
+      row("Force database", "Nemotron looks up the starting force for each stain and surface here.", val(`${st.force_db.entries} entries · ${st.force_db.site_override ? "site-adjusted" : "default values"}`))],
+    vision: ["Vision", "Zone checks on this computer",
+      row("Cosmos 3", esc(m.verifier.model), stat("sv-cosmos")) + row("Runs on", "", val("Local NVIDIA GPU")) +
+      row("Endpoint", "", val(esc(m.verifier.endpoint))) +
+      row("Classical vision check", "Runs alongside Cosmos 3 on every zone; the two results are combined.", val("On"))],
+    cloud: ["Cloud models", "Planning and audit on Nebius Token Factory",
+      row("API key", "Stored only on this computer.", `<span class="sval2">••••••••••••</span>${stat("sv-tf")}<button class="ghost" id="stest">Test</button>`) +
+      row("Planner", st.runtime.policy === "nemotron" ? esc(m.planner.model) : "Started with the offline rule planner", val(st.runtime.policy === "nemotron" ? "Nemotron 3 Super" : "Rules (offline)")) +
+      row("Auditor", esc(m.auditor.model), val("Nemotron 3 Ultra")) +
+      row("Spending limit", `New model calls stop when the limit is reached. Up to $${st.budget.max_usd.toFixed(2)} for this installation.`, `<div class="inp" style="min-width:110px"><input id="sbudget" value="$${st.budget.limit_usd.toFixed(2)}"></div>`) +
+      row("Spent so far", "", `<div style="width:260px"><div class="lbl" id="sbud" style="font-size:13px"></div><div class="bbar"><i id="sbbar"></i></div></div>`)],
+    robot: ["Robot", "The robot computer for this site",
+      row("Robot", "", `<span class="sval2">${esc(st.robot.label)} · ${esc(st.robot.adapter)}</span>`) +
+      row("Robot computer", st.robot.host ? "Paired during installation · encrypted SSH tunnel" : "Run install_edge.sh --pair on this computer", val(esc(st.robot.host || "Not paired"))) +
+      row("Skill server", esc(st.robot.skill_url.replace("http://", "")) + " through the tunnel", stat("sv-skill")) +
+      row("Camera service", esc(st.robot.camera_url.replace("http://", "")) + " through the tunnel", stat("sv-cam")) +
+      row("Motion enable", "Granted on the robot by on-site staff for each session; it cannot be granted from this computer.", val("On site")) +
+      row("Connection check", "Checks every service, from Cosmos 3 to the robot.", '<button class="ghost" id="sruncheck">Run checks</button>')],
+    notify: ["Notifications", "Who hears about jobs that need a person",
+      row("Staff-check webhook", "CleanProof posts each staff-check request to this address, for example a chat or ticket system.", `<div class="inp" style="min-width:300px"><input id="swebhook" placeholder="https://…" value="${esc(st.notifications.staff_check_webhook)}"></div>${stat("sv-hook")}<button class="ghost" id="shooktest">Send test</button>`)],
+    data: ["Data & logs", "Where job records stay on this computer",
+      row("Model-call log", "Every model call with its latency, tokens and cost.", val(esc(st.data.calls_log))) +
+      row("Job records and reports", "Images, force traces and every decision, one folder per job.", val(`${esc(st.data.runs_dir)} · ${st.data.reports} reports`))],
+    about: ["About", "",
+      row("CleanProof", "Physical AI software that enables various robot platforms to clean intelligently", val(`Version ${esc(st.about.release || "–")} (${esc(st.about.version || "–")}) · ${esc(st.about.license)}`)) +
+      row("Models", "", val("NVIDIA Cosmos 3 · NVIDIA Nemotron 3 on Nebius Token Factory")) +
+      row("Robot photos", "Wikimedia Commons: Mojmir Churavy (CC0 1.0); RT Robotics (CC BY-SA 4.0, background removed).", val("")) +
+      row("Other robot images", "Rendered from open robot models.", val(""))]};
+  if (liveMode) {                                               // live: the groups not opened in the video are replaced by controls that really work (styled like the other groups); unchanged when recording
+    const chips = (k, opts) => `<div class="chs">${opts.map(([v, n]) => `<span class="wty" id="sch-${k}-${v}" data-v="${v}">${esc(n)}</span>`).join("")}</div>`;
+    const inp = (id, v, w = 250) => `<input class="sinp2" id="${id}" value="${esc(v)}" style="width:${w}px" spellcheck="false" autocomplete="off">`;
+    const sim = !!st.robot.sim_robot, via = sim ? "" : viaTunnel() ? " · through the encrypted SSH tunnel" : " · direct address";
+    P.vision = ["Vision", "Zone checks on this computer",
+      row("Zone check", '<span id="svhint"></span>', chips("ver", [["vlm", "Cosmos 3 + classical vision"], ["cv", "Classical vision only"]])) +
+      row("Cosmos 3", esc(m.verifier.model), stat("sv-cosmos")) + row("Runs on", "", val("Local NVIDIA GPU")) +
+      row("Endpoint", "", val(esc(m.verifier.endpoint)))];
+    P.cloud = ["Cloud models", "Planning and audit on Nebius Token Factory",
+      row("API key", '<span id="skeyhint"></span>', `<div class="inp" style="min-width:230px"><input id="skey" type="password" placeholder="${st.runtime.api_key_set ? "A key is saved · paste to replace" : "Paste your API key"}" autocomplete="off" aria-label="Nebius Token Factory API key"></div>${stat("sv-tf")}<button class="ghost" id="stest">Test</button>`) +
+      row("Planner", '<span id="sphint"></span>', chips("pol", [["nemotron", "Nemotron 3 Super"], ["rules", "Rules (offline)"]])) +
+      row("Auditor", esc(m.auditor.model), val("Nemotron 3 Ultra")) +
+      row("Spending limit", `New model calls stop when the limit is reached. Up to $${st.budget.max_usd.toFixed(2)} for this installation.`, `<div class="inp" style="min-width:110px"><input id="sbudget" value="$${st.budget.limit_usd.toFixed(2)}"></div>`) +
+      row("Spent so far", "", `<div style="width:260px"><div class="lbl" id="sbud" style="font-size:13px"></div><div class="bbar"><i id="sbbar"></i></div></div>`)];
+    P.robot = ["Robot", "The robot computer for this site",
+      row("Robot", "", `<span class="sval2">${esc(st.robot.label)} · ${esc(st.robot.adapter)}</span>`) +
+      row("Robot computer", sim ? "This desktop build runs the robot computer as a built-in simulation" : st.robot.host ? "Paired during installation · encrypted SSH tunnel" : "Run install_edge.sh --pair on this computer",
+        val(sim ? "This computer · built-in simulation" : esc(st.robot.host || "Not paired"))) +
+      row("Skill server", sim ? "Address used once this computer is paired with a robot computer" : "Runs the robot's whitelisted skills" + via, inp("sskill", st.robot.skill_url) + stat("sv-skill")) +
+      row("Camera service", sim ? "Address used once this computer is paired with a robot computer" : "Streams the site camera" + via, inp("scamu", st.robot.camera_url) + stat("sv-cam")) +
+      row("Motion enable", "Granted on the robot by on-site staff for each session; it cannot be granted from this computer.", val("On site")) +
+      row("Connection check", '<span id="srunhint">Checks every service, from Cosmos 3 to the robot.</span>', '<button class="ghost" id="sruncheck">Run checks</button>')];
+  }
+  $("#p-settings").innerHTML = `<div class="ph"><div><div class="h1">Settings</div><div class="sub">${esc(s.name)} · changes apply from the next job</div></div></div>
+   <button id="ssave">Save changes</button><div id="toast">Saved · applies from the next job</div>
+   <div id="sgrid"><div class="card" id="scats">${SCATS.map(([k, n, ic]) => `<div class="scat" id="sc-${k}"><svg viewBox="0 0 24 24">${ic}</svg>${n}</div>`).join("")}</div>
+    <div class="card" id="spanel">${Object.entries(P).map(([k, [h, sub, body]]) => `<div class="sgrp" id="sg-${k}" style="display:none"><div class="sgh">${h}</div>${sub ? `<div class="sgs">${sub}</div>` : ""}${body}</div>`).join("")}</div></div>`;
+}
+function buildLogs() {
+  $("#p-logs").innerHTML = `<div class="ph"><div><div class="h1">Logs</div><div class="sub">Model calls · newest first</div></div></div>
+    <div class="filters" id="lfil">${[["all", "All models"], ["cosmos", "Cosmos 3"], ["super", "Nemotron 3 Super"], ["ultra", "Nemotron 3 Ultra"]]
+      .map(([k, n]) => `<span class="fch" id="lf-${k}">${n}</span>`).join("")}</div>
+    <div class="tw"><table style="table-layout:fixed"><colgroup>${[18, 20, 9.5, 18.5, 9.5, 15, 9.5].map(w => `<col style="width:${w}%">`).join("")}</colgroup>
+      <thead><tr><th>Time (UTC)</th><th>Model</th><th>Role</th><th>Where</th><th>Latency</th><th>Tokens in / out</th><th>Cost</th></tr></thead><tbody id="ltb"></tbody></table></div>`;
+}
+const MODEL_NAME = m => /cosmos/i.test(m) ? ["Cosmos 3", "cosmos"] : /ultra/i.test(m) ? ["Nemotron 3 Ultra", "nemotron_ultra"] : /super/i.test(m) ? ["Nemotron 3 Super", "nemotron_super"] : [m, "nemotron_super"];
+function renderLogs(filter, n, off) {
+  const f = {all: () => true, cosmos: r => /cosmos/i.test(r.model), super: r => /super/i.test(r.model), ultra: r => /ultra/i.test(r.model)}[filter || "all"];
+  const rows = D.calls.filter(f).slice().sort((a, b) => String(b.ts || "").localeCompare(String(a.ts || "")));   // newest first (by time, not by write order)
+  const k = clamp(Math.round(off || 0), 0, Math.max(0, rows.length - 1));
+  $("#ltb").style.opacity = (V.logs && V.logs.fa != null) ? V.logs.fa : 1;
+  $("#ltb").innerHTML = rows.slice(k, k + (n || 15)).map(r => { const [nm, ic] = MODEL_NAME(r.model || "");
+    return `<tr><td>${esc((r.ts || "").replace("T", " ").slice(0, 19))}</td><td><span class="who"><img src="/brand/${ic}.png">${esc(nm)}</span></td>
+    <td>${esc(r.role || "")}</td><td>${/local|vllm/i.test(r.backend || "") ? "Local NVIDIA GPU" : "Nebius Token Factory"}</td>
+    <td>${r.failed ? `<span style="color:#b42318;font-weight:600">${esc(r.failed)}</span>` : r.latency_s != null ? (+r.latency_s).toFixed(2) + " s" : ""}</td><td>${r.failed ? "—" : `${r.tokens_in ?? ""} / ${r.tokens_out ?? ""}`}</td>
+    <td>${r.failed ? "—" : r.cost_usd != null ? "$" + (+r.cost_usd).toFixed(4) : ""}</td></tr>`; }).join("")
+    || `<tr><td colspan="7" class="muted" style="padding:14px 10px">No model calls yet${D.meta.runtime && D.meta.runtime.policy !== "nemotron" && D.meta.runtime.verifier !== "vlm" ? " · this computer runs the rules planner and classical vision" : ""}</td></tr>`;
+  $$("#lfil .fch").forEach(e => e.classList.toggle("on", e.id === "lf-" + (filter || "all")));
+}
+
+function buildReports() {
+  const st = {done: '<span class="pill ok"><span class="d"></span>All zones clean</span>', needs_human: '<span class="pill staff"><span class="d"></span>Staff check</span>',
+              stopped: '<span class="pill staff"><span class="d"></span>Stopped</span>', estopped: '<span class="pill bad"><span class="d"></span>Emergency stop</span>',
+              error: '<span class="pill bad"><span class="d"></span>Software error</span>', interrupted: '<span class="pill staff"><span class="d"></span>Interrupted</span>',
+              model_unavailable: '<span class="pill staff"><span class="d"></span>Model unavailable</span>'};
+  $("#p-reports").innerHTML = `<div class="ph"><div><div class="h1">Reports</div><div class="sub">One report per job, with image proof for every zone</div></div></div>
+   <div class="tw"><table><thead><tr><th>Finished (UTC)</th><th>Site</th><th>Robot</th><th>Zones</th><th>Result</th><th>Wipes</th><th>Model cost</th></tr></thead>
+   <tbody>${D.reports.map(r => `<tr id="rr-${esc(r.run_id)}"><td>${esc(r.ended_utc)}</td><td>${esc(r.site)}</td><td>${esc(r.robot)}</td><td>${r.zones}</td>
+    <td>${st[r.status] || `<span class="pill">${esc(r.status)}</span>`}</td><td>${r.wipes}</td><td>$${(+r.cost_usd).toFixed(4)}</td></tr>`).join("")}</tbody></table></div>
+   <div id="drawer"><div class="dh2"><span id="drt" style="font-weight:600"></span><span class="sp"></span>
+    <button class="ghost" id="drclose">Close</button></div><iframe id="rframe"></iframe></div>`;
+}
+
+/* ------------------------------------------------------------ per-frame state of the Jobs page */
+function zoneState(zs, statuses, scanA, zA = 1) {
+  // during scanning the thin grid lines fade in (scanA), cells judged dirty keep a Cosmos blue frame (not filled, filled in via zA when scanning ends), clean cells keep no mark; cells handed to a human get a slate grey frame
+  $$("#jzmap .zc2").forEach(e => { const z = e.dataset.z, s = (statuses[z] || {}).status;
+    let bc = `rgba(255,255,255,${(0.55 * scanA).toFixed(3)})`, bw = 1, lb = `rgba(255,255,255,${(0.9 * scanA).toFixed(3)})`;
+    if (s === "residue" || s === "uncertain") { bc = `rgba(29,78,216,${(0.95 * zA).toFixed(3)})`; bw = 2; lb = "rgba(255,255,255,.95)"; }
+    if (zs.staff && zs.staff.includes(z)) { bc = "rgba(71,85,105,.95)"; bw = 2; lb = "rgba(255,255,255,.95)"; }
+    e.style.border = `${bw}px solid ${bc}`; e.querySelector(".lb").style.color = lb; });
+}
+async function jobState(t, nev) {
+  const k = t.toFixed(3) + "|" + (nev ?? "");
+  if (!D.js[k]) D.js[k] = api(`/api/jobs/state?t=${t}` + (nev != null ? `&nev=${nev}` : ""));
+  return D.js[k];
+}
+async function lookup(stain, surface) {
+  const k = stain + "|" + surface;
+  if (!D.lookups[k]) D.lookups[k] = api(`/api/forcedb/lookup?stain=${encodeURIComponent(stain)}&surface=${encodeURIComponent(surface)}`);
+  return D.lookups[k];
+}
+function setImg(img, src) {
+  if (img.dataset.src === src) return Promise.resolve();
+  img.dataset.src = src; img.dataset.busy = "1";
+  const nx = new Image(); nx.src = src; nx.decode().finally(() => { delete img.dataset.busy; }).catch(() => {});                         // decode in the background first: if no new frame is available keep the previous one, and leave it empty only if none was ever obtained (no broken image shown)
+  return nx.decode().then(() => { if (img.dataset.src === src) { img.src = src; img.style.visibility = ""; } })
+    .catch(() => { if (!img.getAttribute("src")) img.style.visibility = "hidden"; });
+}
+function growTail(box, items, tail) {
+  // recording: the last tail.n rows expand from 0 height (tail.h) and fade in (tail.a), not pushing the log above up in one frame; the rest as usual
+  if (tail && tail.n > 0 && (tail.h < 1 || tail.a < 1)) {
+    const k = Math.max(0, items.length - tail.n);
+    items = items.slice(0, k).concat([`<div class="tailw" data-h="${clamp(tail.h)}" style="opacity:${clamp(tail.a)}">${items.slice(k).join("")}</div>`]);
+  }
+  box.innerHTML = items.join("");
+  box.querySelectorAll(".tailw").forEach(w => { const h = +w.dataset.h; if (h < 1) { w.style.height = (h * w.scrollHeight).toFixed(1) + "px"; w.style.marginTop = (-(1 - h) * 7).toFixed(1) + "px"; } });
+}
+function robotKeyOf(label) { const r = D.meta.supported.find(x => x.label === label); return r ? r.key : "spot_arm"; }
+const JSTAT = {running: ["run", "Running"], done: ["ok", "All zones clean"], needs_human: ["staff", "Staff check"],
+               estopped: ["bad", "Emergency stop"], stopped: ["staff", "Stopped"], error: ["bad", "Error"], interrupted: ["staff", "Interrupted"], model_unavailable: ["staff", "Model unavailable"]};
+async function renderJobList(j, status) {
+  // today job list: the current job at the top (appears once started); the rest are the jobs finished today at each site (real run records).
+  // recording: when the human-handoff notification appears this row first becomes Staff check (j.listFinal), and clicking it opens the finished job (replaces the old timed cross-fade, C-1)
+  const lst = liveMode && !D.meta.job && FX.st && FX.st.status !== "idle" ? FX.st : null;     // live: the current job is also at the top (consistent with the recording)
+  const cur = D.meta.job ? D.meta.job.run_id : (lst ? lst.run_id : null);
+  const rows = [];
+  if (cur && j.started && D.meta.job) {
+    const stt = j.listFinal ? (await jobState(D.meta.job.t1)).status : status;
+    rows.push({id: "jl-current", run: "current", site: siteById(D.meta.job.site).name, robot: robotLabel(D.meta.job.robot), key: D.meta.job.robot, st: stt, sel: true});
+  } else if (lst && j.started) {
+    const s2 = siteById(FX.site || D.meta.site);
+    rows.push({id: "jl-current", run: "current", site: s2.name, robot: robotLabel(s2.robot), key: s2.robot, st: lst.status, sel: true});
+  }
+  const today = r => !liveMode || new Date(String(r.ended_utc || "").replace(" ", "T") + "Z").toDateString() === new Date().toDateString();   // live: list only today (local date) jobs
+  D.reports.filter(r => r.run_id !== cur && today(r)).forEach((r, i) => rows.push({id: "jl-" + i, run: r.run_id, site: r.site, robot: r.robot, key: robotKeyOf(r.robot), st: r.status}));
+  $("#jlrows").innerHTML = rows.length ? "" : '<div class="muted" style="font-size:12px;padding:6px 0 2px">No jobs yet today</div>';
+  if (rows.length) $("#jlrows").innerHTML = rows.slice(0, 2).map(r => { const [c, t] = JSTAT[r.st] || ["", r.st || ""];
+    return `<div class="jl ${r.sel ? "sel" : ""}" id="${r.id}" data-run="${esc(r.run)}"><img src="/robots/photo/${esc(r.key)}.png"><div class="tx"><div class="a">${esc(r.site)}</div>
+      <div class="b2">${esc(r.robot)}<span class="pill ${c}"><span class="d"></span>${esc(t)}</span></div></div></div>`; }).join("");
+  const ta = clamp(j.toast == null ? 0 : j.toast), to = $("#jtoast");
+  if (ta > 0 && D.meta.job) {
+    const fin = await jobState(D.meta.job.t1); const rq = (fin.requests || [])[0];
+    to.innerHTML = `<div class="row"><b>Staff check needed</b><span class="muted">${esc(siteById(D.meta.job.site).name)}${rq && rq.zones.length ? ` · zone ${esc(rq.zones.join(", "))}` : ""}</span><button class="ghost" id="jtview">View</button></div>`;
+    to.style.display = "block"; to.style.opacity = ta; to.style.transform = `translateY(${((1 - ease(ta)) * -10).toFixed(1)}px)`;
+  } else if (!liveMode) to.style.display = "none";
+}
+async function renderJob(j, live) {
+  const s = siteById(D.meta.job ? D.meta.job.site : D.meta.site);
+  // recording: the text in the input box appears character by character per typed (a real <input>, the same control the operator types in); the cursor position is decided by focus
+  const task = j.task || "Clean the whole surface";
+  const typed = j.typed == null ? task.length : Math.round(j.typed);
+  if (!liveMode) {                                            // live mode does not touch what the operator is typing
+    const ti = $("#jtask"); ti.value = task.slice(0, typed);
+    if (j.focus === "task") { ti.focus(); ti.setSelectionRange(ti.value.length, ti.value.length); } else ti.blur();
+    $("#jtaskw").classList.toggle("focus", j.focus === "task");
+    if (j.site) $("#jsite").value = j.site;
+    $("#jsitew").classList.toggle("focus", j.focus === "site");
+  }
+  const started = j.started === true;
+  if (liveMode) { zonesLine();                                  // live: zones named in the task; when the robot computer is a real-robot backend the camera is not labeled Simulation
+    const rc = FX.st && FX.st.live && FX.st.live.robot_computer, lk = D.link && D.link.link;
+    const real = (rc && rc.simulated === false) || (!(rc && rc.simulated === true) && ((lk && lk.simulated === false) || (D.meta.robot_link && D.meta.robot_link.simulated === false)));
+    $("#jsimtag").style.display = real ? "none" : ""; }
+  $("#jappr").textContent = D.settings.require_plan_approval ? "Each plan waits for operator approval." : "Plans that pass the guardrail run without approval.";
+  if (liveMode) { const em = D.estopMsg && performance.now() < D.estopMsg.until ? D.estopMsg : null;   // e-stop result: briefly write one line (in red and kept longer if it was not delivered)
+    if (em) $("#jappr").textContent = em.text; $("#jappr").style.color = em && em.bad ? "var(--res)" : ""; $("#jappr").style.fontWeight = em && em.bad ? "600" : ""; }
+  const robotStopped = liveMode && !D.meta.sim_robot && !!(D.link && D.link.link && D.link.link.stopped);   // live paired: the robot computer is in e-stop (no job can be created before the on-site reset, the title bar says Robot stopped)
+  if (!started) {
+    $("#jcam").style.opacity = 1;                              // live mode before job creation: the tabletop the camera will see at job creation for this site (the server builds the scene from the job template and shoots one frame)
+    await setImg($("#jcam"), D.meta.job ? `/api/jobs/frame?t=${D.meta.job.t0}` : `/api/jobs/frame?t=0&site=${encodeURIComponent($("#jsite").value || D.meta.site)}`);
+    zoneState({}, {}, 0); $("#jlogi").innerHTML = ""; $("#jpill").innerHTML = '<span class="pill"><span class="d"></span>Ready</span>';
+    $("#jstart").disabled = robotStopped; ["#jpause", "#jstop", "#jestop"].forEach(b => $(b).disabled = true); estopLive(false);
+    $("#jreq").style.display = "none"; $("#jrun").textContent = ""; await renderJobList(j, null); return;
+  }
+  const st = live || await jobState(j.t, j.nev);
+  await renderJobList(j, st.status);
+  const pend = live && live.live && live.live.pending;              // live: a plan awaiting approval (enabled in settings with "Ask an operator to approve each plan")
+  $("#japprove2").style.display = pend && !j.holdApprove ? "block" : "none";
+  if (pend) { const d = pend.decision || {};
+    $("#japprove2").innerHTML = `<div class="t">Plan waiting for approval</div><div style="font-size:13px;margin-top:4px">${esc(String(d.action || "").replace("_", " "))} ${esc((d.zone_ids || []).join(" + "))}${d.force_n ? ` · ${d.force_n} N` : ""}</div>
+      <div class="row"><button class="ghost" id="jreject">Reject</button><button id="japprove">Approve</button></div>`; }
+  const running = st.status === "running";
+  const waitStaff = st.status === "needs_human" && (st.requests || []).some(r => !r.resolved);   // live: human handoff not yet handled (in the video Start is grey during Waiting for staff check); a new job can only be started after it is handled or the site is changed
+  $("#jstart").disabled = liveMode ? running || waitStaff || robotStopped : true; ["#jpause", "#jstop", "#jestop"].forEach(b => $(b).disabled = !running); estopLive(running);
+  const PILL = {running: ["run", "Running"], done: ["ok", "All zones clean"], needs_human: ["staff", "Waiting for staff check"],
+                estopped: ["bad", "Emergency stop"], stopped: ["staff", "Stopped by operator"], error: ["bad", "Job stopped · software error"], model_unavailable: ["staff", "Model unavailable"]};
+  const [pc, pt] = running && liveMode && FX.stopping ? ["staff", "Stopping after this step"]          // Stop wraps up after the current step finishes
+    : running && liveMode && live && live.live && live.live.paused ? ["staff", "Paused"]                // live: paused (holds after the current step finishes, Resume continues)
+    : PILL[st.status] || ["staff", "Job ended · " + String(st.status || "").replace(/_/g, " ")];
+  $("#jpill").innerHTML = `<span class="pill ${pc}"><span class="d"></span>${esc(pt)}</span>`;
+  if (!live) await setImg($("#jcam"), `/api/jobs/frame?t=${j.t.toFixed(3)}`);
+  else if (!FX.waiting && performance.now() - (FX.camT || 0) > 200 && !$("#jcam").dataset.busy) { FX.camT = performance.now(); setImg($("#jcam"), `/api/jobs/frame?t=${Date.now()}`); }
+  const dim = j.dim == null ? 1 : j.dim;                      // replay jumps to the next time window: camera, zone map and log fade down first and then back up (no whole-block switch in one frame)
+  [$("#jcam"), $("#jzmap"), $("#jlogi"), $(".zinfo")].forEach(e => { if (e) e.style.opacity = dim; });
+  const zs = st.zones || {};
+  const dirty = Object.values(zs).filter(z => z.status === "residue" || z.status === "uncertain").length;
+  const staff = (st.requests || []).flatMap(r => r.zones);
+  zoneState({staff}, zs, j.scan == null ? 0 : j.scan, j.zA == null ? 1 : j.zA);
+  $("#jdirty").textContent = Object.values(zs).some(z => z.status) ? dirty : "–";
+  $("#jwipes").textContent = st.wipes; $("#jchecks").textContent = st.checks; $("#jcost").textContent = "$" + (+st.cost_usd).toFixed(3);
+  $("#jforce").textContent = st.in_contact ? `${(+st.f_n).toFixed(1)} N` : "–";
+  $("#jrun").textContent = D.meta.job ? D.meta.job.run_id.split("-").slice(-3).join("-") : (live && live.run_id ? live.run_id.split("-").slice(-3).join("-") : "");
+  // activity log: new entries at the bottom; under a Nemotron plan entry the force database screening is attached (by stain x surface, showing only entry names, the force appears only after a hit)
+  const log = (st.log || []).slice(-9);
+  const items = [];
+  for (let i = 0; i < log.length; i++) {
+    const e = log[i]; const [cls, ic] = WHO[e.who] || ["op", "skill_server"];
+    let extra = "";
+    if (e.kind === "plan" && e.lookup) extra = e.lookup;
+    items.push(`<div class="ev ${cls}"><span class="w">${esc(e.who)}</span><span class="x">${esc(friendlyLog(e))}</span>${e.meta ? `<div class="m">${esc(e.meta)}</div>` : ""}${extra}</div>`);
+  }
+  // recording: the newly added rows expand from 0 height and fade in (tail = {n, h, a}), not pushing the log above up in one frame
+  const wrap = (html, h, a) => `<div class="tailw" data-h="${h}" style="opacity:${a}">${html}</div>`;
+  if (j.tail && j.tail.n > 0 && (j.tail.h < 1 || j.tail.a < 1)) {
+    const k = Math.max(0, items.length - j.tail.n);
+    items.splice(k, items.length - k, wrap(items.slice(k).join(""), clamp(j.tail.h), clamp(j.tail.a)));
+  }
+  if (j.fdb) {                                                  // force database screening animation (u 0→1)
+    const L = await lookup(j.fdb.stain, s.surface); const u = clamp(j.fdb.u);
+    const show = L.entries.filter((e, i) => u < 0.35 ? true : u < 0.7 ? e.surface === s.surface : e.stain === L.hit.stain && e.surface === s.surface);
+    const n = L.entries.length;
+    const chips = (u < 0.35 ? L.entries.slice(0, Math.max(4, Math.round(n * clamp(u / 0.35)))) : show).slice(0, 12)
+      .map(e => `<span class="chip ${u >= 0.7 && e.stain === L.hit.stain ? "hit" : ""}">${esc(e.label)}</span>`).join("");
+    const head = u < 0.35 ? `Force database · ${n} entries` : u < 0.7 ? `Filter: surface = ${esc(siteById(D.meta.job ? D.meta.job.site : D.meta.site).surface_label)}` :
+      `Match: ${L.unknown_fallback ? "Unknown stain · starts as " : ""}${esc(L.hit.label)} → ${u > 0.85 ? L.hit.force_n + " N" : "…"}`;   // type not recognizable: start with wet spill per the table rule, stated honestly
+    const sA = clamp(Math.min(Math.abs(u - 0.35), Math.abs(u - 0.7)) / 0.05);   // phase change: content fades out first and then fades in
+    const panel = `<div class="fdb"><div style="opacity:${sA.toFixed(3)}"><b>${head}</b><div class="chips">${chips}</div></div></div>`;
+    items.push(j.fdb.h == null ? panel : wrap(panel, clamp(j.fdb.h), clamp(j.fdb.a ?? 1)));
+  }
+  $("#jlogi").innerHTML = items.join("");
+  const lb = $("#jlogi");                                          // with few entries they are laid out top to bottom (top-aligned); beyond the height new entries go at the bottom and old ones fade out at the top
+  lb.style.position = "static"; const over = lb.scrollHeight > $("#jlog").clientHeight; lb.style.position = over ? "absolute" : "static";
+  $("#jlog").classList.toggle("over", over);                       // entries exceed the height: the topmost one fades out gradually, not cut off halfway (same approach as the log in the report drawer)
+  $$("#jlogi .tailw").forEach(w => { const h = +w.dataset.h; if (h < 1) { w.style.height = (h * w.scrollHeight).toFixed(1) + "px"; w.style.marginTop = (-(1 - h) * 7).toFixed(1) + "px"; } });
+  const rq = st.requests || [];
+  if (rq.length && !running && j.reqShow !== false) {                    // recording and live alike: when the notification appears it is not expanded at first, and the human-handoff card expands only when the job is clicked in Today (or View in the notification)
+    const r = rq[0]; const res = liveMode ? (r.resolved || null) : (j.resolved || null);   // recording: shown by the operation time in the view (the handling note was really written once before recording)
+    $("#jreq").style.display = "block"; $("#jreq").style.opacity = j.reqA == null ? 1 : j.reqA;
+    $("#jreq").style.maxHeight = "none"; $("#jreq").style.overflow = "";
+    if (liveMode && !res) {                                        // live: a real input box, Resolve submits its value
+      const el = $("#jreq"), key = (st.run_id || "") + "|" + (r.id ?? "0");   // the card is identified by this job + this request: a new job rebuilds it (the previous job card is not left for the new job)
+      if (!$("#jnotei") || el.dataset.key !== key) { el.dataset.key = key;
+        el.innerHTML = `<div class="t"><span class="pill staff"><span class="d"></span>Staff check</span>${r.zones.length ? "Zone " + esc(r.zones.join(", ")) : "Job-level"}</div>
+        <div class="r">${esc(friendlyReason(r.reason))}</div><div class="row"><div class="inp" style="flex:0 0 96px;min-width:0"><input style="min-width:0;width:100%" id="jnamei" placeholder="Your name" aria-label="Your name" value="${esc(((() => { try { return localStorage.getItem("cp_name") || ""; } catch (e) { return ""; } })()))}"></div><div class="inp" style="flex:1;min-width:0"><input style="min-width:0;width:100%" id="jnotei" aria-label="Note for the report"></div><button id="jresolve" data-req="${esc(r.id ?? "0")}">Resolve</button></div>`; }
+      if (j.reqA != null && j.reqA < 1) { const h = el.scrollHeight; el.style.overflow = "hidden"; el.style.maxHeight = (j.reqA * h).toFixed(1) + "px"; }   // same as the recording: card height expands with the fade-in and the log moves up smoothly
+      return;
+    }
+    if (liveMode) $("#jreq").dataset.key = "";
+    $("#jreq").innerHTML = `<div class="t"><span class="pill staff"><span class="d"></span>Staff check</span>Zone ${esc(r.zones.join(", "))}</div>
+      <div class="r">${esc(friendlyReason(r.reason))}</div>
+      <div class="row" style="position:relative">
+        <div class="row" style="flex:1;opacity:${res ? 1 - (j.resolvedA ?? 1) : 1}"><div class="inp ${j.noteFocus ? "focus" : ""}" id="jnote"><span>${esc((j.note || (res && res.note) || "").slice(0, Math.round(j.noteTyped ?? 99)))}</span>${j.noteFocus ? '<span class="car"></span>' : ""}</div><button id="jresolve">Resolve</button></div>
+        ${res ? `<span class="done" style="position:absolute;left:0;top:50%;transform:translateY(-50%);opacity:${j.resolvedA ?? 1}">Resolved${res.note ? " · " + esc(res.note) : ""}</span>` : ""}</div>`;
+    if (j.reqA != null && j.reqA < 1) {                            // recording: card height expands with the fade-in and the log moves up smoothly (it used to jump up two rows in one frame)
+      const el = $("#jreq"), h = el.scrollHeight; el.style.overflow = "hidden"; el.style.maxHeight = (j.reqA * h).toFixed(1) + "px";
+    }
+  } else $("#jreq").style.display = "none";
+}
+// zone range in the task box: the server parses it with the same rule (cleanproof/ui/taskparse.py: named zones, ranges, exclusions, phrasings that are not recognised); nothing is shown when no zone is named and there is no notice (same as the video)
+let ZSEQ = 0;
+function zonesShow(p) {
+  const e = $("#jzones"); if (!e) return;
+  const line = p ? (p.mode !== "all" && p.label ? `Zones in this job: ${p.label}` : "") : "";
+  const note = p && p.notes && p.notes.length ? p.notes.join(" ") : "";
+  e.textContent = [D.notice, line, note].filter(Boolean).join(" · ");
+  e.style.color = (p && p.confirm) || D.notice ? "#b45309" : ""; e.style.display = e.textContent ? "block" : "none";
+}
+async function zonesLine() {
+  const e = $("#jzones"); if (!e) return;
+  const text = $("#jtask").value, key = text + "|" + ($("#jsite").value || D.meta.site);
+  if (D.parseKey !== key && D.parseKey != null) D.notice = null;                // task or site changed: collapse the notice shown at job start
+  if (D.parseKey === key) { zonesShow(D.parse); return; }                  // runs on every page redraw: do not ask the server again while the task and site are unchanged
+  const my = ++ZSEQ; D.parse = null; D.parseKey = key;
+  if (!text.trim()) { zonesShow(null); return; }
+  try { const p = await api(`/api/task/parse?text=${encodeURIComponent(text)}&site=${encodeURIComponent($("#jsite").value || D.meta.site)}`);
+    if (my === ZSEQ) { D.parse = p; zonesShow(p); } } catch (er) { if (my === ZSEQ) zonesShow(null); }
+}
+function friendlyReason(r) {
+  if (/[\u3400-\u9fff\uf900-\ufaff]/.test(r || "")) {           // reasons from the skill layer that still contain CJK text (e.g. no contact, wipe aborted): the UI shows only one English sentence, with the zone
+    const zs = [...new Set((String(r).match(/(?<![A-Za-z0-9_])[A-H][1-9]\d?(?![A-Za-z0-9_])/g) || []))];
+    return zs.length ? `The robot could not complete the wipe in ${zs.join(" and ")}. Please check it.` : "The robot could not complete a wipe. Please check it.";
+  }
+  const parts = String(r || "").split(/;\s(?=[A-H]\d\b)/);
+  if (parts.length > 1) return parts.map(friendlyReason).join(" ");                                   // several cells handed to a human together: say it cell by cell
+  let m = /(\b[A-H]\d)\b residue survived a (\d+(?:\.\d+)?) N wipe, the limit/.exec(r || "");          // rule-based planner: still dirty at the surface limit
+  if (m) return `A mark in ${m[1]} is still visible after wiping at this surface's maximum force (${m[2]} N). Please check it.`;
+  m = /(\b[A-H]\d): robot rejected every planned wipe/.exec(r || "");
+  if (m) return `The robot could not run a safe wipe in ${m[1]}. Please check it.`;
+  m = /(\b[A-H]\d)\b.*?(?:limit|max(?:imum)? force)\D{0,3}(\d+(?:\.\d+)?) ?N/.exec(r || "");
+  if (m) return `A mark in ${m[1]} is still visible after wiping at this surface's maximum force (${m[2]} N). Please check it.`;
+  m = /(\b[A-H]\d) still not clean after (\d+) passes/.exec(r || "");
+  if (m) return `A mark in ${m[1]} is still visible after ${m[2]} wipes. Please check it.`;
+  if (/\b[a-z]+_[a-z_]+\s*=/.test(r || "")) {                       // the model verbatim contains internal field names (surface_max_n=15N, passes_left=0, etc.): replace them with words the operator understands
+    const z = (/(\b[A-H]\d)\b/.exec(r) || [])[1] || "";
+    const n = (/(\d+(?:\.\d+)?) ?N\b/.exec(r) || [])[1];
+    return `A mark${z ? ` in ${z}` : ""} is still visible after wiping${n ? ` at this surface's maximum force (${n} N)` : ""}. Please check it.`;
+  }
+  return r || "";
+}
+function friendlyLog(e) {
+  // raw status words in the run record are replaced by words the operator understands (content unchanged)
+  let t = e.text || "";
+  if (/^Ended: needs_human/.test(t)) t = "Staff check requested · report with image proof";
+  else if (/^Ended: /.test(t)) { const s = t.slice(7).trim();                  // outcome words are replaced by words the operator understands (e-stop / stop / error)
+    t = "Job ended · " + ({estopped: "emergency stop", stopped: "stopped by operator", error: "software error", model_unavailable: "model unavailable"}[s] || s.replace(/_/g, " ")); }
+  if (e.who === "Guardrail" && /limit/.test(t) && /blocked/.test(t)) t = "blocked · already at this surface's maximum force";
+  if (/^Ask a person/.test(t)) t = t.replace("Ask a person", "Ask staff to check");
+  return t;
+}
+
+/* ------------------------------------------------------------ per-frame state of the other pages */
+async function renderRobots(rv) {
+  const grp = (rv && rv.filter) || "All";
+  $$("#rfil .fch").forEach(e => e.classList.toggle("on", e.id === "rf-" + grp.replace(/ /g, "_")));
+  $$("#rsupg .mt").forEach(e => e.classList.toggle("dim", grp !== "All" && e.dataset.group !== grp));
+  $$(".rc").forEach(e => e.classList.toggle("sel", !!(rv && rv.sel && (liveMode ? e.dataset.key === rv.sel && e.dataset.site === rv.site : e.id === "rc-" + rv.sel))));
+  const zo = $("#rzoom");
+  if (!rv || !rv.sel) { zo.style.display = "none"; return; }
+  const r = D.meta.robots.find(x => x.key === rv.sel && (!rv.site || x.site === rv.site)) || D.meta.robots.find(x => x.key === rv.sel); if (!r) return;
+  const live = liveMode && !r.has_feed;                       // live (no recording): the image comes from the camera / simulation scene of this robot site, and the state from the job running at this site or the latest report
+  // full-screen view ("enlarge to almost fill the middle of the screen"): rv.zoom 0→1, smoothly enlarging from this robot card to the screen middle; the labels above switch by venue (consistent with the narration order)
+  const t = rv.t == null ? r.t1 : rv.t;
+  const z = clamp(rv.zoom == null ? 0 : rv.zoom);
+  if (z <= 0) { zo.style.display = "none"; return; }
+  zo.style.display = "block";
+  if (liveMode) zo.style.pointerEvents = "auto";               // live: while open it covers the Robots page (click the background or press Esc to close, clicks do not fall through to the cards below)
+  const st = live ? robotLiveState(r) : D.robots[r.key + "|" + t.toFixed(2)] || (D.robots[r.key + "|" + t.toFixed(2)] = await api(`/api/robots/state?robot=${r.key}&t=${t}`));
+  let cam = ((liveMode && rv.card && document.getElementById(rv.card)) ? document.getElementById(rv.card).querySelector(".im") : ($(`#rc-${rv.from || rv.sel} .im`) || $("#rgrid"))).getBoundingClientRect();
+  const e = ease(z);
+  if (liveMode) { const dr = $("#desk").getBoundingClientRect(), k = dr.width / 1600 || 1;   // desktop edition (?app=1): #desk is scaled as a whole: convert screen coordinates back to page coordinates
+    cam = {left: (cam.left - dr.left) / k, top: (cam.top - dr.top) / k, width: cam.width / k, height: cam.height / k}; }
+  const H1 = 640, W1 = H1 * 16 / 9, X1 = (1600 - W1) / 2, Y1 = 84;
+  const im = zo.querySelector(".rzim");
+  im.style.opacity = clamp(z / 0.2).toFixed(3);                // the scene image fades in during the first 0.2 of the zoom (no image swap on the card in one frame)
+  im.style.left = (cam.left + (X1 - cam.left) * e).toFixed(1) + "px"; im.style.top = (cam.top + (Y1 - cam.top) * e).toFixed(1) + "px";
+  im.style.width = (cam.width + (W1 - cam.width) * e).toFixed(1) + "px"; im.style.height = (cam.height + (H1 - cam.height) * e).toFixed(1) + "px";
+  zo.querySelector(".bg").style.opacity = (0.96 * e).toFixed(3);
+  const ui = clamp((z - 0.55) / 0.45);
+  $("#rztabs").style.opacity = rv.bare ? "0" : ui.toFixed(3);       // recording bare: only the central image, without the venue labels above or the close button (so it does not look like a showy demo software)
+  $("#rzclose").style.visibility = rv.bare ? "hidden" : "";
+  if (liveMode) $("#rztabs").style.visibility = rv.bare ? "hidden" : "";   // live: labels that cannot be seen cannot be clicked either
+  $$(".rzt").forEach(x => x.classList.toggle("on", liveMode ? x.dataset.key === rv.sel && (!rv.site || x.dataset.site === rv.site) : x.id === "rz-" + rv.sel));   // live: when the same model is at two sites only this one is lit
+  await setImg($("#rzimg"), live ? robotLiveSrc(r) : `/api/jobs/frame?robot=${r.key}&t=${t.toFixed(3)}`);
+  if (liveMode) zo.querySelector(".simtag").style.display = live ? (st.sim ? "" : "none") : "";
+  const xf = rv.xf;                                         // switching to another robot: the old image stays underneath and the new one overlays by xf.w (cross-fade, not passing through paper color)
+  if (xf) { await setImg($("#rzimg2"), `/api/jobs/frame?robot=${xf.robot}&t=${(+xf.t).toFixed(3)}`); $("#rzimg2").style.opacity = 1; }
+  else $("#rzimg2").style.opacity = 0;
+  const wa = xf ? clamp(xf.w) : (rv.a == null ? 1 : rv.a);
+  $("#rzimg").style.opacity = wa.toFixed(3);
+  const zs = Object.values(st.zones || {}); const n = zs.length;
+  const chip = live ? st.chip : st.status === "running" ? `<span class="pill run"><span class="d"></span>Cleaning · ${st.wipes} wipe${st.wipes === 1 ? "" : "s"}</span>` :
+    st.status === "done" ? `<span class="pill ok"><span class="d"></span>All ${n} zones clean</span>` :
+    `<span class="pill staff"><span class="d"></span>${st.status === "needs_human" ? "Staff check" : esc(st.status)}</span>`;
+  const ca = xf ? Math.abs(1 - 2 * clamp(xf.w)) : wa;       // caption bar: in the first half of a switch the previous robot is kept and fades out, past halfway it is replaced by the new robot and fades in
+  zo.querySelector(".rzcap").style.opacity = (ui * ca).toFixed(3);
+  const rep = live ? st.rep : D.reports.find(x => x.run_id === r.last_run);
+  if (!xf || xf.w >= 0.5) { $("#rzn").textContent = r.label; $("#rzs").textContent = r.site_name + (rep ? ` · last job ${rep.ended_utc.slice(5)} UTC` : ""); $("#rzchip").innerHTML = chip; }
+  $("#rzclose").style.opacity = ui.toFixed(3);
+}
+// Robots page full-screen view (live): this robot of the current site = the live camera image (the image of the running job; with no job, in a simulated deployment the scene at job creation, in a paired deployment what the robot computer sees now);
+// other sites: a simulated deployment renders one image from that site simulation scene, a paired deployment has only the clean reference image (that robot is not connected to this computer)
+function rzAnimTo(to, done) {                                     // full-screen view zoom in / out: zoom follows ease over 0.7 s
+  const R = V.robots; if (!R || !R.sel) return;
+  const from = R.zoom || 0, t0 = performance.now(), dur = Math.max(1, 700 * Math.abs(to - from)), me = (rzAnimTo.n = (rzAnimTo.n || 0) + 1);
+  const f = async () => { if (me !== rzAnimTo.n || V.robots !== R) return;
+    const u = clamp((performance.now() - t0) / dur); R.zoom = from + (to - from) * ease(u);
+    await renderRobots(R); if (me !== rzAnimTo.n || V.robots !== R) return;
+    if (u < 1) requestAnimationFrame(f); else if (done) done(); };
+  f();
+}
+function rzClose() { if (!V.robots || !V.robots.sel || V.robots.closing) return; V.robots.closing = true; rzAnimTo(0, () => { V.robots = {}; setView(V); }); }
+function robotLiveSite(r) { return r.site === (FX.site || D.meta.site); }
+function robotLiveSrc(r) {
+  if (robotLiveSite(r)) return FX.st && FX.st.status === "running" ? `/api/jobs/frame?t=${Math.floor(Date.now() / 500)}` : `/api/jobs/frame?t=0&site=${encodeURIComponent(r.site)}`;
+  return D.meta.sim_robot ? `/api/jobs/frame?t=0&site=${encodeURIComponent(r.site)}` : `/api/sites/${encodeURIComponent(r.site)}/reference.png`;
+}
+function robotLiveState(r) {
+  const cur = robotLiveSite(r) && FX.st && FX.st.status !== "idle" && FX.st.status !== "stale" ? FX.st : null;
+  const rep = D.reports.find(x => (x.site_id ? x.site_id === r.site : x.site === r.site_name) && robotKeyOf(x.robot) === r.key) || null;
+  const s = cur ? cur.status : rep ? rep.status : null;
+  const P = {running: ["run", `Cleaning · ${cur ? cur.wipes : 0} wipe${cur && cur.wipes === 1 ? "" : "s"}`], done: ["ok", "All zones clean"], needs_human: ["staff", "Staff check"],
+             stopped: ["staff", "Stopped"], estopped: ["bad", "Emergency stop"], error: ["bad", "Software error"], model_unavailable: ["staff", "Model unavailable"]};
+  const [c, txt] = P[s] || ["", s ? String(s).replace(/_/g, " ") : "Idle"];
+  const rc = cur && cur.live && cur.live.robot_computer, lk = D.link && D.link.link;
+  // Simulation label: always written for a simulated deployment; for a paired deployment only when the robot computer reports that it is a simulation backend
+  const sim = D.meta.sim_robot || (rc ? rc.simulated === true : !!(lk && lk.simulated === true));
+  return {status: s, chip: `<span class="pill ${c}"><span class="d"></span>${esc(txt)}</span>`, rep: cur ? null : rep, sim};
+}
+function setPill(id, ok, text) { const e = $("#" + id); if (!e) return; e.className = "pill" + (ok === true ? " ok" : ok === false ? " bad" : ""); e.lastElementChild.textContent = text; }
+function renderSettings(sv) {
+  sv = sv || {};
+  const st = D.settings; const s = siteById(D.meta.site);
+  const cat = sv.cat || "jobs";
+  $$(".scat").forEach(e => e.classList.toggle("on", e.id === "sc-" + cat));
+  $$(".sgrp").forEach(e => e.style.display = e.id === "sg-" + cat ? "block" : "none");
+  $("#spanel").style.opacity = sv.ca == null ? 1 : sv.ca;
+  const J = {...st.jobs, ...(sv.jobs || {})};
+  $("#sj-passes").textContent = J.max_passes_per_zone; $("#sj-steps").textContent = J.max_steps;
+  $("#sj-recheck").classList.toggle("on", !!J.recheck_all); $("#sj-audit").classList.toggle("on", !!J.audit);
+  $("#stog").classList.toggle("on", !!(sv.approval != null ? sv.approval : st.require_plan_approval));
+  $$("#snw i").forEach(e => e.classList.toggle("on", (J.no_wipe_zones || []).includes(e.dataset.z)));
+  $("#snwt").textContent = (J.no_wipe_zones || []).length ? (J.no_wipe_zones || []).join(", ") : "None selected";
+  const setSl = (el, v, lo, hi) => { const u = (v - lo) / Math.max(1e-6, hi - lo); el.querySelector("i").style.width = (100 * u) + "%"; el.querySelector("b").style.left = (100 * u) + "%"; };
+  st.surfaces.forEach(f => { const v = (sv.max || {})[f.surface] ?? f.max_n; setSl($(`.slider[data-sf="${f.surface}"]`), v, f.min_allowed_n, f.max_allowed_n);
+    $("#sfv-" + f.surface).textContent = `${(+v).toFixed(0)} N`; });
+  const ev = sv.escalate ?? st.escalate.value; setSl($("#sesc"), ev, st.escalate.min, st.escalate.max); $("#sescv").textContent = `${(+ev).toFixed(0)} N`;
+  const S = (st.status || {}).checks || {};
+  const cs = (id, okT, badT) => S[id] ? [S[id].ok, S[id].ok ? okT : badT] : [null, "Not checked"];
+  setPill("sv-cosmos", ...cs("cosmos", "Connected", "Not reachable")); setPill("sv-tf", ...cs("tokenfactory", "OK", "Missing"));
+  setPill("sv-skill", ...cs("skill_server", "Connected", "Not reachable")); setPill("sv-cam", ...cs("camera", "Connected", "Not reachable"));
+  const hook = st.notifications.staff_check_webhook; setPill("sv-hook", hook ? true : null, hook ? "Configured" : "Not configured");
+  if (liveMode) renderSettingsLive(sv, st, S);
+  const spent = D.spent ?? 0, lim = st.budget.limit_usd;
+  $("#sbud").textContent = `$${spent.toFixed(2)} of $${lim.toFixed(2)}`; $("#sbbar").style.width = (100 * spent / lim).toFixed(2) + "%";
+  $("#toast").style.opacity = sv.toast != null ? sv.toast : 0;
+}
+function renderSettingsLive(sv, st, S) {
+  // controls that exist only in live mode: planning / inspection mode options, key test result, connection status of the two robot computer addresses (same polling as the title bar)
+  const pol = sv.policy || st.runtime.policy, ver = sv.verifier || st.runtime.verifier;
+  $$('[id^="sch-pol-"]').forEach(e => e.classList.toggle("sel", e.dataset.v === pol));
+  $$('[id^="sch-ver-"]').forEach(e => e.classList.toggle("sel", e.dataset.v === ver));
+  $("#sphint").textContent = pol === "nemotron" ? st.models.planner.model : "Offline rules planner on this computer · no model calls";
+  $("#svhint").textContent = ver === "vlm" ? "Cosmos 3 and classical vision check every zone; the two results are combined." : "Classical vision on this computer checks every zone; Cosmos 3 is not called.";
+  const tf = D.tfTest, kh = $("#skeyhint");
+  kh.textContent = tf ? tf.detail : st.runtime.api_key_set ? "Stored only on this computer · a key is saved" : "Stored only on this computer · no key saved yet";
+  kh.style.color = tf && !tf.ok && !tf.fallback ? "var(--res)" : "";
+  if (tf) setPill("sv-tf", tf.ok ? true : tf.fallback ? null : false, tf.ok ? "OK" : tf.fallback ? "Not configured" : "Failed");
+  else if (!S.tokenfactory) setPill("sv-tf", null, st.runtime.api_key_set ? "Key saved" : "No key");
+  const L = D.link;
+  if (st.robot.sim_robot) { setPill("sv-skill", null, "Not in use · built-in simulation"); setPill("sv-cam", null, "Not in use · built-in simulation"); }   // built-in simulation: these two addresses are not used
+  else { if (L && L.skill_server) setPill("sv-skill", !!L.skill_server.ok, L.skill_server.ok ? "Connected" : "Not reachable");
+    if (L && L.link && L.link.camera != null) setPill("sv-cam", !!L.link.camera, L.link.camera ? "Connected" : "Not reachable"); }
+  const tip = (id, d) => { const e = $("#" + id); if (e) e.title = d || ""; };
+  tip("sv-skill", L && L.skill_server ? L.skill_server.detail : (S.skill_server || {}).detail); tip("sv-cam", (S.camera || {}).detail);
+  tip("sv-cosmos", (S.cosmos || {}).detail); tip("sv-tf", tf ? tf.detail : (S.tokenfactory || {}).detail);
+  if (D.runChk) { const h = $("#srunhint"); h.textContent = D.runChk.busy ? "Checking every service…" : D.runChk.msg; h.style.color = D.runChk.bad ? "var(--res)" : ""; }
+  const b = $("#sruncheck"); if (b) { b.disabled = !!(D.runChk && D.runChk.busy); b.textContent = D.runChk && D.runChk.busy ? "Checking…" : "Run checks"; }
+  const t = $("#stest"); if (t) { t.disabled = !!D.tfBusy; t.textContent = D.tfBusy ? "Testing…" : "Test"; }
+}
+const settingsUrl = () => "/api/settings" + (D.meta && D.meta.site ? `?site=${encodeURIComponent(D.meta.site)}` : "");   // settings follow the site currently on the Jobs page: reads and writes both carry the site
+async function fullSettings(r) {                                  // the return value of PUT should be the full settings (API J); if fields are missing GET once more
+  return r && r.status && r.robot && r.runtime && r.about && r.models ? r : await api(settingsUrl());
+}
+async function renderReports(rv) {
+  $$("#p-reports tbody tr").forEach(e => e.classList.toggle("sel", !!(rv && rv.open && e.id === "rr-" + rv.open)));
+  const dr = $("#drawer");
+  if (!rv || !rv.open) { dr.style.display = "none"; return; }
+  dr.style.display = "block"; dr.style.transform = `translateX(${(1 - ease(rv.a == null ? 1 : rv.a)) * 100}%)`;
+  const f = $("#rframe");
+  if (f.dataset.run !== rv.open) { f.dataset.run = rv.open; f.src = `/api/reports/${encodeURIComponent(rv.open)}`;
+    await new Promise(res => { f.onload = res; setTimeout(res, 4000); }); }
+  $("#drt").textContent = "Job " + rv.open.split("-").slice(-3).join("-");      // job number (consistent with the activity log), the run directory name is not shown
+  try { f.contentWindow.scrollTo(0, (rv.u || 0) * (f.contentDocument.body.scrollHeight - 900)); } catch (e) {}
+}
+
+/* ------------------------------------------------------------ setView (called frame by frame when recording) */
+async function setView(v) {
+  await readyP;
+  V = v || {};
+  const page = V.page || "jobs";
+  $("#win").style.opacity = V.mainA == null ? 1 : V.mainA;          // the main UI does not appear until the first-run wizard is finished; fades in afterwards
+  renderWizard(V.wiz);
+  $$(".nv").forEach(e => { e.classList.toggle("on", e.dataset.page === page); e.classList.toggle("hover", V.hover === "nv-" + e.dataset.page);
+    e.style.opacity = "";
+    if (e.dataset.page === page && V.pa != null && V.pa < 1) {      // nav highlight fades in and out together with the page content (no one-frame switch)
+      e.style.background = `rgba(255,255,255,${V.pa})`; e.style.boxShadow = `0 1px 3px rgba(0,0,0,${0.07 * V.pa})`;
+    } else { e.style.background = ""; e.style.boxShadow = ""; } });
+  $$(".page").forEach(e => e.classList.toggle("on", e.id === "p-" + page));
+  $("#content").style.opacity = V.pa == null ? 1 : V.pa;
+  $$(".hover,.press").forEach(e => { if (!e.classList.contains("nv")) e.classList.remove("hover", "press"); });
+  const s = siteById(D.meta.site);
+  $("#tsite span").textContent = s.name;
+  titleChip();
+  if (page === "jobs") { if (liveMode && FX.st && FX.st.status !== "idle") { const {j, view} = liveView(); await renderJob(j, view); } else await renderJob(V.job || {}); }
+  if (page === "robots") await renderRobots(V.robots);
+  if (page === "sites") { const id = (V.sites && V.sites.sel) || D.meta.site; if (built.site !== id) renderSiteDetail(id);
+    $$(".si").forEach(e => e.classList.toggle("on", e.id === "si-" + id)); }
+  if (page === "settings") renderSettings(V.settings);
+  if (page === "logs") renderLogs((V.logs || {}).filter, (V.logs || {}).n, (V.logs || {}).off);
+  if (page === "reports") await renderReports(V.reports);
+  if (V.hover) { const e = document.getElementById(V.hover); if (e) e.classList.add("hover"); }
+  if (V.press) { const e = document.getElementById(V.press); if (e) e.classList.add("press"); }
+  const cur = $("#cursor"), rip = $("#ripple");
+  if (V.cursor) { cur.style.display = "block"; cur.style.transform = `translate(${V.cursor.x}px,${V.cursor.y}px)`;
+    const c = V.cursor.click; if (c != null && c >= 0 && c < 0.55) { const u = c / 0.55; rip.style.opacity = (1 - u) * 0.8;
+      rip.style.transform = `translate(${V.cursor.x - 20}px,${V.cursor.y - 20}px) scale(${0.4 + u})`; } else rip.style.opacity = 0;
+  } else { cur.style.display = "none"; rip.style.opacity = 0; }
+  await document.fonts.ready;
+  await Promise.all($$(".page.on img, #wiz img").map(i => i.complete ? null : i.decode().catch(() => {})));   // wait until all images on the page are decoded before the screenshot
+  return true;
+}
+function estopNotice(text, bad) {
+  D.estopMsg = {text, bad, until: performance.now() + (bad ? 15000 : 5000)};
+  const a = $("#jappr"); a.textContent = text; a.style.color = bad ? "var(--res)" : ""; a.style.fontWeight = bad ? "600" : "";
+  setTimeout(() => { if (D.estopMsg && performance.now() >= D.estopMsg.until && V.page === "jobs") setView(V); }, (bad ? 15000 : 5000) + 50);
+}
+function estopLive(running) {
+  // live paired: while a job is running, connecting, or the robot computer reports it is still executing a skill (busy, e.g. a job ended because the network dropped while the skill has not stopped yet), E-stop can always be pressed; when idle it is grey as in the video
+  if (!liveMode || D.meta.sim_robot) return;
+  const lk = D.link && D.link.link, conn = FX.waiting || (FX.st && FX.st.status === "running");
+  $("#jestop").disabled = !(running || conn || (lk && lk.busy === true));
+}
+function titleChip() {
+  // robot status in the title bar. Recording: the skill server item of the saved deploy check (as before). Live: polls /api/robot/link every 3 s, shows nothing until the first reply
+  let sk = ((D.settings.status || {}).checks || {}).skill_server;
+  if (liveMode && !D.linkMissing) sk = D.link && D.link.skill_server ? {ok: !!D.link.skill_server.ok} : null;
+  let cls = sk && sk.ok ? "ok" : "bad", txt = sk && sk.ok ? "Robot connected" : "Robot not reachable";
+  const lk = liveMode && sk && sk.ok && D.link && D.link.link;    // live paired: when the robot computer reports e-stop / fault / this site uncalibrated, say so honestly (normally green Robot connected as in the video)
+  if (lk && lk.stopped) [cls, txt] = ["bad", "Robot stopped (E-stop)"];
+  else if (lk && lk.fault) [cls, txt] = ["bad", "Robot fault"];
+  else if (lk && lk.calibrated === false) [cls, txt] = ["run", "Site not calibrated"];
+  $("#tstat").innerHTML = sk ? `<span class="pill ${cls}"><span class="d"></span>${txt}</span>` : "";
+}
+async function pollLink() {
+  try { D.link = await api("/api/robot/link"); D.linkMissing = false; }
+  catch (e) { if (e.status === 404) D.linkMissing = true; else D.link = {skill_server: {ok: false, detail: errText(e)}}; }   // the local service cannot be reached at all: honestly show not reachable
+  titleChip();
+  const lk = (D.link && D.link.link) || {}, key = [!!lk.ok, !!lk.stopped, !!lk.fault, lk.calibrated].join("|");   // e-stop / fault / calibration state changed: redraw the Jobs page immediately (Start follows the robot computer, no need to wait for a page change)
+  if (key !== D.linkKey) { D.linkKey = key; if (V.page === "jobs" && !(V.wiz && V.wiz.a > 0)) await setView(V); }
+  if (V.page === "jobs" && $("#jestop")) estopLive(!!(FX.st && FX.st.status === "running"));
+  if (V.page === "settings" && $("#sv-skill")) renderSettings(V.settings);
+}
+function linkTick() { pollLink().finally(() => setTimeout(linkTick, 3000)); }
+window.elementBox = id => { const e = document.getElementById(id); if (!e) return null; const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, r.height]; };
+
+/* ------------------------------------------------------------ local live mode: buttons call the API directly */
+function anim(obj, key, dur, done, rate = 1, hold) {   // advance a time parameter frame by frame (check spinners, calibration grid fade-in), call back when done; rate = speed multiplier (wizard checks and recording both use 2); while hold() is true keep running even past dur (the result has not come back yet)
+  const t0 = performance.now(), me = obj["_" + key] = {};
+  const f = () => { if (obj["_" + key] !== me) return; obj[key] = (performance.now() - t0) / 1000 * rate; setView(V);
+    if (obj[key] < dur || (hold && hold())) requestAnimationFrame(f); else if (done) done(); };
+  f();
+}
+// live-mode transitions: the same fields as the recording (V.pa, W.pa, wiz.a / mainA, settings.ca, logs.fa, settings.toast), advancing linearly on the real clock; stop if apply returns false (the view has changed)
+const TW = {};
+function tween(key, from, to, dur, apply) {
+  const t0 = performance.now(), me = TW[key] = {};
+  return new Promise(res => { const f = () => { if (TW[key] !== me) return res(false);
+    const u = dur > 0 ? clamp((performance.now() - t0) / (dur * 1000)) : 1;
+    if (apply(from + (to - from) * u) === false) return res(false);
+    if (u < 1) requestAnimationFrame(f); else res(true); }; f(); });
+}
+async function pageTo(pg) {                                       // page change: content and nav highlight fade out over 0.17 s → switch page → fade in over 0.27 s (recording page_at)
+  const R0 = V, a0 = R0.pa ?? 1;
+  if (R0.page === pg && a0 >= 1) { setView(R0); return; }
+  if (!await tween("page", a0, 0, 0.17 * a0, x => { if (V !== R0) return false; R0.pa = x; setView(R0); })) return;
+  R0.page = pg;
+  if (await tween("page", 0, 1, 0.27, x => { if (V !== R0) return false; R0.pa = x; setView(R0); })) { delete R0.pa; setView(R0); }
+}
+async function wizStepTo(w, step) {                               // wizard step change: the old step fades out over 0.15 s → the new step fades in over 0.27 s
+  if (!await tween("wstep", w.pa ?? 1, 0, 0.15, x => { if (V.wiz !== w) return false; w.pa = x; setView(V); })) return false;
+  w.step = step;
+  tween("wstep", 0, 1, 0.27, x => { if (V.wiz !== w) return false; w.pa = x; setView(V); }).then(ok => { if (ok) { delete w.pa; setView(V); } });
+  return true;
+}
+async function finishLive(w) {                                    // Finish: no page reload; re-read the config and rebuild the pages, the wizard fades out over 0.35 s and the main UI fades in
+  const [meta, settings, reps, lg] = await Promise.all([api("/api/meta"), api("/api/settings"), api("/api/reports").catch(() => ({reports: D.reports})),
+    api("/api/logs/models?limit=400").catch(() => null)]);
+  const site0 = D.meta.site;
+  D.meta = meta; D.settings = settings; D.reports = reps.reports; if (lg) { D.calls = lg.calls; D.spent = lg.spent_usd ?? D.spent; }
+  if (D.meta.site !== site0 && FX.st && FX.st.status !== "running") { FX.hide = (FX.st.live && FX.st.live.started_at) ?? FX.sess; FX.st = null; }   // the current site changed: the job ended at the previous site is no longer shown (same approach as the site dropdown change)
+  D.siteCal = await api(`/api/setup/site?site=${encodeURIComponent(D.meta.site)}`).catch(() => D.siteCal);
+  D.wz = null; built.site = null; FX.site = D.meta.site; D.js = {}; D.robots = {};
+  buildJobs(); buildRobots(); buildSites(); buildSettings(); buildLogs(); buildReports();
+  const pg = w.add ? "robots" : "jobs", m0 = V.mainA ?? 0;
+  V = {page: pg, mainA: m0, wiz: w};
+  await tween("finish", 0, 1, 0.35, u => { if (V.wiz !== w) return false; w.a = 1 - u; V.mainA = m0 + (1 - m0) * u; setView(V); });
+  V = {page: pg}; buildWizard(); if (D.settings.runtime && D.settings.runtime.api_key_set) $("#wz-key").value = KEY_SENT;
+  if (APP) $$("#wiz .tbar").forEach(t => t.classList.add("pywebview-drag-region"));   // desktop edition: the rebuilt wizard title bar can also drag the window
+  await setView(V);
+}
+function settingsBody() {
+  const sv = V.settings || {}, body = {};
+  // submit only the fields that were changed (another item just changed in another window is not written back to its old value by this save)
+  const base = D.settings, same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  if (sv.jobs) { const d = {}; for (const k in sv.jobs) if (!same(sv.jobs[k], (base.jobs || {})[k])) d[k] = sv.jobs[k]; if (Object.keys(d).length) body.jobs = d; }
+  if (sv.approval != null && sv.approval !== base.require_plan_approval) body.require_plan_approval = sv.approval;
+  if (sv.max) { const d = {}; for (const k in sv.max) { const f = base.surfaces.find(x => x.surface === k); if (!f || Math.abs(sv.max[k] - f.max_n) > 1e-9) d[k] = sv.max[k]; } if (Object.keys(d).length) body.max_n = d; }
+  if (sv.escalate != null && Math.abs(sv.escalate - base.escalate.value) > 1e-9) body.escalate_step_n = sv.escalate;
+  const b = parseFloat(($("#sbudget").value || "").replace("$", ""));
+  if (isFinite(b) && Math.abs(b - D.settings.budget.limit_usd) > 1e-9) body.budget_usd = b;
+  const h = $("#swebhook").value.trim();
+  if (h !== D.settings.notifications.staff_check_webhook) body.staff_check_webhook = h;
+  if (liveMode) {                                                // live: planning / inspection mode, robot computer addresses, new key (one PUT, the server validates everything before writing)
+    const rt = {}, R = D.settings.runtime || {};
+    if (sv.policy && sv.policy !== R.policy) rt.policy = sv.policy;
+    if (sv.verifier && sv.verifier !== R.verifier) rt.verifier = sv.verifier;
+    if (Object.keys(rt).length) body.runtime = rt;
+    const k = $("#skey") ? $("#skey").value.trim() : ""; if (k) body.api_key = k;
+    const lk = {}, su = $("#sskill") ? $("#sskill").value.trim() : "", cu = $("#scamu") ? $("#scamu").value.trim() : "";
+    if ($("#sskill") && su !== D.settings.robot.skill_url) lk.skill_url = su;   // cleared = back to the default tunnel port (send "")
+    if ($("#scamu") && cu !== D.settings.robot.camera_url) lk.camera_url = cu;
+    if (Object.keys(lk).length) body.robot_link = lk;
+  }
+  return body;
+}
+function wireLive() {
+  $$(".nv").forEach(e => e.onclick = () => { if (liveMode) { fadeToast(); pageTo(e.dataset.page); return; } V.page = e.dataset.page; setView(V); });
+  document.addEventListener("change", async ev => {
+    if (ev.target && ev.target.id === "wz-sitesel" && V.wiz) {         // wizard: a site was selected and the venue type follows the category of this site (Finish does not write another category into it)
+      const W = V.wiz; Object.assign(W, {calErr: false, calMsg: "", gOpen: false, gAuto: false, gstate: null, gErr: null, gBusy: null, grows: null, gcols: null});
+      if (ev.target.value === "__new__") { wizNewSite(W); return; }
+      W.newSite = false;
+      const sx = siteById(ev.target.value), map = D.meta.site_type_stored || {};
+      W.type = Object.keys(map).find(k => map[k] === sx.type) || W.type;
+      $("#wz-sname").value = sx.name;                                   // the site name follows the selected site (Finish writes back by this name)
+      await loadSiteCal(ev.target.value); W.cal = 1; setView(V); return; }
+    if (ev.target && ev.target.id === "wz-tpl" && V.wiz) { setView(V); return; }
+    if (!ev.target || ev.target.id !== "jsite") return; FX.site = ev.target.value;
+    if (FX.st && FX.st.status !== "running") { FX.hide = (FX.st.live && FX.st.live.started_at) ?? FX.sess; FX.st = null; }   // the previous job has ended: the page returns to Ready of the new site   // site change: zone map, camera title and robot follow this site (still valid after the Jobs page is rebuilt)
+    D.siteCal = await api(`/api/setup/site?site=${encodeURIComponent(FX.site)}`).catch(() => D.siteCal); D.meta.site = FX.site;
+    const task = $("#jtask").value; buildJobs(); $("#jtask").value = task;
+    const ns = await api(settingsUrl()).catch(() => null);               // Settings switches to this site as well (title bar, subtitle, force limits and job options all belong to it)
+    if (ns) { D.settings = ns; V.settings = {}; buildSettings(); }
+    setView(V); });   // switching site does not clear a task that is already written
+  document.addEventListener("input", ev => { if (ev.target && ev.target.id === "jtask") zonesLine(); });
+  document.addEventListener("click", async ev => {
+    const el = ev.target.closest("[id],[data-z],[data-sf]"); if (!el) return;
+    const id = el.id;
+    const post = postJ;
+    const W = V.wiz;
+    // ---- first-run wizard
+    if (W && W.a > 0) {
+      const k = WSTEPS.findIndex(x => x[0] === W.step);
+      const gs = ev.target.closest("[data-gstep]");
+      if (gs) { if (!gs.disabled) await wizGuidedStep(W, gs); return; }            // one step of on-site calibration (API G)
+      if (id.startsWith("wz-r-")) W.sel = id.slice(5);
+      else if (id.startsWith("wf-")) W.filter = id.slice(3).replace(/_/g, " ");
+      else if (id === "wz-connect") { if (W.busy) return; W.busy = "connect";   // same as the video: once clicked, rows spin one by one at 2x speed, and a row whose turn has come waits for its result before ticking (a fast check looks exactly like the video)
+        D.wz = {...(D.wz || {}), connect: PEND(["skill_server", "camera", "adapter"])}; anim(W, "ck", 2.0, null, 2.0, () => W.busy === "connect");
+        const r = await post("/api/setup/connect", {robot: W.sel}).catch(e => ({checks: FAILED(["skill_server", "camera", "adapter"], e)}));
+        W.busy = null; D.wz = {...(D.wz || {}), connect: r.checks}; setView(V); return; }
+      else if (id === "wz-test") { if (W.busy) return; let key = $("#wz-key").value.trim(); if (key === KEY_SENT) key = "";   // dot placeholder is not a key, do not submit it
+        W.busy = "test"; D.wz = {...(D.wz || {}), models: PEND(["tokenfactory", "cosmos", "orchestrator"])}; anim(W, "mk", 2.0, null, 2.0, () => W.busy === "test");
+        const r = await post("/api/setup/models", key ? {api_key: key} : {}).catch(e => ({checks: FAILED(["tokenfactory", "cosmos", "orchestrator"], e)}));
+        W.busy = null; D.wz = {...(D.wz || {}), models: r.checks};
+        const tf = (r.checks || []).find(c => c.id === "tokenfactory"), good = tf && tf.ok && !tf.fallback;
+        if (key && good) D.settings.runtime.api_key_set = true;
+        $("#wz-key").value = good || (!key && D.settings.runtime.api_key_set) ? KEY_SENT : "";   // a stored key is shown only as 28 dots (as in the video), the real key is never shown
+        setView(V); return; }
+      else if (id.startsWith("wz-t-")) { W.type = id.slice(5).replace(/_/g, " ");
+        if (W.newSite) { setView(V); return; }                                          // new site: the type buttons only pick the type
+        const cat = (D.meta.site_type_stored || {})[W.type] || W.type;                   // button (Home) → site category (Homes)
+        const m = D.meta.sites.find(x => x.type === cat);
+        if (!m) { wizNewSite(W); return; }                                               // no site of this kind yet: create one directly
+        if (m.id !== $("#wz-sitesel").value) Object.assign(W, {calErr: false, calMsg: "", gOpen: false, gAuto: false, gstate: null, gErr: null, gBusy: null, grows: null, gcols: null});
+        $("#wz-sitesel").value = m.id; $("#wz-sname").value = m.name;
+        await loadSiteCal($("#wz-sitesel").value); const t0 = performance.now();          // grid fade-in: cal is a progress from 0 to 1 (same field as the recording), finishing in 0.6 s
+        const f = () => { W.cal = Math.min(1, (performance.now() - t0) / 600); setView(V); if (W.cal < 1) requestAnimationFrame(f); }; f(); return; }
+      else if (id === "wz-cal") { if (!W.calBusy) await wizCalibrate(W); return; }
+      else if (id === "wz-back" && k === 0 && W.add) { V = {page: "robots"}; D.wz = null; setView(V); return; }   // Add robot: cancel
+      else if (id === "wz-back" && k > 0) { await wizStepTo(W, WSTEPS[k - 1][0]); return; }
+      else if (id === "wz-next" && !$("#wz-next").disabled) {
+        if (W.step === "site") { const sid = $("#wz-sitesel").value; if (sid === "__new__") return;
+          $("#wz-next").disabled = true;
+          try { await post("/api/setup/finish", {robot: W.sel, site: sid, site_type: W.type || "", site_name: $("#wz-sname").value.trim()}); }
+          catch (e) { $("#wz-next").disabled = false; W.calErr = true; W.calMsg = errText(e); say(e); setView(V); return; }
+          try { await finishLive(W); }                                      // no reload: the wizard fades out and the main UI fades in (Add robot returns to the Robots page, the new robot is in My robots)
+          catch (e) { if (W.add) try { sessionStorage.setItem("cp_page", "robots"); } catch (e2) {} location.reload(); }   // fall back to a reload only if the re-read fails
+          return; }
+        if (!await wizStepTo(W, WSTEPS[k + 1][0])) return;
+        if (W.step === "site") {                                       // entering the Site step: re-read the selected site (the calibration mode may have changed after connecting to the robot computer)
+          if (W.add && !W.siteInit) { W.siteInit = true; wizNewSite(W); }   // Add robot: create a new site by default (choosing an existing site replaces the robot there, with a notice)
+          else if ($("#wz-sitesel").value !== "__new__" && D.wz && D.wz.site) await loadSiteCal($("#wz-sitesel").value);
+          else if (!D.wz || !D.wz.site) { const c = await api(`/api/setup/site?site=${encodeURIComponent($("#wz-sitesel").value)}`).catch(() => null); if (c && c.how) D.lastHow = c.how; if (c && D.siteCal && c.site === D.siteCal.site) D.siteCal = c; }
+        }
+      }
+      setView(V); return;
+    }
+    // ---- job
+    if (id === "jstart") { const body = {site: $("#jsite").value, instruction: $("#jtask").value.trim() || "Clean the whole surface"};
+      if (D.parse && D.parse.confirm && D.confirmFor !== body.instruction) {            // a negation without a recognised zone: first explain under the task box, and wipe the whole surface only on a second click
+        D.confirmFor = body.instruction; const e = $("#jzones"); e.textContent = D.parse.notes.join(" ") + " Click Start job again to clean the whole surface."; e.style.color = "#b45309"; e.style.display = "block"; return; }
+      if (D.confirmFor === body.instruction) body.confirm_scope = true;
+      FX.waitOld = (V.live && V.live.started_at) ?? FX.sess; FX.waiting = true; FX.hide = null; liveReset();
+      setImg($("#jcam"), `/api/jobs/frame?t=0&site=${encodeURIComponent(body.site)}`);          // before the display viewpoint of the new job is ready: the view of this site at job creation
+      FX.st = {status: "running", live: {running: true}, zones: {}, log: [], wipes: 0, checks: 0, cost_usd: 0};   // the new job is shown as Running immediately (stats 0), replaced when the state arrives
+      D.toastFor = null; $("#jtoast").style.display = "none";
+      if (V.page === "jobs") { const {j, view} = liveView(); await renderJob(j, view); kick(); }
+      await api("/api/jobs/start", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)})
+        .then(r => { D.notice = r && r.notice ? r.notice : null; zonesShow(D.parse); })   // a job that was interrupted last time: notice shown once
+        .catch(e => { FX.waiting = false; FX.hide = FX.waitOld; FX.st = null; setView(V); say(e); }); }   // did not start: back to Ready (the previous job is not replayed)
+    if (id === "jpause") await post(V.live && V.live.paused ? "/api/jobs/resume" : "/api/jobs/pause").catch(say);
+    if (id === "jstop") { FX.stopping = true; kick(); const r = await post("/api/jobs/stop").catch(e => { say(e); return null; });
+      if (!r || !r.ok) FX.stopping = false; }
+    if (id === "jestop") {                                             // record the state before pressing (polling during the request changes busy / running state)
+      const idle = !(FX.st && FX.st.status === "running") && !FX.waiting, wasBusy = !!(D.link && D.link.link && D.link.link.busy);
+      let r = null, err = null;
+      try { r = await post("/api/jobs/estop"); } catch (e) { err = e; }
+      const lv = r && (r.live || r);                                  // e-stop did not reach the skill server: tell the operator right away in red text on the page (no popup covering the page, E-stop can still be pressed again)
+      if (err || (lv && lv.estop_delivered === false)) estopNotice(err ? errText(err) : "The E-stop did not reach the robot computer. Use the physical E-stop on site.", true);
+      else if (r && r.ok && (idle || wasBusy)) estopNotice("E-stop sent to the robot computer", false);
+      else if (r && r.ok && D.estopMsg) { D.estopMsg = null; const ap = $("#jappr"); ap.style.color = ap.style.fontWeight = ""; setView(V); }   // delivered this time: clear the red "not delivered" text from last time
+      pollLink(); }
+    if (id === "jresolve" && liveMode && !el.disabled && $("#jnotei")) {   // the handling note may be left blank (posts note: "", the card shows Resolved); an already handled card is not submitted again
+      const note = (($("#jnotei") || {}).value || "").trim(), rid = el.dataset.req || "0", by = (($("#jnamei") || {}).value || "").trim(); el.disabled = true;
+      try { if (by) localStorage.setItem("cp_name", by); } catch (e) {}                 // remember the last name
+      const r = await post("/api/requests/resolve", {id: rid, note, by}).catch(e => { el.disabled = false; say(e); return null; });
+      if (r && FX.st) { const q = (FX.st.requests || []).find(x => String(x.id) === String(rid)) || (FX.st.requests || [])[0];   // do not wait for the next poll: the card switches to Resolved immediately
+        if (q) q.resolved = r.resolved || r.request || {note, by: "operator"};
+        if (V.page === "jobs") { const {j, view} = liveView(); await renderJob(j, view); } } }
+    if (id === "japprove" || id === "jreject") await post(id === "japprove" ? "/api/jobs/approve" : "/api/jobs/reject").catch(say);
+    if (id === "jtview" || id === "jl-current") { fadeToast();                          // consistent with the video: the notification fades out over 0.3 s when this job is opened
+      if (!FX.reqShow && FX.st && (FX.st.requests || []).length) { FX.reqShow = true; FX.req0 = performance.now() / 1000; kick(); }
+      V.page = "jobs"; setView(V); }
+    if (id.startsWith("jl-") && el.dataset.run && el.dataset.run !== "current") { V = {page: "reports", reports: {open: el.dataset.run}}; setView(V); }
+    if (id === "jtoast") fadeToast();
+    // ---- robots / sites / reports / logs
+    if (id.startsWith("rc-") && !(V.robots && V.robots.sel)) {      // full-screen view: as in the video, enlarge from this card to the screen middle over 0.7 s (only the image, without venue labels and the x)
+      V.robots = {sel: el.dataset.key || id.slice(3), site: el.dataset.site, card: id, zoom: 0, a: 1, bare: true}; rzAnimTo(1); }
+    if (id.startsWith("rz-")) { V.robots = {...V.robots, sel: el.dataset.key || id.slice(3), site: el.dataset.site}; setView(V); }
+    if (id === "rzclose" || (ev.target.closest("#rzoom .bg"))) rzClose();
+    if (id.startsWith("rf-")) { V.robots = {filter: id.slice(3).replace(/_/g, " ")}; setView(V); }
+    if (id === "radd") { D.wz = null; V = {page: "robots", mainA: 0.35, wiz: {a: 1, step: "robot", filter: "All", add: true}}; setView(V); }   // add a robot: the same wizard (new site or existing site), appears in My robots after Finish
+    if (id.startsWith("si-")) { V.sites = {sel: id.slice(3)}; setView(V); }
+    if (id.startsWith("rr-")) { V.reports = {open: id.slice(3)}; setView(V); }
+    if (id === "drclose") { V.reports = {}; setView(V); }
+    if (id.startsWith("lf-")) { const nf = id.slice(3), L = V.logs = V.logs || {};   // change filter: the table fades out over 0.2 s → switch → fades in over 0.3 s (recording logs.fa); with rapid clicks the last one wins
+      if (nf !== (L.want ?? (L.filter || "all"))) { L.want = nf; const a0 = L.fa ?? 1;
+        const away = () => { if (L.want) { L.filter = L.want; delete L.want; } delete L.fa; return false; };   // page changed midway: the filter is switched directly and the table is opaque
+        tween("logs", a0, 0, 0.2 * a0, x => { if (V.logs !== L) return false; if (V.page !== "logs") return away(); L.fa = x; setView(V); }).then(ok => { if (!ok) return; L.filter = L.want; delete L.want;
+        tween("logs", 0, 1, 0.3, x => { if (V.logs !== L) return false; if (V.page !== "logs") return away(); L.fa = x; setView(V); }).then(ok2 => { if (ok2) { delete L.fa; setView(V); } }); }); } }
+    // ---- settings
+    const S = V.settings = V.settings || {};
+    const J = () => (S.jobs = S.jobs || {...D.settings.jobs});
+    if (id.startsWith("sc-") && S.cat !== id.slice(3)) { S.cat = id.slice(3);          // change group: the panel fades in from 0.25 over 0.25 s (recording settings.ca)
+      tween("scat", 0.25, 1, 0.25, x => { if (V.settings !== S) return false; if (V.page !== "settings") { delete S.ca; return false; }   // page changed midway: the panel is directly opaque
+        S.ca = x; setView(V); }).then(ok => { if (ok) { delete S.ca; setView(V); } }); }
+    if (id === "sj-passes-dec" || id === "sj-passes-inc") J().max_passes_per_zone = clamp(J().max_passes_per_zone + (id.endsWith("inc") ? 1 : -1), 1, 6);
+    if (id === "sj-steps-dec" || id === "sj-steps-inc") J().max_steps = clamp(J().max_steps + (id.endsWith("inc") ? 5 : -5), 5, 200);
+    if (id === "sj-recheck") J().recheck_all = !J().recheck_all;
+    if (id === "sj-audit") J().audit = !J().audit;
+    if (id === "stog") S.approval = !$("#stog").classList.contains("on");
+    if (el.dataset.z && el.closest("#snw")) { const z = el.dataset.z, L = new Set(J().no_wipe_zones || []); L.has(z) ? L.delete(z) : L.add(z); J().no_wipe_zones = [...L].sort(); }
+    if (el.dataset.sf || id === "sesc") { const r = el.getBoundingClientRect(), u = clamp((ev.clientX - r.left) / r.width);
+      if (el.dataset.sf) { const f = D.settings.surfaces.find(x => x.surface === el.dataset.sf); S.max = {...(S.max || {}), [f.surface]: Math.round(f.min_allowed_n + u * (f.max_allowed_n - f.min_allowed_n))}; }
+      else { const e = D.settings.escalate; S.escalate = Math.round(e.min + u * (e.max - e.min)); } }
+    if (id.startsWith("sch-pol-")) S.policy = el.dataset.v;                  // planning / inspection mode: takes effect only on Save after selecting (runtime.policy / runtime.verifier)
+    if (id.startsWith("sch-ver-")) S.verifier = el.dataset.v;
+    if (id === "stest") { if (D.tfBusy) return; D.tfBusy = true; setView(V);  // key: if the box is filled, save it first (PUT api_key, not echoed), then test Token Factory
+      const key = ($("#skey") || {}).value ? $("#skey").value.trim() : "";
+      try {
+        if (key) { D.settings = await fullSettings(await api(settingsUrl(), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({api_key: key})}));
+          const ki = $("#skey"); if (ki) { ki.value = ""; ki.placeholder = "A key is saved · paste to replace"; } }
+        const r = await post("/api/setup/models", {});
+        const c = (r.checks || []).find(x => x.id === "tokenfactory");
+        if (c) { D.tfTest = {ok: !!c.ok && !c.fallback, fallback: !!c.fallback, detail: c.detail || ""};
+          D.settings.status.checks = {...(D.settings.status.checks || {}), tokenfactory: {ok: !!c.ok && !c.fallback, detail: c.detail}}; }
+      } catch (e) { D.tfTest = {ok: false, detail: errText(e)}; const ki = $("#skey"); if (ki) ki.value = ""; }
+      D.tfBusy = false; }
+    if (id === "shooktest") { const r = await post("/api/settings/test-webhook?site=" + encodeURIComponent(D.meta.site)).catch(e => ({ok: false})); setPill("sv-hook", !!r.ok, r.ok ? "Test delivered" : "Test failed"); return; }
+    if (id === "sruncheck") { if (D.runChk && D.runChk.busy) return; D.runChk = {busy: true}; setView(V);   // works for both deployments: a simulated deployment checks the local simulation, a paired deployment checks the robot computer
+      try { const r = await api("/api/deploy/checks");
+        D.settings.status = {source: "check", ts: r.ts, checks: Object.fromEntries(r.checks.map(c => [c.id, {ok: c.ok, detail: c.detail}]))};
+        const R = D.settings.runtime || {}, unused = c => (c.id === "cosmos" && R.verifier !== "vlm") || (c.id === "tokenfactory" && R.policy !== "nemotron");   // services not needed by the current settings that are not up do not count as failures (same rule as the wizard Services step)
+        const bad = r.checks.filter(c => !c.ok && !unused(c)), off = r.checks.filter(c => !c.ok && unused(c)), tm = new Date().toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
+        const nm = c => ({cosmos: "Cosmos 3", tokenfactory: "Token Factory"}[c.id] || c.title || c.id);
+        D.runChk = {msg: `Checked at ${tm} · ` + (bad.length ? `not reachable: ${bad.map(nm).join(", ")}` : "every service in use is OK") + (off.length ? ` · not in use: ${off.map(nm).join(", ")}` : ""), bad: bad.length > 0}; }
+      catch (e) { D.runChk = {msg: errText(e), bad: true}; }
+      pollLink(); }
+    if (id === "ssave") { let r;
+      try { r = await api(settingsUrl(), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify(settingsBody())}); }
+      catch (e) { settingsToast(errText(e), true); return; }           // the server rejected it (e.g. switching to Nemotron without a key): red notice states the reason and the change is kept
+      D.settings = await fullSettings(r).catch(() => D.settings);
+      if (D.settings.runtime) D.meta.runtime = {...(D.meta.runtime || {}), policy: D.settings.runtime.policy, verifier: D.settings.runtime.verifier};
+      D.tfTest = null; V.settings = {cat: S.cat, toast: 0}; buildSettings(); settingsToast("Saved · applies from the next job", false); pollLink(); }
+    if (V.page === "settings") setView(V);
+  });
+}
+function settingsToast(msg, bad) {                                 // settings page save notice: 2.2 s on success, 4 s on error, then fades out over 0.3 s (same element and fields as the recording)
+  const t = $("#toast"); t.textContent = msg; t.classList.toggle("bad", !!bad);
+  const S = V.settings = V.settings || {}, me = (settingsToast.n = (settingsToast.n || 0) + 1), a0 = S.toast || 0;
+  const step = x => { if (me !== settingsToast.n || V.settings !== S) return false;
+    if (V.page !== "settings") { S.toast = 0; return false; }   // page changed midway: the notice is dismissed directly (nothing half-transparent left when coming back)
+    S.toast = x; setView(V); };
+  tween("stoast", a0, 1, 0.3 * (1 - a0), step).then(ok => { if (ok) setTimeout(() => { if (me === settingsToast.n) tween("stoast", 1, 0, 0.3, step); }, bad ? 4000 : 2200); });   // fade in over 0.3 s, hold, then fade out over 0.3 s
+}
+function toastIn() {                                             // human-handoff notification: same as the recording, fades in over 0.3 s and drops from 10 px above
+  const to = $("#jtoast"); delete to.dataset.fading; to.style.display = "block"; const t0 = performance.now();
+  const f = () => { if (to.dataset.fading) return; const u = clamp((performance.now() - t0) / 300); to.style.opacity = u;
+    to.style.transform = `translateY(${((1 - ease(u)) * -10).toFixed(1)}px)`; if (u < 1) requestAnimationFrame(f); }; f();
+}
+function fadeToast() {                                          // live mode: the human-handoff notification fades out over 0.3 s (the same duration as in the recording)
+  const to = $("#jtoast"); if (to.style.display === "none" || to.dataset.fading) return;
+  to.dataset.fading = "1"; const t0 = performance.now();
+  const f = () => { const u = clamp((performance.now() - t0) / 300); to.style.opacity = 1 - u;
+    if (u < 1) requestAnimationFrame(f); else { to.style.display = "none"; delete to.dataset.fading; } }; f();
+}
+async function loadSiteCal(id) { D.wz = {...(D.wz || {}), site: await api(`/api/setup/site?site=${encodeURIComponent(id)}`).catch(() => null)};
+  if (D.wz.site && D.wz.site.how) D.lastHow = D.wz.site.how; }
+// live-mode transition animation: the same set of fields as the recording (scan / zA / fdb / tail / reqA), timed on the real clock:
+// job creation → zone grid scan (thin lines fade in, at least 1.5 s) → first check result arrives: grid fades out over 0.5 s, dirty cells get a blue frame fading in over 0.3 s, the log shows the first check →
+// force database screening (all entries → by surface → hit, about 3 s; the log stays at the check entry meanwhile) → later entries such as plan and guardrails expand and fade in → the human-handoff card expands over 0.45 s when opened.
+// the state on screen "plays out" the real backend events along this timeline, without changing or making up any data.
+const FX0 = {n: 0, seen: false, stopping: false, run0: null, res0: null, fdb0: null, stain: null, tail0: null, tailN: 0, reqShow: false, req0: null, ended: null};
+// sess = started_at of the current job (given by the server); waiting / waitOld: Start was clicked and the state of the new job has not arrived (drop the late state of the old job); hide: the job no longer shown after a site change
+const FX = {st: null, raf: false, camT: 0, site: null, sess: null, waiting: false, waitOld: null, hide: null, ...FX0};
+const nowS = () => performance.now() / 1000;
+const SCAN_MIN = 1.5, FDB_LEN = 2.65, SCAN_LEN = 3.5;          // screening starts collapsing at 2.25 s and finishes at 2.65 s; the grid lights up from 0.3 and reaches 1 at 3.5 s
+function scanAt(t) { return FX.run0 == null ? 0 : 0.3 + 0.7 * clamp((t - FX.run0) / SCAN_LEN); }   // recording job_sim: 0.3 + 0.7 · progress
+function resT() { return FX.res0 == null ? null : Math.max(FX.res0, (FX.run0 ?? FX.res0) + SCAN_MIN); }   // the moment the result is "revealed" (scanning runs at least SCAN_MIN)
+function liveView() {
+  const t = nowS(), st = FX.st, log = st.log || [], T = resT();
+  const j = {started: true, task: $("#jtask").value, reqShow: FX.reqShow};
+  const iCheck = log.findIndex(e => e.kind === "check"), iPlan = log.findIndex(isWipePlan);   // only wipe plans query the force library
+  let shown = log, zones = st.zones || {}, view = st;
+  if (T == null || t < T) {                                          // scanning: the result has not been revealed yet
+    shown = iCheck < 0 ? log : log.slice(0, iCheck); zones = {};
+    j.scan = scanAt(t);
+  } else {
+    j.scan = scanAt(T) * clamp(1 - (t - T) / 0.5); j.zA = clamp((t - T) / 0.3);   // result arrived: fade out from the brightness at that time (do not jump to 1 first)
+    if (FX.fdb0 != null && t < FX.fdb0 + FDB_LEN) {                  // screening: the log stays before the plan (a plan awaiting approval also waits until the screening has played)
+      if (iPlan >= 0) shown = log.slice(0, iPlan);
+      j.holdApprove = true;
+      const u = t - FX.fdb0;
+      if (u >= 0) j.fdb = {stain: FX.stain, u: clamp(u / 1.8), a: u < 2.25 ? clamp(u / 0.3) : clamp(1 - (u - 2.25) / 0.15), h: u < 2.25 ? ease(u / 0.25) : 1 - ease((u - 2.4) / 0.25)};
+    } else if (FX.fdb0 == null && iPlan >= 0) { shown = log.slice(0, iPlan); j.holdApprove = true; }   // plan has arrived and screening has not started (liveTick schedules it right away)
+  }
+  if (shown.length > FX.n && (FX.n > 0 || FX.seen)) { FX.tail0 = t; FX.tailN = shown.length - FX.n; }   // the first entry of a new job also expands and fades in
+  FX.n = shown.length; FX.seen = true;
+  if (FX.tail0 != null && t - FX.tail0 < 0.4) j.tail = {n: FX.tailN, h: ease((t - FX.tail0) / 0.25), a: clamp((t - FX.tail0) / 0.35)};
+  if (FX.req0 != null) j.reqA = ease((t - FX.req0) / 0.45);
+  if (shown !== log || zones !== st.zones) view = {...st, log: shown, zones,
+    checks: shown === log ? st.checks : shown.filter(e => e.kind === "check").length};
+  return {j, view};
+}
+function liveJob() { return liveView().j; }
+function fxActive() { const t = nowS(), T = resT();
+  return (FX.run0 != null && (T == null || t < T + 0.6)) || (FX.fdb0 != null && t < FX.fdb0 + FDB_LEN + 0.1) || (FX.tail0 != null && t - FX.tail0 < 0.45) || (FX.req0 != null && t - FX.req0 < 0.5); }
+async function renderLive() { if (V.page !== "jobs" || !FX.st || (V.wiz && V.wiz.a > 0)) { FX.raf = false; return; }
+  const {j, view} = liveView(); await renderJob(j, view); if (fxActive()) requestAnimationFrame(renderLive); else FX.raf = false; }
+function kick() { if (!FX.raf) { FX.raf = true; requestAnimationFrame(renderLive); } }
+async function refreshAfterJob() {                             // a job ended: reports, Today history, logs, spending and the Robots page are all refreshed (no need to reopen the software)
+  const r = await api("/api/reports").catch(() => null); if (r) D.reports = r.reports;
+  const lg = await api("/api/logs/models?limit=400").catch(() => null); if (lg) { D.calls = lg.calls; D.spent = lg.spent_usd ?? D.spent; }
+  buildLogs(); buildReports(); buildRobots();
+  if (["robots", "logs", "reports"].includes(V.page) && !(V.wiz && V.wiz.a > 0)) setView(V);   // the page being viewed is redrawn right after rebuilding (also when the Robots full-screen view is open)
+}
+const isWipePlan = e => e.kind === "plan" && (e.action == null || e.action === "wipe_zone" || e.action === "spot_scrub");
+function liveReset() { Object.assign(FX, FX0, {run0: nowS(), seen: true}); }   // new job: start from scanning, the first log entry also expands
+async function liveTick() {
+  if (!D.meta.job && !(V.wiz && V.wiz.a > 0)) {
+    const st = await api("/api/jobs/state").catch(() => ({status: "idle"}));
+    V.live = st.live;
+    const sa = st.live ? st.live.started_at : null;
+    if (FX.waiting) { if (sa == null || sa === FX.waitOld) st.status = "stale"; else { FX.waiting = false; FX.sess = sa; } }   // the state of the new job has not arrived
+    if (st.status !== "stale" && st.status !== "idle" && !(FX.hide != null && sa === FX.hide)) {
+      FX.hide = null;
+      const t = nowS(), zs = st.zones || {}, log = st.log || [];
+      if (FX.sess == null) {                                         // a job already exists when the software is opened (running or ended): show the current state directly, without replaying scanning and screening
+        FX.sess = sa; Object.assign(FX, FX0, {run0: t - 10, res0: Object.values(zs).some(z => z.status) ? t - 10 : null,
+          fdb0: log.some(isWipePlan) ? t - 10 - FDB_LEN : null});
+      } else if (sa != null && sa !== FX.sess) { FX.sess = sa; liveReset(); }   // a new job started elsewhere
+      if (FX.res0 == null && (Object.values(zs).some(z => z.status) || st.status !== "running")) FX.res0 = t;   // ended without a check result (e-stop / error): scanning also collapses
+      const plan = log.find(isWipePlan);
+      if (FX.fdb0 == null && plan && !plan.lookup && FX.res0 != null) { FX.fdb0 = Math.max(t, resT() + 0.35);
+        const pz = (plan.zones || [])[0], dz = (pz && zs[pz]) || Object.values(zs).find(z => z.status === "residue" || z.status === "uncertain");
+        FX.stain = (dz && dz.stain_type) || "unknown"; }
+      if (st.status === "error" && st.live && st.live.error)
+        st.log = [...log, {who: "Software", kind: "guard", ok: false, text: "job stopped: " + String(st.live.error).split("\n")[0].slice(0, 120), meta: "see the server log"}];
+      FX.st = st;
+      if (st.status !== "running" && FX.ended !== st.run_id) { FX.ended = st.run_id; refreshAfterJob(); }
+      if (V.page === "jobs") { const {j, view} = liveView(); await renderJob(j, view); kick(); $("#jpause").textContent = st.live && st.live.paused ? "Resume" : "Pause"; }
+      if (st.requests && st.requests.length && D.toastFor !== st.run_id && !FX.waiting) {      // human handoff: notification at the top right (together with the webhook); the card expands only when clicked
+        D.toastFor = st.run_id; const r = st.requests[0];
+        $("#jtoast").innerHTML = `<div class="row"><b>Staff check needed</b><span class="muted">${esc(siteById(FX.site || D.meta.site).name)}${r.zones.length ? ` · zone ${esc(r.zones.join(", "))}` : ""}</span><button class="ghost" id="jtview">View</button></div>`;
+        toastIn();
+      }
+    }
+  }
+  setTimeout(liveTick, 700);
+}
+function camTick() {                                           // live camera frame at 5 frames / s (rendered at the same rate in the simulation thread, see session.LiveSession._attach_view)
+  if (liveMode && !D.meta.job && V.page === "jobs" && FX.st && FX.st.status === "running" && !FX.waiting && !(V.wiz && V.wiz.a > 0)
+      && performance.now() - (FX.camT || 0) > 180 && !$("#jcam").dataset.busy) { FX.camT = performance.now(); setImg($("#jcam"), `/api/jobs/frame?t=${Date.now()}`); }
+  if (liveMode && V.page === "robots" && V.robots && V.robots.sel && !(V.wiz && V.wiz.a > 0) && performance.now() - (FX.rzT || 0) > 500 && !$("#rzimg").dataset.busy) {
+    FX.rzT = performance.now(); renderRobots(V.robots); }                // Robots page full-screen view: the image follows while a job runs at this site
+  setTimeout(camTick, 200);
+}
+
+// desktop edition (?app=1): the window holds only the software window, scaled proportionally to the window size; the title bar drags the window, and the dots are window buttons (js_api of pywebview)
+const APP = /[?&]app=1/.test(location.search);
+// the software window (1568 × 718) scales in proportion to the browser / desktop window and is centred: when the window is smaller than the design size the whole thing shrinks instead of cutting off the right and bottom
+function fitApp() { const k = Math.min(innerWidth / 1568, innerHeight / 718), ox = (innerWidth - 1568 * k) / 2, oy = (innerHeight - 718 * k) / 2;
+  $("#desk").style.transform = `translate(${ox.toFixed(2)}px,${oy.toFixed(2)}px) scale(${k.toFixed(4)}) translate(-16px,-14px)`; }
+function wireApp() {
+  document.body.classList.add("app"); addEventListener("resize", fitApp); fitApp();
+  $$(".tbar").forEach(t => t.classList.add("pywebview-drag-region"));
+  document.addEventListener("click", ev => { const i = ev.target.closest(".dots i"); if (!i || !window.pywebview || !window.pywebview.api) return;
+    const k = [...i.parentNode.children].indexOf(i), a = window.pywebview.api; (k === 0 ? a.close : k === 1 ? a.minimize : a.toggle_maximize)(); });
+}
+
+// config error / startup failure: one banner over the whole page (which file, which line, what is wrong), no blank page; when a site other than the current one has errors, only a hint at the top
+function configBanner(errs, blocking, msg) {
+  const rows = (errs || []).slice(0, 6).map(e => `<li><b>${esc(e.file)}</b>${e.line ? `, line ${e.line}` : ""}: ${esc(e.message)}</li>`).join("");
+  const el = document.createElement("div"); el.id = "cfgbanner";
+  el.style.cssText = "position:fixed;left:0;right:0;top:0;z-index:99;background:#fff4e5;color:#7a3e00;border-bottom:1px solid #f0c48a;padding:10px 16px;font:13px/1.45 system-ui,sans-serif;" +
+    (blocking ? "bottom:0;overflow:auto;padding:40px 16px;border:0" : "");
+  el.innerHTML = `<b>${blocking ? "CleanProof cannot start with this configuration." : "A site configuration file has a problem."}</b> ${esc(msg || "")}<ul style="margin:6px 0 0 18px">${rows}</ul>` +
+    `<div style="margin-top:6px">Fix the file, then ${blocking ? "reload this page" : "reload to bring the site back"}.${blocking ? "" : ' <a href="#" id="cfgx">Dismiss</a>'}</div>`;
+  document.body.appendChild(el);
+  const x = el.querySelector("#cfgx"); if (x) x.onclick = ev => { ev.preventDefault(); el.remove(); };
+}
+async function boot() {
+  try { await boot0(); } catch (e) {
+    const cfg = e && e.cfg; configBanner(cfg, true, cfg ? "" : errText(e)); }
+}
+async function boot0() {
+  D.meta = await api("/api/meta");
+  if (D.meta.config_errors && D.meta.config_errors.length) {
+    configBanner(D.meta.config_errors, D.meta.mode === "config_error");
+    if (D.meta.mode === "config_error") return;
+  }
+  D.settings = await api("/api/settings");
+  D.deploy = await api("/api/deploy/checks?recorded=1").catch(() => null);
+  D.siteCal = await api(`/api/setup/site?site=${encodeURIComponent(D.meta.site)}`).catch(() => null);
+  D.reports = (await api("/api/reports")).reports;
+  const lg = await api("/api/logs/models?limit=400"); D.calls = lg.calls; D.spent = lg.spent_usd ?? D.meta.spent_usd;
+  liveMode = D.meta.mode === "live" && !/capture/.test(location.search);   // decide the mode before building pages (the settings page etc. write notes according to it)
+  buildNav(); buildWizard(); buildJobs(); buildRobots(); buildSites(); buildSettings(); buildLogs(); buildReports();
+  if (APP || !/capture/.test(location.search)) wireApp();            // the browser version scales to the window too; the picture in video recording (?capture=1) stays untouched
+  window.setView = setView;
+  READY();
+  if (liveMode) {
+    document.body.classList.add("live");                        // mouse hover / press feedback (when recording, setView sets .hover / .press)
+    const blk = document.createElement("div"); blk.id = "wzblock"; $("#desk").insertBefore(blk, $("#wiz"));
+    if (D.settings.runtime && D.settings.runtime.api_key_set) $("#wz-key").value = KEY_SENT;
+    document.addEventListener("focusin", e => { if (e.target && e.target.id === "wz-key" && e.target.value === KEY_SENT) e.target.select(); });   // dot placeholder: typing replaces the whole thing
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && V.page === "robots" && V.robots && V.robots.sel) rzClose(); });
+    wireLive();
+    let pg = "jobs"; try { pg = sessionStorage.getItem("cp_page") || "jobs"; sessionStorage.removeItem("cp_page"); } catch (e) {}   // back to the Robots page after Add robot finishes and reloads
+    if (!PAGES.some(x => x[0] === pg)) pg = "jobs";
+    await setView(D.meta.setup_done ? {page: pg} : {page: "jobs", mainA: 0, wiz: {a: 1, step: "robot", filter: "All"}}); liveTick(); camTick(); linkTick(); }
+  else await setView({page: "jobs"});
+  window.cpReady = true;                                      // recording / screenshots wait for it: the per-frame view setting starts only after the setView that runs at startup has been drawn
+}
+boot();
+</script>
+</body>
+</html>

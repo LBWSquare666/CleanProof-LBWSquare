@@ -1,0 +1,6 @@
+# Home dining table site (simulation): the small countertop textures are cut to this site's work area (0.34 × 0.60 m), with the same meters-per-pixel scale as the default textures (scripts/make_surface_textures.py)
+dirt:
+  surfaces:
+    sealed_wood:     { texture: assets/surfaces/home_dining/sealed_wood.png }
+    rough_stone:     { texture: assets/surfaces/home_dining/rough_stone.png }
+    stainless_steel: { texture: assets/surfaces/home_dining/stainless_steel.png }

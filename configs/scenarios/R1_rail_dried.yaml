@@ -1,0 +1,8 @@
+name: R1_rail_dried
+description: Multi-platform segment, with a wide wooden handrail on the lobby stairs (30-degree slope, surface sealed_wood) with one dried drink stain and one wet stain; in the video it is wiped by a UR5e on top of the ramp control-cabinet cart (unit mounted square to the surface)
+platform: ur5e              # the robot registered for the site; the simulation models it when a job starts (CLI --platform can override)
+task: { instruction: "Clean the surface.", surface: sealed_wood, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  - { type: dried, zone: C2, offset: [0.002, 0.0], radius: 0.018, seed: 41 }
+  - { type: light, zone: B3, offset: [-0.003, 0.002], radius: 0.014, seed: 42 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

@@ -1,0 +1,7 @@
+include README.md LICENSE
+graft configs
+graft scripts
+graft assets
+prune assets/readme
+prune assets/submission
+global-exclude __pycache__ *.pyc

@@ -1,0 +1,18 @@
+# Countertop and zones (base frame, units m).
+# All geometry below is placeholder (estimated from the reachable range near the UR3e mounting Home), to be updated after on-site measurement:
+#   countertop height, work-area corners and size, fixed camera pose.
+# Zone naming: rows A, B, C... along base +x; columns 1, 2, 3... along base +y.
+
+table:
+  z_surface: 0.0
+work_area:
+  origin_xy: [0.18, -0.18]   # work-area corner with minimum x and minimum y
+  size_xy: [0.24, 0.30]
+  rows: 4
+  cols: 5
+# tool pose while wiping: take the mounting Home pose (tool +Z pointing down), keeping wrist and cable state unchanged
+tool_rotvec: [2.9010442185828293, -1.1874544824069944, 0.008989094351195465]
+# Survey pose: the robot moves out of the fixed camera view. Placeholder = the base joint of the mounting Home turned a further −1.435 rad (TCP turns to the −100° direction),
+# other joints unchanged (wrist 3 stays, cable state unchanged). On the real robot it must be re-taught at the actual camera position.
+survey_q: [-1.1565830385684967, -1.1763106149486084, -1.794198989868164,
+           -1.7396394215025843, 1.5636017322540283, -6.791584618875774]

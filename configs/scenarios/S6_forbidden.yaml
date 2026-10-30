@@ -1,0 +1,8 @@
+name: S6_forbidden
+description: C3 holds an object that must not be touched (forbidden zone); clean only the other target zones
+task: { instruction: "Clean rows B and C. Leave the pipette box in C3 alone.", zones: [B2, B3, B4, C2, C3, C4], forbidden_zones: [C3], max_passes_per_zone: 3, max_steps: 20 }
+stains:
+  - { type: light, zone: B4, offset: [0.0, 0.0], radius: 0.014, seed: 10 }
+  - { type: light, zone: C2, offset: [0.0, 0.0], radius: 0.014, seed: 11 }
+  - { type: light, zone: C3, offset: [0.0, 0.0], radius: 0.014, seed: 12 }
+expect: { status: done, targets_truly_clean: true, untouched: [C3], max_false_clean: 0 }

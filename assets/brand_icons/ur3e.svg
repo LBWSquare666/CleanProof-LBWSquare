@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1024" height="1024">
+<!-- ur3e emblem: original work for the CleanProof demo (Apache-2.0). No third-party trademarks. -->
+<defs><linearGradient id="g" x1="0" y1="0" x2="0.45" y2="0.55"><stop offset="0" stop-color="rgb(217, 107, 47)"/><stop offset="1" stop-color="rgb(246, 176, 122)"/></linearGradient><filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect x="40" y="40" width="920" height="920" rx="220" fill="url(#g)"/><rect x="40" y="40" width="920" height="920" rx="220" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="8"/>
+<g filter="url(#glow)">
+<rect x="160.00" y="800.00" width="400.00" height="70.00" rx="20.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<polyline points="300.00,800.00 360.00,440.00 660.00,300.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="1.000" stroke-width="85.00" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="660.00,300.00 760.00,520.00" fill="none" stroke="rgb(255,255,255)" stroke-opacity="1.000" stroke-width="70.00" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="300.00" cy="800.00" r="75.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="300.00" cy="800.00" r="30.00" fill="rgb(217,107,47)" fill-opacity="1.000"/>
+<circle cx="360.00" cy="440.00" r="75.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="360.00" cy="440.00" r="30.00" fill="rgb(217,107,47)" fill-opacity="1.000"/>
+<circle cx="660.00" cy="300.00" r="75.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<circle cx="660.00" cy="300.00" r="30.00" fill="rgb(217,107,47)" fill-opacity="1.000"/>
+<rect x="660.00" y="540.00" width="210.00" height="80.00" rx="20.00" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+</g>
+</svg>

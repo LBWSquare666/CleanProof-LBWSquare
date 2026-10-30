@@ -1,0 +1,7 @@
+# site registration in the software: car wash, a Flexiv Rizon 4 on top of a floor cleaning cart wipes the slanted side window of a van. Geometry uses the default work area (simulation).
+name: Car wash · van window
+type: Car washes
+surface: glass
+robot: rizon4
+scenarios: [G1_window_glass]
+job_scenario: G1_window_glass

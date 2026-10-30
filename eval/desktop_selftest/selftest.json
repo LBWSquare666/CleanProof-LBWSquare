@@ -1,0 +1,137 @@
+{
+ "plumbing_only": false,
+ "passed": true,
+ "failed": [],
+ "checks": {
+  "sshd_login": {
+   "ok": true,
+   "detail": "temporary sshd 127.0.0.1:56443, temporary key login"
+  },
+  "robot_skill_server_up": {
+   "ok": true,
+   "detail": "mujoco backend 127.0.0.1:18100"
+  },
+  "pair_exit0": {
+   "ok": true,
+   "detail": "install_edge.sh --pair --no-start exit code 0"
+  },
+  "pair_token_copied_0600": {
+   "ok": true,
+   "detail": "robot_token copied to the robot side over SSH, contents match (not printed), mode 0600"
+  },
+  "pair_robot_host_written": {
+   "ok": true,
+   "detail": "W/robot_host = 'robot-pc'"
+  },
+  "pair_unit_written_not_started": {
+   "ok": true,
+   "detail": "tunnel service file written (not started)"
+  },
+  "tunnel_health": {
+   "ok": true,
+   "detail": "GET 127.0.0.1:8100/health through the tunnel → 200 backend=mujoco label=mujoco"
+  },
+  "desktop_auto_picks_paired": {
+   "ok": true,
+   "detail": "launcher prints paired, service command line has no --sim-robot"
+  },
+  "meta_robot_mode_paired": {
+   "ok": true,
+   "detail": "/api/meta robot_mode='paired' (None = operator does not expose the field yet)"
+  },
+  "wizard_connect_three_checks": {
+   "ok": true,
+   "detail": "ids=['skill_server', 'camera', 'adapter']"
+  },
+  "wizard_connect_skill_server": {
+   "ok": true,
+   "detail": "connected · token OK"
+  },
+  "wizard_connect_camera": {
+   "ok": true,
+   "detail": "1 camera stream live"
+  },
+  "wizard_connect_adapter": {
+   "ok": true,
+   "detail": "Spot + Arm · ready · software adapter"
+  },
+  "ui_shots_exit0": {
+   "ok": true,
+   "detail": "desktop_parity_shots.py --paired exit code 0"
+  },
+  "ui_robot_connected_chip": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_toast_seen": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_save_toast_ok": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_save_runtime_unchanged": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_resolved_empty_note": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_job_started": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_paused": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_resumed": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_stopped": {
+   "ok": true,
+   "detail": "status=stopped"
+  },
+  "ui_estop_clicked": {
+   "ok": true,
+   "detail": ""
+  },
+  "ui_estop_health_stopped": {
+   "ok": true,
+   "detail": "/health stopped='operator E-STOP (console)'"
+  },
+  "ui_connect_idle_texts": {
+   "ok": true,
+   "detail": "{\"robot-pc\": true, \"SSH tunnel · ports 8100 and 8101\": true}"
+  },
+  "ui_wizard_texts": {
+   "ok": true,
+   "detail": "{\"connected · token OK\": true, \"1 camera stream live\": true, \"ready · software adapter\": true, \"robot-pc\": true, \"SSH tunnel\": true}"
+  },
+  "skill_server_log_has_skill_calls": {
+   "ok": true,
+   "detail": "POST /skill ×13 (the job really reached the robot side through the tunnel)"
+  },
+  "skill_server_log_has_stop": {
+   "ok": true,
+   "detail": "POST /stop ×1 (Stop / E-stop reached the robot side)"
+  }
+ },
+ "new_run_dirs": [
+  "live-home_dining-mujoco-full-20261029-150502-521577",
+  "live-home_dining-mujoco-full-20261029-150619-043170",
+  "live-home_dining-mujoco-full-20261029-150625-922506"
+ ],
+ "memory_peak_mib": 2265,
+ "seconds": 124,
+ "ports": {
+  "tunnel": [
+   8100,
+   8101
+  ],
+  "operator": 8097
+ }
+}

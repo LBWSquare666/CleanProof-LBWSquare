@@ -1,0 +1,9 @@
+name: H1_dining_dried
+description: Opening / chapter 1 / chapter 3 of the principle segment, with one dried coffee stain and one wet coffee stain on a home dining table (wood), whole-surface scan (no zones named). Several jobs are recorded in the same scenario; the opening and chapter 3 use the job where "Cosmos first judges it wet → 5 → 10 → 15 N", chapter 1 uses the job where "judged dry → 12 N, clean in one pass". The expect line is for Nemotron + VLM (it identifies the stain type, and the force table starts dried coffee on sealed_wood at 12 N); the rule planner with classical vision does not identify the stain type, starts at 5 N and adds 5 N per pass, cannot reach 12 N within the 3-pass limit, and ends with needs_human, which is not counted as an expected failure of this scenario
+site: home_dining
+platform: spot_arm
+task: { instruction: "Clean the table.", surface: sealed_wood, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  - { type: dried, zone: C3, offset: [0.0, 0.0], radius: 0.022, seed: 3 }
+  - { type: light, zone: B2, offset: [0.02, 0.02], radius: 0.016, seed: 4 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

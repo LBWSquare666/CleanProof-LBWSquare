@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" font-family="Inter, 'DejaVu Sans', Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect x="0" y="0" width="1000" height="560" fill="#ffffff"/>
+<rect x="20" y="16" width="960" height="128" rx="12" fill="#f4f5fa" stroke="#c9cbd1" stroke-width="1"/>
+<text x="38" y="40" font-size="12.5" fill="#52514e"><tspan font-weight="700">CLOUD</tspan><tspan fill="#8a8984" font-size="12">   ·  Nebius Token Factory</tspan></text>
+<rect x="250" y="52" width="260" height="76" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<circle cx="270" cy="74" r="9.5" fill="#2a78d6"/>
+<text x="270" y="78.3" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+<text x="286" y="79" font-size="15" font-weight="600" fill="#1f2328" text-anchor="start">Nemotron 3 Super</text>
+<text x="264" y="101" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">plans each step (JSON schema,</text>
+<text x="264" y="118" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">reasoning off)</text>
+<rect x="560" y="52" width="260" height="76" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<circle cx="580" cy="74" r="9.5" fill="#2a78d6"/>
+<text x="580" y="78.3" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">6</text>
+<text x="596" y="79" font-size="15" font-weight="600" fill="#1f2328" text-anchor="start">Nemotron 3 Ultra</text>
+<text x="574" y="101" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">audits each finished job</text>
+<text x="574" y="118" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">(reasoning on)</text>
+<rect x="20" y="172" width="960" height="214" rx="12" fill="#f3f8f5" stroke="#c9cbd1" stroke-width="1"/>
+<text x="38" y="196" font-size="12.5" fill="#52514e"><tspan font-weight="700">GPU WORKSTATION</tspan><tspan fill="#8a8984" font-size="12">   ·  on site, local NVIDIA GPU</tspan></text>
+<rect x="40" y="210" width="280" height="76" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<circle cx="60" cy="232" r="9.5" fill="#2a78d6"/>
+<text x="60" y="236.3" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+<circle cx="82" cy="232" r="9.5" fill="#2a78d6"/>
+<text x="82" y="236.3" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">5</text>
+<text x="98" y="237" font-size="14.5" font-weight="600" fill="#1f2328" text-anchor="start">Cosmos 3 Nano on vLLM</text>
+<text x="54" y="259" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">labels every zone: clean / residue /</text>
+<text x="54" y="276" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">uncertain, stain type, likely cause</text>
+<rect x="40" y="298" width="280" height="70" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<text x="54" y="325" font-size="14.5" font-weight="600" fill="#1f2328" text-anchor="start">Classical color difference</text>
+<text x="54" y="347" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">each zone vs the site's clean-</text>
+<text x="54" y="364" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">surface reference, fused with Cosmos</text>
+<rect x="360" y="210" width="340" height="158" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<text x="374" y="237" font-size="15" font-weight="600" fill="#1f2328" text-anchor="start">Orchestrator</text>
+<text x="374" y="259" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">agent loop and per-zone state</text>
+<text x="374" y="276" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">guardrail: force database, surface limits,</text>
+<text x="374" y="293" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">   forbidden zones, pass and step budgets</text>
+<text x="374" y="310" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">report with per-zone images, force traces</text>
+<text x="374" y="327" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">model-call log, cost ledger, spending cap</text>
+<circle cx="668" cy="232" r="9.5" fill="#2a78d6"/>
+<text x="668" y="236.3" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+<rect x="740" y="210" width="220" height="158" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<text x="754" y="237" font-size="15" font-weight="600" fill="#1f2328" text-anchor="start">Operator software</text>
+<text x="754" y="259" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">setup wizard, jobs,</text>
+<text x="754" y="276" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">settings, logs, reports,</text>
+<text x="754" y="293" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">plan approval, E-stop</text>
+<text x="754" y="310" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">browser or Linux</text>
+<text x="754" y="327" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">desktop app</text>
+<rect x="20" y="414" width="960" height="130" rx="12" fill="#faf6f1" stroke="#c9cbd1" stroke-width="1"/>
+<text x="38" y="438" font-size="12.5" fill="#52514e"><tspan font-weight="700">ROBOT COMPUTER</tspan><tspan fill="#8a8984" font-size="12">   ·  skill server and camera service listen on localhost</tspan></text>
+<rect x="360" y="452" width="150" height="72" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<text x="374" y="479" font-size="14" font-weight="600" fill="#1f2328" text-anchor="start">Camera service</text>
+<text x="374" y="501" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">site camera frames</text>
+<rect x="530" y="452" width="210" height="72" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<circle cx="550" cy="474" r="9.5" fill="#2a78d6"/>
+<text x="550" y="478.3" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+<text x="566" y="479" font-size="14.5" font-weight="600" fill="#1f2328" text-anchor="start">Skill server</text>
+<text x="544" y="501" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">whitelisted skills, force</text>
+<text x="544" y="518" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">control, safety limits</text>
+<rect x="780" y="452" width="180" height="72" rx="8" fill="#ffffff" stroke="#9aa0aa" stroke-width="1.2"/>
+<text x="794" y="479" font-size="14.5" font-weight="600" fill="#1f2328" text-anchor="start">Robot</text>
+<text x="794" y="501" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">RTDE adapter for UR arms,</text>
+<text x="794" y="518" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">adapters for other robots</text>
+<path d="M430,210 L430,128" fill="none" stroke="#52514e" stroke-width="1.6" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<text x="438" y="162" font-size="11.5" font-weight="400" fill="#52514e" text-anchor="start">OpenAI-compatible API</text>
+<path d="M640,210 L640,128" fill="none" stroke="#52514e" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M320,248 L360,248" fill="none" stroke="#52514e" stroke-width="1.6" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<path d="M320,333 L360,333" fill="none" stroke="#52514e" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M700,289 L740,289" fill="none" stroke="#52514e" stroke-width="1.6" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<path d="M435,452 L435,368" fill="none" stroke="#52514e" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M610,368 L610,452" fill="none" stroke="#52514e" stroke-width="1.6" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<text x="620" y="404" font-size="11.5" font-weight="400" fill="#52514e" text-anchor="start">encrypted SSH tunnel · shared token</text>
+<path d="M740,488 L780,488" fill="none" stroke="#52514e" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="40" y="470" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">The skill server is the only process</text>
+<text x="40" y="487" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">that writes to the robot controller.</text>
+<text x="40" y="512" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">UR arms: shadow → dry run → full,</text>
+<text x="40" y="529" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">armed by a person on site.</text>
+</svg>

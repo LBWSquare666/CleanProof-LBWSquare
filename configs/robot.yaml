@@ -1,0 +1,123 @@
+# Robot and force-control parameters. Initial values come from the real-robot conventions from our earlier UR3e force-control work, all in execution units
+# (the teach pendant speed slider is fixed at 100%, so the speed limits here are the speeds the robot actually runs at, with no further scaling).
+# The three backends share this file: mujoco (simulation) / ursim (local docker) / ur3e (real robot, connected only on robot-pc by the skill server).
+
+backend: mujoco
+
+hosts:
+  ursim: 127.0.0.1
+  ur3e: 10.20.30.101
+# the ursim backend only accepts addresses with these prefixes, to avoid connecting to a real robot by mistake
+ursim_allowed_prefixes: ["127.", "localhost", "172.17.", "172.18.", "172.19."]
+
+control_hz: 250
+speedl: { acceleration: 0.09, time: 0.02 }
+# Controller watchdog (ur_rtde setWatchdog): if the skill server crashes / is killed / loses the robot connection, the controller shuts down the control script within 1/watchdog_hz seconds,
+# instead of continuing the last speedL. The real controller is kicked by a separate thread at 3× the rate; 0 = off (never turn it off on the real robot)
+rtde: { watchdog_hz: 10 }
+
+startup:
+  require_robot_mode: 7
+  require_speed_fraction: 1.0
+  speed_fraction_tol: 0.01
+  expected_tcp_offset: [0.0024, 0.00241, 0.25961, 0.0, 0.0, 0.0]   # teach pendant TCP withpolisher
+  tcp_offset_tol_m: 0.002
+  expected_payload_kg: 0.88                                        # teach pendant Payload withpolisherhh
+  payload_tol_kg: 0.05
+
+# Software tare before wiping: take readings over window_s while hovering at rest (existing real-robot rule)
+tare: { window_s: 0.3, max_abs_mean_n: 2.0, max_std_n: 0.5, max_speed_m_s: 0.01 }
+
+# mass-damper teacher law: v ← (M·v + dt·(F_ref − F_n)) / (M + B·dt), outputs only translation along tool +Z
+teacher:
+  mass_kg: 6.6667
+  damping_ns_m: 833.33
+  max_normal_speed_m_s: 0.0015
+  max_normal_accel_m_s2: 0.015
+  ramp_up_n_s: 5.0
+  ramp_down_n_s: 10.0
+  f_ref_clip_n: [5.0, 20.0]
+
+contact:
+  enter_force_n: 3.0
+  exit_force_n: 2.0
+  enter_duration_s: 0.1
+  exit_duration_s: 0.1
+  max_confirm_tcp_speed_m_s: 0.01
+  push_in_min_m_s: 0.001
+  push_in_window_s: 0.3
+  stable_tolerance_n: 0.75
+  stable_duration_s: 0.25
+  ramp_grace_s: 0.3
+  ramp_timeout_s: 5.0
+  release_clear_force_n: 3.0
+  release_clear_duration_s: 0.1
+  release_suppress_s: 0.5
+
+motion:
+  approach_max_linear_m_s: 0.003
+  approach_timeout_s: 12.0
+  contact_max_tangent_m_s: 0.009     # value verified on the real robot; speeding up to shorten the demo requires on-site acceptance level by level
+  contact_max_angular_rad_s: 0.03
+  path_tracking_gain_1_s: 2.0
+  retract_m_s: 0.003                 # automatic retract (new CleanProof logic, pending real-robot acceptance)
+  retract_max_m: 0.02
+  hover_above_surface_m: 0.012
+  lift_height_m: 0.04
+  movel_speed_m_s: 0.03
+  movel_accel_m_s2: 0.045
+  movej_speed_rad_s: 0.18
+  movej_accel_rad_s2: 0.108
+
+safety:
+  free_max_normal_force_n: 12.0      # free space / hovering: above this it enters a hold that only allows lifting off
+  contact_max_normal_force_n: 24.0   # in contact: above this it latches FAULT (about 80% of sensor range)
+  max_tangent_force_n: 20.0
+  max_torque_nm: 3.0
+  negative_baseline_n: -3.0
+  negative_baseline_s: 0.5
+  max_horizontal_radius_m: 0.49      # the real robot once triggered a protective stop at 0.53 m
+  min_z_m: -0.05
+  max_linear_speed_m_s: 0.05
+  min_elbow_margin_deg: 15.0
+  max_wrist3_travel_rad: 3.14159
+  command_timeout_s: 0.5
+
+# Tool and wrist camera (pad radius and D405 mounting position are placeholders, to be measured on site)
+tool:
+  pad_radius_m: 0.03
+wrist_camera:
+  pos_in_flange: [0.0, -0.06, 0.16]   # camera optical center in the flange frame, optical axis along tool +Z
+  closeup_tcp_height_m: 0.08          # TCP height above the countertop for close-up views
+
+# Skill budget
+skills:
+  max_contact_losses: 3
+  zone_timeout_s: 240
+  trace_every_ticks: 10              # 250 Hz / 10 = 25 Hz recording
+  forbidden_margin_extra_m: 0.005    # extra clearance between pad edge and forbidden zone when adjacent to one
+  default_margin_ratio: 0.3          # default distance from pad center to zone border = 0.3 × pad radius
+
+# Target force (since v8 the values come from the stain × surface force table configs/force_table.yaml): the skill server only accepts values within [min_n, max_n].
+# 5 N is the lower limit of the control law (contact confirmation 3 N, teacher law F_ref clamped to [5, 20] N); 15 N is the global cap of the force table.
+# real_validated_max_n: extra cap for the ur3e backend; only 5 N has real-robot trial data; on-site staff raise it here after accepting 10 N and 15 N level by level.
+force_limits: { min_n: 5.0, max_n: 15.0, real_validated_max_n: 5.0 }
+# old three levels: only for reading run files from before v8 (benchmark_v1, v7 video shots), not used for new tasks
+force_presets_n: { light: 5.0, medium: 10.0, firm: 15.0 }
+
+# installed Home (teach pendant Move > Home, read via RTDE on 2026-09-18; wrist 3 is about −389°, one full turn wrapped)
+home_q: [0.2784169614315033, -1.1763106149486084, -1.794198989868164,
+         -1.7396394215025843, 1.5636017322540283, -6.791584618875774]
+
+arming:
+  ttl_s: 300          # ur3e backend: authorization duration after manual arming
+  # the authorization file is written on robot-pc by on-site staff with `python -m cleanproof.robot.commissioning arm --by <name>`; the code only reads it
+
+# staged rollout of the rtde backend (shadow → dry_run → full), see cleanproof/robot/commissioning.py
+commissioning:
+  gate_path: ~/.local/state/cleanproof/commissioning.json     # gate evidence file (registered per backend)
+  arming_token_path: ~/.local/state/cleanproof/arming.json     # motion authorization file (ur3e)
+  ur3e_allowed_hostnames: ["robot-pc"]                             # only allow creating the ur3e control interface on the robot host
+  dry_run:
+    max_speed_scale: 0.3        # speed scale cap (acceleration × scale²), consistent with LIM-VLA policy_dry_run
+    min_clearance_m: 0.03       # TCP must not go below countertop + this height; contact skills are always rejected

@@ -1,0 +1,7 @@
+name: W1_wall_marker
+description: multi-platform segment - two marker scribbles on a vertical wall (white glossy wall, surface treated as whiteboard); in the video it is wiped by a wall-mounted UR5e (robot + work-surface cell mounted facing each other)
+task: { instruction: "Clean the surface.", surface: whiteboard, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  - { type: marker, zone: C3, offset: [0.0, 0.0], radius: 0.020, seed: 31 }
+  - { type: marker, zone: B2, offset: [0.003, -0.003], radius: 0.016, seed: 32 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

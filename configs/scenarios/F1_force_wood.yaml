@@ -1,0 +1,7 @@
+name: F1_force_wood
+description: v8 chapter 1 - two stains on the wood-grain countertop, B3 wet coffee (5 N in the table) and C2 marker stroke (10 N in the table), each starting from the force table
+task: { instruction: "Clean zones B2, B3, C2 and C3.", surface: sealed_wood, zones: [B2, B3, C2, C3], max_passes_per_zone: 3, max_steps: 20 }
+stains:
+  - { type: light, zone: B3, offset: [0.002, -0.003], radius: 0.016, seed: 11 }
+  - { type: marker, shape: strokes, zone: C2, offset: [0.0, 0.0], length: 0.036, angle_deg: 80, seed: 12 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

@@ -1,0 +1,62 @@
+{
+ "sealed_wood": {
+  "texture": "assets/surfaces/sealed_wood.png",
+  "source": {
+   "file": "grey_oak_veneer_01/grey_oak_veneer_01_diff_4k.jpg",
+   "size_m": 1.0,
+   "origin_m": [
+    0.0,
+    0.0
+   ]
+  },
+  "shape": [
+   480,
+   600
+  ],
+  "mean_rgb": [
+   205.0,
+   183.4,
+   163.0
+  ]
+ },
+ "rough_stone": {
+  "texture": "assets/surfaces/rough_stone.png",
+  "source": {
+   "file": "acg_granite002a/Granite002A_4K-JPG_Color.jpg",
+   "size_m": 0.4,
+   "origin_m": [
+    0.0,
+    0.0
+   ]
+  },
+  "shape": [
+   480,
+   600
+  ],
+  "mean_rgb": [
+   178.5,
+   175.0,
+   170.7
+  ]
+ },
+ "stainless_steel": {
+  "texture": "assets/surfaces/stainless_steel.png",
+  "source": {
+   "file": "acg_metal011/Metal011_4K-JPG_Color.jpg",
+   "size_m": 1.0,
+   "origin_m": [
+    0.0,
+    0.0
+   ]
+  },
+  "shape": [
+   480,
+   600
+  ],
+  "mean_rgb": [
+   154.7,
+   159.2,
+   163.9
+  ]
+ }
+}

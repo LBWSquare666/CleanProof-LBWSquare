@@ -1,0 +1,7 @@
+# site registration in the software (Sites page, site dropdown for new tasks). Geometry, cameras, force limits etc. override the default config through the other YAML files in the same directory.
+name: Home · dining table
+type: Homes
+surface: sealed_wood
+robot: spot_arm
+scenarios: [H1_dining_dried, H2_wood_coffee, H3_stone_wine, H4_steel_grease, H5_dining_permanent]
+job_scenario: H5_dining_permanent        # default job for local live runs (--live)

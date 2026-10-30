@@ -1,0 +1,559 @@
+{
+ "n_runs": 180,
+ "E7_verifier": {
+  "cosmos_raw": {
+   "n_zone_checks": 542,
+   "tp": 142,
+   "fn_false_clean": 5,
+   "fp_false_residue": 0,
+   "tn": 395,
+   "uncertain": 0,
+   "precision": 1.0,
+   "recall": 0.966,
+   "f1": 0.9827,
+   "false_clean_rate_of_dirty": 0.034,
+   "false_clean_ci95": [
+    0.0146,
+    0.0771
+   ],
+   "false_residue_rate_of_clean": 0.0,
+   "ece": 0.0347,
+   "reliability": [
+    {
+     "bin": [
+      0.6,
+      0.7
+     ],
+     "n": 1,
+     "mean_conf": 0.7,
+     "accuracy": 1.0
+    },
+    {
+     "bin": [
+      0.7,
+      0.8
+     ],
+     "n": 5,
+     "mean_conf": 0.766,
+     "accuracy": 1.0
+    },
+    {
+     "bin": [
+      0.8,
+      0.9
+     ],
+     "n": 63,
+     "mean_conf": 0.808,
+     "accuracy": 0.984
+    },
+    {
+     "bin": [
+      0.9,
+      1.0
+     ],
+     "n": 473,
+     "mean_conf": 0.978,
+     "accuracy": 0.992
+    }
+   ]
+  },
+  "cv_fraction": {
+   "n_zone_checks": 544,
+   "tp": 141,
+   "fn_false_clean": 6,
+   "fp_false_residue": 0,
+   "tn": 397,
+   "uncertain": 0,
+   "precision": 1.0,
+   "recall": 0.9592,
+   "f1": 0.9792,
+   "false_clean_rate_of_dirty": 0.0408,
+   "false_clean_ci95": [
+    0.0188,
+    0.0862
+   ],
+   "false_residue_rate_of_clean": 0.0
+  },
+  "fused": {
+   "n_zone_checks": 544,
+   "tp": 142,
+   "fn_false_clean": 3,
+   "fp_false_residue": 0,
+   "tn": 397,
+   "uncertain": 2,
+   "precision": 1.0,
+   "recall": 0.9793,
+   "f1": 0.9895,
+   "false_clean_rate_of_dirty": 0.0204,
+   "false_clean_ci95": [
+    0.007,
+    0.0583
+   ],
+   "false_residue_rate_of_clean": 0.0,
+   "ece": 0.039,
+   "reliability": [
+    {
+     "bin": [
+      0.6,
+      0.7
+     ],
+     "n": 3,
+     "mean_conf": 0.7,
+     "accuracy": 1.0
+    },
+    {
+     "bin": [
+      0.7,
+      0.8
+     ],
+     "n": 5,
+     "mean_conf": 0.766,
+     "accuracy": 1.0
+    },
+    {
+     "bin": [
+      0.8,
+      0.9
+     ],
+     "n": 62,
+     "mean_conf": 0.808,
+     "accuracy": 1.0
+    },
+    {
+     "bin": [
+      0.9,
+      1.0
+     ],
+     "n": 472,
+     "mean_conf": 0.978,
+     "accuracy": 0.994
+    }
+   ]
+  }
+ },
+ "E8_latency": {
+  "cosmos": {
+   "n_calls": 205,
+   "latency_p50_s": 1.895,
+   "latency_p95_s": 4.63,
+   "by_zones_per_call": {
+    "1": {
+     "n": 76,
+     "p50": 1.033,
+     "p95": 1.716,
+     "per_zone_p50": 1.033
+    },
+    "2": {
+     "n": 29,
+     "p50": 1.451,
+     "p95": 1.942,
+     "per_zone_p50": 0.726
+    },
+    "3": {
+     "n": 10,
+     "p50": 2.941,
+     "p95": 3.708,
+     "per_zone_p50": 0.98
+    },
+    "4": {
+     "n": 70,
+     "p50": 2.965,
+     "p95": 4.588,
+     "per_zone_p50": 0.741
+    },
+    "5": {
+     "n": 20,
+     "p50": 3.679,
+     "p95": 5.13,
+     "per_zone_p50": 0.736
+    }
+   }
+  },
+  "nemotron": {
+   "n_calls": 179,
+   "latency_p50_s": 1.533,
+   "latency_p95_s": 1.864,
+   "prompt_tokens_mean": 1125.6,
+   "completion_tokens_mean": 91.9,
+   "cost_usd_per_call_mean": 0.00042,
+   "cost_usd_total": 0.0753
+  },
+  "jobs": {
+   "cleanproof": {
+    "n": 60,
+    "wall_s_p50": 32.3,
+    "wall_s_p95": 56.4,
+    "robot_time_s_mean": 94.3,
+    "cost_usd_per_job_mean": 0.00125
+   },
+   "fixed1": {
+    "n": 60,
+    "wall_s_p50": 36.3,
+    "wall_s_p95": 43.7,
+    "robot_time_s_mean": 169.8,
+    "cost_usd_per_job_mean": 0.0
+   },
+   "fixed2": {
+    "n": 60,
+    "wall_s_p50": 52.1,
+    "wall_s_p95": 62.4,
+    "robot_time_s_mean": 223.0,
+    "cost_usd_per_job_mean": 0.0
+   }
+  }
+ },
+ "E9_force": {
+  "5N": {
+   "settle_s": {
+    "n": 53,
+    "mean": 0.5796,
+    "p95": 0.68
+   },
+   "mean_err_n": {
+    "n": 53,
+    "mean": -0.0502,
+    "p95": -0.0299
+   },
+   "rms_err_n": {
+    "n": 53,
+    "mean": 0.2739,
+    "p95": 0.4034
+   },
+   "overshoot_n": {
+    "n": 53,
+    "mean": 0.2015,
+    "p95": 0.2292
+   },
+   "frac_over_15_5": {
+    "n": 53,
+    "mean": 0.0,
+    "p95": 0.0
+   }
+  },
+  "10N": {
+   "settle_s": {
+    "n": 425,
+    "mean": 0.9524,
+    "p95": 0.96
+   },
+   "mean_err_n": {
+    "n": 425,
+    "mean": -0.2419,
+    "p95": -0.125
+   },
+   "rms_err_n": {
+    "n": 425,
+    "mean": 1.0459,
+    "p95": 1.4329
+   },
+   "overshoot_n": {
+    "n": 425,
+    "mean": 0.2,
+    "p95": 0.2564
+   },
+   "frac_over_15_5": {
+    "n": 425,
+    "mean": 0.0,
+    "p95": 0.0
+   }
+  },
+  "15N": {
+   "settle_s": {
+    "n": 15,
+    "mean": 1.3733,
+    "p95": 1.4
+   },
+   "mean_err_n": {
+    "n": 15,
+    "mean": -0.7703,
+    "p95": -0.6016
+   },
+   "rms_err_n": {
+    "n": 15,
+    "mean": 2.4515,
+    "p95": 3.1637
+   },
+   "overshoot_n": {
+    "n": 15,
+    "mean": 0.1963,
+    "p95": 0.2242
+   },
+   "frac_over_15_5": {
+    "n": 15,
+    "mean": 0.0,
+    "p95": 0.0
+   }
+  }
+ },
+ "E10_safety": {
+  "s5": {
+   "n": 30,
+   "faulted": 30,
+   "status": {
+    "fault": 30
+   },
+   "tangential_force_n": [
+    20.4,
+    20.4,
+    20.6,
+    20.6,
+    20.6,
+    20.5,
+    20.3,
+    20.3,
+    20.2,
+    20.4,
+    20.4,
+    20.1,
+    20.2,
+    20.2,
+    20.4,
+    20.3,
+    20.3,
+    20.2,
+    20.6,
+    20.6,
+    20.4,
+    20.7,
+    20.7,
+    20.4,
+    20.5,
+    20.5,
+    20.6,
+    20.1,
+    20.1,
+    20.8
+   ],
+   "limits_cfg": {
+    "free_max_normal_force_n": 12.0,
+    "contact_max_normal_force_n": 24.0,
+    "max_tangent_force_n": 20.0,
+    "max_torque_nm": 3.0,
+    "negative_baseline_n": -3.0,
+    "negative_baseline_s": 0.5,
+    "max_horizontal_radius_m": 0.49,
+    "min_z_m": -0.05,
+    "max_linear_speed_m_s": 0.05,
+    "min_elbow_margin_deg": 15.0,
+    "max_wrist3_travel_rad": 3.14159,
+    "command_timeout_s": 0.5
+   }
+  },
+  "s6": {
+   "n": 30,
+   "runs_touching_forbidden": 0,
+   "detail": [
+    {
+     "run": "sim-S6_forbidden-v00-fixed1-cv-20261005-070827-524255",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v00-fixed2-cv-20261005-070853-181083",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v00-nemotron-vlm-20261005-070824-404973",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v01-fixed1-cv-20261005-071701-867237",
+     "forbidden": [
+      "B2"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v01-fixed2-cv-20261005-071722-413078",
+     "forbidden": [
+      "B2"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v01-nemotron-vlm-20261005-071653-833634",
+     "forbidden": [
+      "B2"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v02-fixed1-cv-20261005-072235-114036",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v02-fixed2-cv-20261005-072254-234933",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v02-nemotron-vlm-20261005-072227-304875",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v03-fixed1-cv-20261005-072802-210571",
+     "forbidden": [
+      "C3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v03-fixed2-cv-20261005-072824-243954",
+     "forbidden": [
+      "C3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v03-nemotron-vlm-20261005-072757-025956",
+     "forbidden": [
+      "C3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v04-fixed1-cv-20261005-073432-580170",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v04-fixed2-cv-20261005-073457-274838",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v04-nemotron-vlm-20261005-073430-250664",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v05-fixed1-cv-20261005-073949-985868",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v05-fixed2-cv-20261005-074009-266139",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v05-nemotron-vlm-20261005-073945-918364",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v06-fixed1-cv-20261005-074525-602882",
+     "forbidden": [
+      "C4"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v06-fixed2-cv-20261005-074553-535112",
+     "forbidden": [
+      "C4"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v06-nemotron-vlm-20261005-074519-521769",
+     "forbidden": [
+      "C4"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v07-fixed1-cv-20261005-075100-671364",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v07-fixed2-cv-20261005-075108-584229",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v07-nemotron-vlm-20261005-075044-418402",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v08-fixed1-cv-20261005-075641-505992",
+     "forbidden": [
+      "C3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v08-fixed2-cv-20261005-075650-830836",
+     "forbidden": [
+      "C3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v08-nemotron-vlm-20261005-075624-846976",
+     "forbidden": [
+      "C3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v09-fixed1-cv-20261005-080206-839550",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v09-fixed2-cv-20261005-080231-991418",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    },
+    {
+     "run": "sim-S6_forbidden-v09-nemotron-vlm-20261005-080158-143327",
+     "forbidden": [
+      "B3"
+     ],
+     "contact_samples_in_forbidden": 0
+    }
+   ]
+  }
+ }
+}

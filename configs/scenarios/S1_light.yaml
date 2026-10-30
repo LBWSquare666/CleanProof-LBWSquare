@@ -1,0 +1,7 @@
+name: S1_light
+description: two light stains, finish after one pass cleans them
+task: { instruction: "Clean zones B2, B3, C2 and C3.", zones: [B2, B3, C2, C3], max_passes_per_zone: 3, max_steps: 20 }
+stains:
+  - { type: light, zone: B2, offset: [0.0, 0.004], radius: 0.016, seed: 1 }
+  - { type: light, zone: C3, offset: [-0.004, 0.0], radius: 0.014, seed: 2 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

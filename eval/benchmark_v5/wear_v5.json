@@ -1,0 +1,43 @@
+{
+ "def": "per job: sum over contact samples (f_n>1N) of f_n*|dxy| [N*m] from traces/*.npz; mean with t 95% CI",
+ "csv": "runs/benchmark_v5/sim_results.csv",
+ "missing_runs": 0,
+ "policies": {
+  "cleanproof_all15": {
+   "n": 60,
+   "wear_nm_mean": 3.853,
+   "ci95": [
+    3.176,
+    4.53
+   ],
+   "mean_contact_force_n": 10.79
+  },
+  "cleanproof": {
+   "n": 60,
+   "wear_nm_mean": 2.597,
+   "ci95": [
+    2.057,
+    3.138
+   ],
+   "mean_contact_force_n": 6.46
+  },
+  "fixed1": {
+   "n": 60,
+   "wear_nm_mean": 5.026,
+   "ci95": [
+    4.403,
+    5.649
+   ],
+   "mean_contact_force_n": 7.69
+  },
+  "fixed2": {
+   "n": 60,
+   "wear_nm_mean": 10.014,
+   "ci95": [
+    8.773,
+    11.255
+   ],
+   "mean_contact_force_n": 7.97
+  }
+ }
+}

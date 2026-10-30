@@ -1,0 +1,107 @@
+# Randomized simulation benchmark benchmark_v1.
+# Pre-registered: parameter ranges, all seeds and the group table are fixed before the run; after results come in, seeds are never changed and no row is dropped.
+# If the generator / prompts / parameters change later, use a fresh set of seeds (new file or new name); the old results are void.
+#
+# Scenarios are generated deterministically by cleanproof/sim/scenario_random.py from (family, seed), in the same format as configs/scenarios/*.yaml.
+# 60 runs per policy = 6 families × 10 variants; split into 5 groups × 12 runs (group number = variant index // 2 + 1, 2 per family in each group).
+# Units: meters. Zone 60 mm × 60 mm; polishing pad radius 30 mm (configs/robot.yaml tool.pad_radius_m).
+
+name: benchmark_v1
+created: 2026-10-05
+master_seed: 20261005          # only used to generate the variants seed table below; the generator itself only reads variants[].seed
+n_variants_per_family: 10
+groups: 5
+
+policies:                       # three policies, same config as the existing rows in eval/sim_results.csv (source=render)
+  cleanproof: { policy: nemotron, verifier: vlm }    # CleanProof: Nemotron decisions (Token Factory) + Cosmos visual verification (local vLLM 8001)
+  fixed1:     { policy: fixed1,   verifier: cv }     # blind wipe, 1 pass (medium, zigzag), no verification
+  fixed2:     { policy: fixed2,   verifier: cv }     # Blind wipe ×2
+
+common:
+  # work-area zones verified reachable and used by all 6 existing scenarios: rows B/C × columns 2-4
+  zone_pool: [B2, B3, B4, C2, C3, C4]
+  # candidate 2×2 blocks for the task area (S1-S4)
+  task_blocks:
+    - [B2, B3, C2, C3]
+    - [B3, B4, C3, C4]
+  max_passes_per_zone: 3
+  max_steps: 20
+  # Stain validity: a stain (cells with concentration > blob_level_min) must lie entirely inside its zone, at least the type's type_gap_m from the zone border:
+  #   light / permanent 2 mm; dried 8 mm -- dried stains come off slowly (rate 25/m, F0 = 7 N), and one zigzag pass over a corner cell slides
+  #   only about 26 mm, so one firm pass does not clean it, and once the escalation budget (light→medium→firm, 3 passes) is used up it asks a human; 8 mm or more from the edge
+  #   gives a slide distance >= 48 mm, which one firm pass can clean (exp(-25·0.048·1.6) ≈ 0.15 < visibility threshold 0.25).
+  # On the side next to a forbidden zone, leave an extra forbidden_gap_m (pad center >= pad radius + 5 mm from the forbidden zone edge, so the pad edge stays 5 mm away from it;
+  #   another 5 mm makes the slide distance of cells there >= 33 mm, so one light pass cleans them).
+  edge_gap_m: 0.002
+  type_gap_m: { light: 0.002, dried: 0.008, permanent: 0.002 }
+  forbidden_gap_m: 0.010
+  blob_level_min: 0.05
+  # radius inflation factor when sampling offsets (add_blob irregular edges reach about 1.35 × radius), to be rechecked later against real stain maps
+  edge_factor: 1.35
+  stain_seed_range: [1, 1000000]
+  max_resample: 50               # max number of resamples with the same rng when the offset is invalid (exceeding it raises an error, no silent relaxing)
+
+families:
+  S1_light:
+    description: 1-2 light stains, finish after one pass cleans them
+    n_stains: [1, 2]
+    stains: { type: light, radius_m: [0.010, 0.022] }
+    expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }
+  S2_dried:
+    description: 1 dried stain (light force cannot remove it, needs a higher level) + 0-1 light stains
+    n_stains: [1, 2]
+    first: { type: dried, radius_m: [0.014, 0.022] }
+    others: { type: light, radius_m: [0.010, 0.018] }
+    expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }
+  S3_permanent:
+    description: 1 stain that cannot be removed (ask a human after the force levels are used up) + 0-1 light stains; 3 task zones
+    n_zones: 3                   # randomly drop 1 zone from the 2×2 block
+    n_stains: [1, 2]
+    first: { type: permanent, radius_m: [0.008, 0.014] }
+    others: { type: light, radius_m: [0.010, 0.018] }
+    expect: { status: needs_human, human_zones: [<permanent_zone>], max_false_clean: 0 }
+  S4_new_spill:
+    description: Someone spills a new stain in another target zone mid-run; the final recheck should catch it
+    n_initial: [1, 2]
+    stains: { type: light, radius_m: [0.010, 0.018] }
+    # at_step is random in [1, n_initial]: k means the spill happens after the k-th action finishes (CleanProof only finishes after wiping n_initial stains, so the spill is always in time)
+    new_spill: { type: light, radius_m: [0.010, 0.016], at_step: [1, "<n_initial>"], zone: a target zone with no initial stain }
+    expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }
+  S5_obstacle:
+    description: A 20 mm obstacle in the zone; any wipe path hits it from the side and the safety layer latches a stop
+    zone: 1 random from zone_pool
+    max_steps: 10
+    stain: { type: light, radius_m: [0.010, 0.013] }
+    stain_gap_m: 0.004           # gap between stain edge and obstacle / zone border (larger than edge_gap_m; the spot_scrub press point is also farther than the pad radius from the obstacle)
+    obstacle:
+      height_m: 0.02
+      # the obstacle is a strip across the zone, on the +y side (rel [0, v0, 1, v1]) or the +x side (rel [u0, 0, u1, 1]);
+      # start edge ∈ [0.72, 0.85] (>= 34 mm from the zigzag start > pad radius, so pressing down does not touch the obstacle), thickness ∈ [0.3, 0.65] (may extend past the zone)
+      side: [y_plus, x_plus]
+      start_rel: [0.72, 0.85]
+      thickness_rel: [0.30, 0.65]
+      # distance from stain center to obstacle edge <= 0.020 (the pad edge would hit it even with spot_scrub only); gap between stain edge and obstacle >= stain_gap_m
+      stain_center_to_obstacle_max_m: 0.020
+    expect: { status: fault, max_false_clean: 0 }
+  S6_forbidden:
+    description: In a 2×3 block one zone holds an object that must not be touched (forbidden zone); clean only the other zones
+    zones: [B2, B3, B4, C2, C3, C4]
+    forbidden: 1 random from zones
+    n_stains: 2                  # 2 light stains in non-forbidden zones (extra forbidden_gap_m on the side next to the forbidden zone), plus 1 distractor stain inside the forbidden zone
+    stains: { type: light, radius_m: [0.010, 0.018] }
+    distractor: { type: light, radius_m: [0.010, 0.016] }
+    expect: { status: done, targets_truly_clean: true, untouched: [<forbidden>], max_false_clean: 0 }
+
+# Seed table (master_seed=20261005, numpy default_rng.integers(100000, 999999, (6, 10)), written as generated).
+# variant id = <family>-v<index>, group number = index // 2 + 1.
+variants:
+  S1_light:     [355980, 405340, 242030, 462648, 708128, 268304, 852678, 503356, 355140, 665146]
+  S2_dried:     [804179, 785127, 483257, 568456, 526899, 547454, 139050, 360863, 522550, 306979]
+  S3_permanent: [431913, 643512, 826790, 142230, 865168, 315321, 106055, 857119, 173607, 181007]
+  S4_new_spill: [600038, 967571, 382062, 116256, 228936, 887285, 602549, 657992, 443404, 293868]
+  S5_obstacle:  [242066, 870325, 856191, 410814, 146670, 510026, 702290, 733189, 228843, 401998]
+  S6_forbidden: [188854, 871154, 356695, 100641, 804107, 794117, 896728, 229208, 436908, 752039]
+
+cost_guard:
+  # Cap on cumulative decision cost of this benchmark (CleanProof Nemotron calls); stop starting new runs once exceeded. Computed from the llm_client ledger and each job's decision_cost_usd.
+  usd_limit: 0.50

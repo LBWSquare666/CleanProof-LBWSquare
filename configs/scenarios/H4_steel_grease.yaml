@@ -1,0 +1,10 @@
+name: H4_steel_grease
+description: v12 chapter 2 triptych (steel) - one greasy handprint on a stainless steel countertop (greasy handprint on steel), scanning the whole tabletop
+site: home_dining
+platform: spot_arm
+task: { instruction: "Clean the table.", surface: stainless_steel, max_passes_per_zone: 3, max_steps: 24 }
+stains:
+  # position changed: with offset [0, 0] and angle 75 the thumb tip poked a few pixels into A3 in the rendered image (the stain grid ground truth counts A3 as clean), and all three Cosmos jobs judged A3 dirty
+  # moved 1.5 cm and turned the finger to 90°, giving B3 39 % + B4 6 %, at least 8 mm from rows A / C
+  - { type: grease, shape: hand, zone: B3, offset: [0.015, 0.0], scale: 0.72, angle_deg: 90, level: 0.8, seed: 23 }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

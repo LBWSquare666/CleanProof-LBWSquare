@@ -1,0 +1,21 @@
+# Site: home dining table (simulation; the principle segment starring Spot + Arm, the triptych and the software showcase job all use it).
+# Work area = the whole tabletop the arm can reach with Spot standing on the long side of the table (cleaning areas are recognized fully automatically; Cosmos scans the whole tabletop).
+# Reachability determined by scan: after turning the tool 240° about the vertical axis (the polishing pad is round, orientation does not affect wiping), the full table width is reachable, and along the table depth the pad center can reach x ≈ 0.34.
+# A narrow 9 cm strip at the far end holds a mug lying on its side (set dressing only, not in perception rendering).
+table:
+  z_surface: 0.0
+  center_xy: [0.23, 0.03]
+  half_xy: [0.23, 0.41]
+  mug: { xy: [0.10, 0.37], yaw_deg: 300 }   # restores the v11c composition ("do not place things randomly"): behind the table in the main view, lying on its side, mug opening angled toward the stain; the tabletop is extended 12 cm toward +y to make room (set dressing only, work area and recordings unchanged)
+work_area:
+  origin_xy: [0.03, -0.33]
+  size_xy: [0.34, 0.60]
+  rows: 3
+  cols: 5
+tool_rotvec: [0.422, -3.1046, -0.0049]
+# Survey pose: Spot stows its arm (upper arm tilted back, forearm folded, the whole arm behind the near edge of the table, out of the fixed camera work-area view, shadow also falls outside the table).
+# "in the ready pose the cleaning tool should not point at the ceiling, check the earlier normal version" - the original [0, -2.6, 2.6, 0, -1.4, 0] has the tool pointing up;
+# changed to wrist flipped down, tool pointing down (about 10° off vertical): the wiping head is 5 cm behind the near edge of the table and 16 cm above the tabletop, the wrist joint is 0.23 rad from its limit, with no contact with the body / table;
+# the fixed camera rectified image is pixel-identical to the original pose (neither arm nor shadow enters the work-area view, verified against the control group)
+survey_arm_q: { spot_arm: [0.0, -2.4, 2.2, 0.0, 1.6, 0.0] }
+home_tcp_xyz: [0.20, -0.03, 0.15]

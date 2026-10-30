@@ -1,0 +1,5 @@
+# Home dining table site (simulation): cells are about 3.7 times larger than in the default work area, so one pass has a longer path
+motion:
+  contact_max_tangent_m_s: 0.02     # simulation site value (the default 0.009 is the UR3e real-robot acceptance value); in the Spot simulation force control still holds the target band at 0.02 m/s, see the smoke run
+skills:
+  zone_timeout_s: 420

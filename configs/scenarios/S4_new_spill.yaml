@@ -1,0 +1,8 @@
+name: S4_new_spill
+description: someone spills a new stain in an already clean area mid-run; the recheck finds and handles it
+task: { instruction: "Clean zones B2, B3, C2 and C3.", zones: [B2, B3, C2, C3], max_passes_per_zone: 3, max_steps: 20 }
+stains:
+  - { type: light, zone: B2, offset: [0.0, 0.0], radius: 0.015, seed: 7 }
+events:
+  - { at_step: 1, add_stain: { type: light, zone: C3, offset: [0.004, 0.004], radius: 0.013, seed: 8 } }
+expect: { status: done, targets_truly_clean: true, max_false_clean: 0 }

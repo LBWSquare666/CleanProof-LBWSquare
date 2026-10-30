@@ -1,0 +1,2308 @@
+{
+  "benchmark": "E19_reference_stainless_steel",
+  "n_per_policy": 60,
+  "groups": 5,
+  "variants_per_family": 10,
+  "families": [
+    "S1_light",
+    "S2_dried",
+    "S3_permanent",
+    "S4_new_spill",
+    "S5_obstacle",
+    "S6_forbidden"
+  ],
+  "ci_method": {
+    "rates": "Wilson score interval, 95 %",
+    "means": "t interval over runs, 95 %"
+  },
+  "policies": {
+    "cleanproof_ref": {
+      "config": {
+        "policy": "nemotron",
+        "verifier": "vlm"
+      },
+      "n": 10,
+      "n_expected": 60,
+      "complete": false,
+      "right_outcome": {
+        "k": 9,
+        "n": 10,
+        "rate": 0.9,
+        "ci95": [
+          0.5958,
+          0.9821
+        ],
+        "half_width": 0.1931
+      },
+      "false_done": {
+        "k": 0,
+        "n": 10,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.2775
+        ],
+        "half_width": 0.1388
+      },
+      "wipes": {
+        "n": 10,
+        "mean": 1.8,
+        "sd": 1.033,
+        "ci95": [
+          1.061,
+          2.539
+        ],
+        "sum": 18.0,
+        "ci95_method": "t over runs"
+      },
+      "robot_time_s": {
+        "n": 10,
+        "mean": 81.343,
+        "sd": 43.69,
+        "ci95": [
+          50.091,
+          112.595
+        ],
+        "sum": 813.43,
+        "ci95_method": "t over runs"
+      },
+      "decision_cost_usd_sum": 0.0136,
+      "wall_s_mean": 67.4,
+      "per_group": [
+        {
+          "group": 1,
+          "n": 4,
+          "right_outcome": {
+            "k": 3,
+            "n": 4,
+            "rate": 0.75,
+            "ci95": [
+              0.3006,
+              0.9544
+            ],
+            "half_width": 0.3269
+          },
+          "false_done": {
+            "k": 0,
+            "n": 4,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.4899
+            ],
+            "half_width": 0.2449
+          },
+          "wipes_mean": 1.5,
+          "robot_time_mean_s": 66.12
+        },
+        {
+          "group": 2,
+          "n": 4,
+          "right_outcome": {
+            "k": 4,
+            "n": 4,
+            "rate": 1.0,
+            "ci95": [
+              0.5101,
+              1.0
+            ],
+            "half_width": 0.2449
+          },
+          "false_done": {
+            "k": 0,
+            "n": 4,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.4899
+            ],
+            "half_width": 0.2449
+          },
+          "wipes_mean": 2.25,
+          "robot_time_mean_s": 99.73
+        },
+        {
+          "group": 3,
+          "n": 2,
+          "right_outcome": {
+            "k": 2,
+            "n": 2,
+            "rate": 1.0,
+            "ci95": [
+              0.3424,
+              1.0
+            ],
+            "half_width": 0.3288
+          },
+          "false_done": {
+            "k": 0,
+            "n": 2,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.6576
+            ],
+            "half_width": 0.3288
+          },
+          "wipes_mean": 1.5,
+          "robot_time_mean_s": 75.03
+        },
+        {
+          "group": 4,
+          "n": 0,
+          "right_outcome": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              null,
+              null
+            ],
+            "half_width": null
+          },
+          "false_done": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              null,
+              null
+            ],
+            "half_width": null
+          },
+          "wipes_mean": null,
+          "robot_time_mean_s": null
+        },
+        {
+          "group": 5,
+          "n": 0,
+          "right_outcome": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              null,
+              null
+            ],
+            "half_width": null
+          },
+          "false_done": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              null,
+              null
+            ],
+            "half_width": null
+          },
+          "wipes_mean": null,
+          "robot_time_mean_s": null
+        }
+      ],
+      "per_family": {
+        "S1_light": {
+          "n": 5,
+          "right_outcome_k": 4,
+          "false_done_k": 0,
+          "statuses": [
+            "done",
+            "needs_human"
+          ],
+          "wipes_sum": 6,
+          "robot_time_sum_s": 267.9
+        },
+        "S2_dried": {
+          "n": 5,
+          "right_outcome_k": 5,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 12,
+          "robot_time_sum_s": 545.6
+        },
+        "S3_permanent": {
+          "n": 0,
+          "right_outcome_k": 0,
+          "false_done_k": 0,
+          "statuses": [],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 0
+        },
+        "S4_new_spill": {
+          "n": 0,
+          "right_outcome_k": 0,
+          "false_done_k": 0,
+          "statuses": [],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 0
+        },
+        "S5_obstacle": {
+          "n": 0,
+          "right_outcome_k": 0,
+          "false_done_k": 0,
+          "statuses": [],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 0
+        },
+        "S6_forbidden": {
+          "n": 0,
+          "right_outcome_k": 0,
+          "false_done_k": 0,
+          "statuses": [],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 0
+        }
+      },
+      "models": [
+        "nvidia/Cosmos3-Nano",
+        "nvidia/nemotron-3-super-120b-a12b"
+      ],
+      "prompt_versions": [
+        "dec-ea4d9c3/ver-b75e57e"
+      ],
+      "git": [
+        "32e5c7a"
+      ],
+      "notes_rows": []
+    },
+    "cleanproof_noref": {
+      "config": {
+        "policy": "nemotron",
+        "verifier": "vlm",
+        "ablation": {
+          "verifier_reference": false
+        }
+      },
+      "n": 10,
+      "n_expected": 60,
+      "complete": false,
+      "right_outcome": {
+        "k": 10,
+        "n": 10,
+        "rate": 1.0,
+        "ci95": [
+          0.7225,
+          1.0
+        ],
+        "half_width": 0.1388
+      },
+      "false_done": {
+        "k": 0,
+        "n": 10,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.2775
+        ],
+        "half_width": 0.1388
+      },
+      "wipes": {
+        "n": 10,
+        "mean": 2.1,
+        "sd": 0.738,
+        "ci95": [
+          1.572,
+          2.628
+        ],
+        "sum": 21.0,
+        "ci95_method": "t over runs"
+      },
+      "robot_time_s": {
+        "n": 10,
+        "mean": 95.303,
+        "sd": 30.085,
+        "ci95": [
+          73.783,
+          116.823
+        ],
+        "sum": 953.03,
+        "ci95_method": "t over runs"
+      },
+      "decision_cost_usd_sum": 0.0139,
+      "wall_s_mean": 73.3,
+      "per_group": [
+        {
+          "group": 1,
+          "n": 4,
+          "right_outcome": {
+            "k": 4,
+            "n": 4,
+            "rate": 1.0,
+            "ci95": [
+              0.5101,
+              1.0
+            ],
+            "half_width": 0.2449
+          },
+          "false_done": {
+            "k": 0,
+            "n": 4,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.4899
+            ],
+            "half_width": 0.2449
+          },
+          "wipes_mean": 2.0,
+          "robot_time_mean_s": 87.88
+        },
+        {
+          "group": 2,
+          "n": 4,
+          "right_outcome": {
+            "k": 4,
+            "n": 4,
+            "rate": 1.0,
+            "ci95": [
+              0.5101,
+              1.0
+            ],
+            "half_width": 0.2449
+          },
+          "false_done": {
+            "k": 0,
+            "n": 4,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.4899
+            ],
+            "half_width": 0.2449
+          },
+          "wipes_mean": 2.5,
+          "robot_time_mean_s": 112.87
+        },
+        {
+          "group": 3,
+          "n": 2,
+          "right_outcome": {
+            "k": 2,
+            "n": 2,
+            "rate": 1.0,
+            "ci95": [
+              0.3424,
+              1.0
+            ],
+            "half_width": 0.3288
+          },
+          "false_done": {
+            "k": 0,
+            "n": 2,
+            "rate": 0.0,
+            "ci95": [
+              0.0,
+              0.6576
+            ],
+            "half_width": 0.3288
+          },
+          "wipes_mean": 1.5,
+          "robot_time_mean_s": 75.03
+        },
+        {
+          "group": 4,
+          "n": 0,
+          "right_outcome": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              null,
+              null
+            ],
+            "half_width": null
+          },
+          "false_done": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              null,
+              null
+            ],
+            "half_width": null
+          },
+          "wipes_mean": null,
+          "robot_time_mean_s": null
+        },
+        {
+          "group": 5,
+          "n": 0,
+          "right_outcome": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              null,
+              null
+            ],
+            "half_width": null
+          },
+          "false_done": {
+            "k": 0,
+            "n": 0,
+            "rate": null,
+            "ci95": [
+              null,
+              null
+            ],
+            "half_width": null
+          },
+          "wipes_mean": null,
+          "robot_time_mean_s": null
+        }
+      ],
+      "per_family": {
+        "S1_light": {
+          "n": 5,
+          "right_outcome_k": 5,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 9,
+          "robot_time_sum_s": 407.5
+        },
+        "S2_dried": {
+          "n": 5,
+          "right_outcome_k": 5,
+          "false_done_k": 0,
+          "statuses": [
+            "done"
+          ],
+          "wipes_sum": 12,
+          "robot_time_sum_s": 545.6
+        },
+        "S3_permanent": {
+          "n": 0,
+          "right_outcome_k": 0,
+          "false_done_k": 0,
+          "statuses": [],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 0
+        },
+        "S4_new_spill": {
+          "n": 0,
+          "right_outcome_k": 0,
+          "false_done_k": 0,
+          "statuses": [],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 0
+        },
+        "S5_obstacle": {
+          "n": 0,
+          "right_outcome_k": 0,
+          "false_done_k": 0,
+          "statuses": [],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 0
+        },
+        "S6_forbidden": {
+          "n": 0,
+          "right_outcome_k": 0,
+          "false_done_k": 0,
+          "statuses": [],
+          "wipes_sum": 0,
+          "robot_time_sum_s": 0
+        }
+      },
+      "models": [
+        "nvidia/Cosmos3-Nano",
+        "nvidia/nemotron-3-super-120b-a12b"
+      ],
+      "prompt_versions": [
+        "dec-ea4d9c3/ver-b75e57e"
+      ],
+      "git": [
+        "32e5c7a"
+      ],
+      "notes_rows": [
+        {
+          "variant_id": "S2_dried-v00",
+          "notes": "verifier_cv_fallback_zones=1"
+        },
+        {
+          "variant_id": "S2_dried-v01",
+          "notes": "verifier_cv_fallback_zones=1"
+        },
+        {
+          "variant_id": "S2_dried-v03",
+          "notes": "verifier_cv_fallback_zones=1"
+        },
+        {
+          "variant_id": "S1_light-v04",
+          "notes": "verifier_cv_fallback_zones=1"
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "dropped_rows": [
+    {
+      "variant_id": "S1_light-v00",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "264366f9a0b9",
+      "time_utc": "2026-10-04T23:04:21+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v00",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "264366f9a0b9",
+      "time_utc": "2026-10-04T23:04:28+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v00",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "fb50dd7479cf",
+      "time_utc": "2026-10-04T23:05:05+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v00",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "264366f9a0b9",
+      "time_utc": "2026-10-04T23:05:18+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v00",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "fb50dd7479cf",
+      "time_utc": "2026-10-04T23:05:45+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v00",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "fb50dd7479cf",
+      "time_utc": "2026-10-04T23:06:15+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v00",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "a6ce7272dbfa",
+      "time_utc": "2026-10-04T23:06:36+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v00",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "a6ce7272dbfa",
+      "time_utc": "2026-10-04T23:06:46+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v00",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "a6ce7272dbfa",
+      "time_utc": "2026-10-04T23:07:21+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v00",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "11c546606279",
+      "time_utc": "2026-10-04T23:07:29+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v00",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "11c546606279",
+      "time_utc": "2026-10-04T23:08:02+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v00",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "ad03f40fbc1a",
+      "time_utc": "2026-10-04T23:08:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v00",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "ad03f40fbc1a",
+      "time_utc": "2026-10-04T23:08:18+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v00",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "11c546606279",
+      "time_utc": "2026-10-04T23:08:22+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v00",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "ad03f40fbc1a",
+      "time_utc": "2026-10-04T23:08:25+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v00",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "87776e1eeeb1",
+      "time_utc": "2026-10-04T23:08:51+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v00",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "87776e1eeeb1",
+      "time_utc": "2026-10-04T23:09:04+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v00",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "87776e1eeeb1",
+      "time_utc": "2026-10-04T23:09:34+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v01",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "0ff9af2f9faa",
+      "time_utc": "2026-10-04T23:12:51+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v01",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "0ff9af2f9faa",
+      "time_utc": "2026-10-04T23:13:02+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v01",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "6204b4c3fd27",
+      "time_utc": "2026-10-04T23:13:37+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v01",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "0ff9af2f9faa",
+      "time_utc": "2026-10-04T23:13:49+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v01",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "6204b4c3fd27",
+      "time_utc": "2026-10-04T23:14:17+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v01",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "6204b4c3fd27",
+      "time_utc": "2026-10-04T23:14:54+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v01",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "07f78174f1ea",
+      "time_utc": "2026-10-04T23:15:05+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v01",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "07f78174f1ea",
+      "time_utc": "2026-10-04T23:15:26+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v01",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "07f78174f1ea",
+      "time_utc": "2026-10-04T23:15:51+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v01",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "bc075608c2d9",
+      "time_utc": "2026-10-04T23:16:06+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v01",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "bc075608c2d9",
+      "time_utc": "2026-10-04T23:16:31+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v01",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "2e2bbfa9ac5d",
+      "time_utc": "2026-10-04T23:16:40+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v01",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "2e2bbfa9ac5d",
+      "time_utc": "2026-10-04T23:16:46+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v01",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "2e2bbfa9ac5d",
+      "time_utc": "2026-10-04T23:16:52+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v01",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "bc075608c2d9",
+      "time_utc": "2026-10-04T23:17:00+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v01",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "20f00f532298",
+      "time_utc": "2026-10-04T23:17:20+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v01",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "20f00f532298",
+      "time_utc": "2026-10-04T23:17:44+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v02",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "0c50b1fb0362",
+      "time_utc": "2026-10-04T23:18:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v01",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "20f00f532298",
+      "time_utc": "2026-10-04T23:18:16+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v02",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "0c50b1fb0362",
+      "time_utc": "2026-10-04T23:18:55+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v02",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "0c50b1fb0362",
+      "time_utc": "2026-10-04T23:19:16+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v02",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "221679f35c24",
+      "time_utc": "2026-10-04T23:19:27+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v02",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "221679f35c24",
+      "time_utc": "2026-10-04T23:19:55+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v02",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "221679f35c24",
+      "time_utc": "2026-10-04T23:20:28+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v02",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "b8494b1749ed",
+      "time_utc": "2026-10-04T23:20:39+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v02",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "b8494b1749ed",
+      "time_utc": "2026-10-04T23:20:56+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v02",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "b8494b1749ed",
+      "time_utc": "2026-10-04T23:21:25+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v02",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "6d0007ea3301",
+      "time_utc": "2026-10-04T23:21:35+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v02",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "6d0007ea3301",
+      "time_utc": "2026-10-04T23:22:03+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v02",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "fe2816a30018",
+      "time_utc": "2026-10-04T23:22:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v02",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "fe2816a30018",
+      "time_utc": "2026-10-04T23:22:19+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v02",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "fe2816a30018",
+      "time_utc": "2026-10-04T23:22:25+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v02",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "6d0007ea3301",
+      "time_utc": "2026-10-04T23:22:33+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v02",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "a30c57a035e0",
+      "time_utc": "2026-10-04T23:22:52+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v02",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "a30c57a035e0",
+      "time_utc": "2026-10-04T23:23:09+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v02",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "a30c57a035e0",
+      "time_utc": "2026-10-04T23:23:38+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v03",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "f9fcb87c81d2",
+      "time_utc": "2026-10-04T23:23:40+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v03",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "f9fcb87c81d2",
+      "time_utc": "2026-10-04T23:24:17+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v03",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "f9fcb87c81d2",
+      "time_utc": "2026-10-04T23:24:39+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v03",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "97c509abe390",
+      "time_utc": "2026-10-04T23:24:47+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v03",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "97c509abe390",
+      "time_utc": "2026-10-04T23:25:17+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v03",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "97c509abe390",
+      "time_utc": "2026-10-04T23:25:46+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v03",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "348332bc5b10",
+      "time_utc": "2026-10-04T23:26:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v03",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "348332bc5b10",
+      "time_utc": "2026-10-04T23:26:20+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v03",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "348332bc5b10",
+      "time_utc": "2026-10-04T23:26:56+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v03",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "936dffc6ba57",
+      "time_utc": "2026-10-04T23:26:56+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v03",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "936dffc6ba57",
+      "time_utc": "2026-10-04T23:27:38+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v03",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "d0ed2d95916b",
+      "time_utc": "2026-10-04T23:27:47+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v03",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "d0ed2d95916b",
+      "time_utc": "2026-10-04T23:27:54+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v03",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "936dffc6ba57",
+      "time_utc": "2026-10-04T23:27:55+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v03",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "d0ed2d95916b",
+      "time_utc": "2026-10-04T23:28:00+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v03",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "2ce999957f14",
+      "time_utc": "2026-10-04T23:28:22+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v03",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "2ce999957f14",
+      "time_utc": "2026-10-04T23:28:35+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v03",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "2ce999957f14",
+      "time_utc": "2026-10-04T23:29:05+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v04",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "a572ebef0b90",
+      "time_utc": "2026-10-04T23:29:09+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v04",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "a572ebef0b90",
+      "time_utc": "2026-10-04T23:29:50+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v04",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "a572ebef0b90",
+      "time_utc": "2026-10-04T23:30:14+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v04",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "66bd2baea15c",
+      "time_utc": "2026-10-04T23:30:49+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v04",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "66bd2baea15c",
+      "time_utc": "2026-10-04T23:31:03+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v04",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "39554cc6a693",
+      "time_utc": "2026-10-04T23:31:55+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v04",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "66bd2baea15c",
+      "time_utc": "2026-10-04T23:32:08+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v04",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "39554cc6a693",
+      "time_utc": "2026-10-04T23:32:38+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v04",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "39554cc6a693",
+      "time_utc": "2026-10-04T23:33:10+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v04",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "6c0dd45543b2",
+      "time_utc": "2026-10-04T23:33:26+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v04",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "6c0dd45543b2",
+      "time_utc": "2026-10-04T23:34:02+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v04",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "4d006f61f8ac",
+      "time_utc": "2026-10-04T23:34:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v04",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "4d006f61f8ac",
+      "time_utc": "2026-10-04T23:34:20+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v04",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "4d006f61f8ac",
+      "time_utc": "2026-10-04T23:34:28+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v04",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "6c0dd45543b2",
+      "time_utc": "2026-10-04T23:34:30+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v04",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "048efacc85ec",
+      "time_utc": "2026-10-04T23:34:55+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v04",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "048efacc85ec",
+      "time_utc": "2026-10-04T23:35:03+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v05",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "d1836ed5b47d",
+      "time_utc": "2026-10-04T23:35:28+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v04",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "048efacc85ec",
+      "time_utc": "2026-10-04T23:35:45+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v05",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "d1836ed5b47d",
+      "time_utc": "2026-10-04T23:36:08+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v05",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "d1836ed5b47d",
+      "time_utc": "2026-10-04T23:36:46+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v05",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "0a712645fbb8",
+      "time_utc": "2026-10-04T23:37:00+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v05",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "0a712645fbb8",
+      "time_utc": "2026-10-04T23:37:29+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v05",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "0a712645fbb8",
+      "time_utc": "2026-10-04T23:37:57+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v05",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "7de6f6be0ba5",
+      "time_utc": "2026-10-04T23:38:11+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v05",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "7de6f6be0ba5",
+      "time_utc": "2026-10-04T23:38:32+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v05",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "7de6f6be0ba5",
+      "time_utc": "2026-10-04T23:38:54+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v05",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "6477a39aa25c",
+      "time_utc": "2026-10-04T23:39:02+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v05",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "6477a39aa25c",
+      "time_utc": "2026-10-04T23:39:29+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v05",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "eb40f3106b73",
+      "time_utc": "2026-10-04T23:39:36+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v05",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "eb40f3106b73",
+      "time_utc": "2026-10-04T23:39:40+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v05",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "eb40f3106b73",
+      "time_utc": "2026-10-04T23:39:44+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v05",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "6477a39aa25c",
+      "time_utc": "2026-10-04T23:39:48+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v05",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "c0d3b7224e13",
+      "time_utc": "2026-10-04T23:40:07+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v05",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "c0d3b7224e13",
+      "time_utc": "2026-10-04T23:40:18+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v06",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "5bfc5afe21ba",
+      "time_utc": "2026-10-04T23:40:40+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v05",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "c0d3b7224e13",
+      "time_utc": "2026-10-04T23:40:55+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v06",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "5bfc5afe21ba",
+      "time_utc": "2026-10-04T23:41:19+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v06",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "5bfc5afe21ba",
+      "time_utc": "2026-10-04T23:41:49+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v06",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "29a85a954d03",
+      "time_utc": "2026-10-04T23:42:19+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v06",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "29a85a954d03",
+      "time_utc": "2026-10-04T23:42:31+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v06",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "29a85a954d03",
+      "time_utc": "2026-10-04T23:43:18+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v06",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "b1518643e99a",
+      "time_utc": "2026-10-04T23:43:29+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v06",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "b1518643e99a",
+      "time_utc": "2026-10-04T23:43:52+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v06",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "b1518643e99a",
+      "time_utc": "2026-10-04T23:44:15+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v06",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "fe0283ddbe9a",
+      "time_utc": "2026-10-04T23:44:27+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v06",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "fe0283ddbe9a",
+      "time_utc": "2026-10-04T23:44:57+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v06",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "380171b31503",
+      "time_utc": "2026-10-04T23:45:06+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v06",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "380171b31503",
+      "time_utc": "2026-10-04T23:45:11+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v06",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "380171b31503",
+      "time_utc": "2026-10-04T23:45:17+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v06",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "fe0283ddbe9a",
+      "time_utc": "2026-10-04T23:45:23+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v06",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "97fd0316d14e",
+      "time_utc": "2026-10-04T23:45:51+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v06",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "97fd0316d14e",
+      "time_utc": "2026-10-04T23:46:01+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v07",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "8874c890eaf9",
+      "time_utc": "2026-10-04T23:46:22+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v06",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "97fd0316d14e",
+      "time_utc": "2026-10-04T23:46:48+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v07",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "8874c890eaf9",
+      "time_utc": "2026-10-04T23:47:04+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v07",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "8874c890eaf9",
+      "time_utc": "2026-10-04T23:47:41+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v07",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "e15f2701cceb",
+      "time_utc": "2026-10-04T23:47:49+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v07",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "e15f2701cceb",
+      "time_utc": "2026-10-04T23:48:17+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v07",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "e15f2701cceb",
+      "time_utc": "2026-10-04T23:48:48+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v07",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "cfd9c446a884",
+      "time_utc": "2026-10-04T23:48:59+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v07",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "cfd9c446a884",
+      "time_utc": "2026-10-04T23:49:15+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v07",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "cfd9c446a884",
+      "time_utc": "2026-10-04T23:49:47+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v07",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "011969b15a24",
+      "time_utc": "2026-10-04T23:50:03+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v07",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "011969b15a24",
+      "time_utc": "2026-10-04T23:50:22+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v07",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "9574feb6c680",
+      "time_utc": "2026-10-04T23:50:31+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v07",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "9574feb6c680",
+      "time_utc": "2026-10-04T23:50:36+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v07",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "9574feb6c680",
+      "time_utc": "2026-10-04T23:50:42+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v07",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "011969b15a24",
+      "time_utc": "2026-10-04T23:50:58+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v07",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "7a0b5a37a089",
+      "time_utc": "2026-10-04T23:51:06+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v07",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "7a0b5a37a089",
+      "time_utc": "2026-10-04T23:51:33+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v07",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "7a0b5a37a089",
+      "time_utc": "2026-10-04T23:51:53+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v08",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "b943dfc6afcf",
+      "time_utc": "2026-10-04T23:52:01+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v08",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "b943dfc6afcf",
+      "time_utc": "2026-10-04T23:52:34+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v08",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "b943dfc6afcf",
+      "time_utc": "2026-10-04T23:53:00+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v08",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "47c1e240c598",
+      "time_utc": "2026-10-04T23:53:32+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v08",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "47c1e240c598",
+      "time_utc": "2026-10-04T23:53:46+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v08",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "47c1e240c598",
+      "time_utc": "2026-10-04T23:54:30+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v08",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "a53129378c7e",
+      "time_utc": "2026-10-04T23:54:36+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v08",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "a53129378c7e",
+      "time_utc": "2026-10-04T23:55:00+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v08",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "a53129378c7e",
+      "time_utc": "2026-10-04T23:55:18+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v08",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "2d7af2d9be43",
+      "time_utc": "2026-10-04T23:55:41+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v08",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "2d7af2d9be43",
+      "time_utc": "2026-10-04T23:55:56+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v08",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "6479554d63b8",
+      "time_utc": "2026-10-04T23:56:07+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v08",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "6479554d63b8",
+      "time_utc": "2026-10-04T23:56:15+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v08",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "6479554d63b8",
+      "time_utc": "2026-10-04T23:56:22+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v08",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "2d7af2d9be43",
+      "time_utc": "2026-10-04T23:56:39+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v08",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "53731cf6b408",
+      "time_utc": "2026-10-04T23:56:48+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v08",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "53731cf6b408",
+      "time_utc": "2026-10-04T23:57:17+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v08",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "53731cf6b408",
+      "time_utc": "2026-10-04T23:57:35+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v09",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "2416b43f5ecb",
+      "time_utc": "2026-10-04T23:57:38+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v09",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "2416b43f5ecb",
+      "time_utc": "2026-10-04T23:58:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v09",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "2416b43f5ecb",
+      "time_utc": "2026-10-04T23:58:38+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v09",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "029ad31b2e0c",
+      "time_utc": "2026-10-04T23:58:56+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v09",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "029ad31b2e0c",
+      "time_utc": "2026-10-04T23:59:20+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v09",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "029ad31b2e0c",
+      "time_utc": "2026-10-04T23:59:53+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v09",
+      "policy": "cleanproof",
+      "status": "needs_human",
+      "scenario_hash": "f03b1b6345c6",
+      "time_utc": "2026-10-05T00:00:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v09",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "f03b1b6345c6",
+      "time_utc": "2026-10-05T00:00:25+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S3_permanent-v09",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "f03b1b6345c6",
+      "time_utc": "2026-10-05T00:00:53+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v09",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "f56c3f100d54",
+      "time_utc": "2026-10-05T00:01:05+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v09",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "f56c3f100d54",
+      "time_utc": "2026-10-05T00:01:34+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v09",
+      "policy": "cleanproof",
+      "status": "fault",
+      "scenario_hash": "ba58fc045a70",
+      "time_utc": "2026-10-05T00:01:42+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v09",
+      "policy": "fixed1",
+      "status": "fault",
+      "scenario_hash": "ba58fc045a70",
+      "time_utc": "2026-10-05T00:01:48+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S5_obstacle-v09",
+      "policy": "fixed2",
+      "status": "fault",
+      "scenario_hash": "ba58fc045a70",
+      "time_utc": "2026-10-05T00:01:55+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S4_new_spill-v09",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "f56c3f100d54",
+      "time_utc": "2026-10-05T00:02:05+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v09",
+      "policy": "cleanproof",
+      "status": "done",
+      "scenario_hash": "b923a6226145",
+      "time_utc": "2026-10-05T00:02:30+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v09",
+      "policy": "fixed1",
+      "status": "done",
+      "scenario_hash": "b923a6226145",
+      "time_utc": "2026-10-05T00:02:40+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S6_forbidden-v09",
+      "policy": "fixed2",
+      "status": "done",
+      "scenario_hash": "b923a6226145",
+      "time_utc": "2026-10-05T00:03:20+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v00",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "7a3ee0826fde",
+      "time_utc": "2026-10-22T14:58:59+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v00",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "fff459a6edf9",
+      "time_utc": "2026-10-22T14:58:59+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v00",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "7a3ee0826fde",
+      "time_utc": "2026-10-22T14:59:02+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v00",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "fff459a6edf9",
+      "time_utc": "2026-10-22T15:00:03+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v01",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "5cd669c3a389",
+      "time_utc": "2026-10-22T15:00:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v01",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "5cd669c3a389",
+      "time_utc": "2026-10-22T15:00:12+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v01",
+      "policy": "cleanproof_noref",
+      "status": "needs_human",
+      "scenario_hash": "e03985d5bc7d",
+      "time_utc": "2026-10-22T15:01:06+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v02",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "6d53fbdf442a",
+      "time_utc": "2026-10-22T15:01:48+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v02",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "6d53fbdf442a",
+      "time_utc": "2026-10-22T15:02:02+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v01",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "e03985d5bc7d",
+      "time_utc": "2026-10-22T15:02:03+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v02",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "3b2ffed71ff5",
+      "time_utc": "2026-10-22T15:02:28+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v03",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "4a85af9457c2",
+      "time_utc": "2026-10-22T15:02:49+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v03",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "4a85af9457c2",
+      "time_utc": "2026-10-22T15:03:37+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v03",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "293fcbdf7a88",
+      "time_utc": "2026-10-22T15:03:41+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v02",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "3b2ffed71ff5",
+      "time_utc": "2026-10-22T15:03:58+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v04",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "03985aa79f21",
+      "time_utc": "2026-10-22T15:05:03+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v04",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "03985aa79f21",
+      "time_utc": "2026-10-22T15:05:06+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v03",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "293fcbdf7a88",
+      "time_utc": "2026-10-22T15:05:21+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v04",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "5b5e698d9427",
+      "time_utc": "2026-10-22T15:05:51+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v04",
+      "policy": "cleanproof_noref",
+      "status": "needs_human",
+      "scenario_hash": "5b5e698d9427",
+      "time_utc": "2026-10-22T15:05:56+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v00",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "c8ff205776ef",
+      "time_utc": "2026-10-22T15:07:43+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v00",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "c8ff205776ef",
+      "time_utc": "2026-10-22T15:07:49+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v01",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "93968d8936bb",
+      "time_utc": "2026-10-22T15:08:28+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v00",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "c92a35106d5a",
+      "time_utc": "2026-10-22T15:08:38+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v00",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "c92a35106d5a",
+      "time_utc": "2026-10-22T15:08:53+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v01",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "93968d8936bb",
+      "time_utc": "2026-10-22T15:09:41+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v01",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "c6ff6a9ad04a",
+      "time_utc": "2026-10-22T15:10:14+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v02",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "65aca9d115f7",
+      "time_utc": "2026-10-22T15:10:55+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v01",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "c6ff6a9ad04a",
+      "time_utc": "2026-10-22T15:11:08+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v02",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "65aca9d115f7",
+      "time_utc": "2026-10-22T15:11:23+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v03",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "91e9c2656525",
+      "time_utc": "2026-10-22T15:12:41+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v02",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "96607e911aad",
+      "time_utc": "2026-10-22T15:12:49+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v02",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "96607e911aad",
+      "time_utc": "2026-10-22T15:13:19+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v03",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "91e9c2656525",
+      "time_utc": "2026-10-22T15:13:48+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v03",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "59615df17607",
+      "time_utc": "2026-10-22T15:14:18+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v04",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "03cb46707a16",
+      "time_utc": "2026-10-22T15:14:46+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v03",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "59615df17607",
+      "time_utc": "2026-10-22T15:14:54+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S1_light-v04",
+      "policy": "cleanproof_noref",
+      "status": "done",
+      "scenario_hash": "03cb46707a16",
+      "time_utc": "2026-10-22T15:15:24+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v04",
+      "policy": "cleanproof_ref",
+      "status": "done",
+      "scenario_hash": "c27c223ea327",
+      "time_utc": "2026-10-22T15:16:05+00:00",
+      "_why": "other bench"
+    },
+    {
+      "variant_id": "S2_dried-v04",
+      "policy": "cleanproof_noref",
+      "status": "needs_human",
+      "scenario_hash": "c27c223ea327",
+      "time_utc": "2026-10-22T15:16:43+00:00",
+      "_why": "other bench"
+    }
+  ],
+  "generated_utc": "2026-10-22T15:25:04+00:00",
+  "git": "32e5c7a",
+  "config_hash": "4e58ce3b7524",
+  "csv": "eval/sim_benchmark.csv"
+}
